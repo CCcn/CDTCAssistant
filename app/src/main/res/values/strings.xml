@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">CDTCAssistant</string>
+    <string name="app_name">成纺助手</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">成都纺织高等专科学校</string>
+    <string name="nav_header_subtitle">我的大学</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="share">分享</string>
+    <string name="about">关于</string>
+    <string name="tools">设置</string>
 </resources>
