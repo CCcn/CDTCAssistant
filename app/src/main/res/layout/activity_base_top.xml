@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/ic_common_title_bg" >
+
+    <LinearLayout
+        android:id="@+id/llTopBack"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/arrow_left" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTopTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/btnTopRight3"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="10dp"
+            android:button="@null"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTopRight2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTopRight4"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTopRight1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:gravity="right|center"
+            android:textColor="#fff"
+            android:textSize="13dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

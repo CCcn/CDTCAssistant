@@ -11,5 +11,14 @@ package com.cdtc.student.cdtcassistant.network;
  */
 public class Api {
 
+    /**
+     *服务器地址
+     */
+    public static final String HOME = "http://119.23.52.87:8080/";
+
+    /**
+     * 加在初始化数据
+     */
+    public static final String INIT = HOME + "Dian/banner";
 
 }

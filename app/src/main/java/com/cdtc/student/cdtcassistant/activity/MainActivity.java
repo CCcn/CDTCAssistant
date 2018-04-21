@@ -1,6 +1,8 @@
 package com.cdtc.student.cdtcassistant.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,10 +18,11 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.fragment.BuyFragment;
+import com.cdtc.student.cdtcassistant.fragment.FindFragment;
 import com.cdtc.student.cdtcassistant.fragment.IndexFragment;
-import com.cdtc.student.cdtcassistant.fragment.SecondFragment;
+import com.cdtc.student.cdtcassistant.fragment.MineFragment;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.hjm.bottomtabbar.BottomTabBar;
 
@@ -55,6 +58,14 @@ public class MainActivity extends AppCompatActivity
      */
     private BottomTabBar mBottomTabBar;
 
+    /**
+     * 从初始页启动
+     *   ok    ：数据请求成功
+     *   failed：数据请求失败，进行相应提示
+     */
+    private static final String STATUS = "status";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +84,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
-
-
-
 
         initVariable();
         initView();
@@ -122,8 +128,10 @@ public class MainActivity extends AppCompatActivity
                 .setFontSize(8)
                 .setTabPadding(20,6,20)
                 .setChangeColor(Color.parseColor("#ffb900"),Color.DKGRAY)
-                .addTabItem("首页", R.mipmap.ic_launcher, IndexFragment.class)
-                .addTabItem("我的", R.mipmap.ic_launcher_round, SecondFragment.class)
+                .addTabItem("首页", R.drawable.icon_index, IndexFragment.class)
+                .addTabItem("跳蚤", R.drawable.icon_buy, BuyFragment.class)
+                .addTabItem("招领", R.drawable.icon_find, FindFragment.class)
+                .addTabItem("我的", R.drawable.icon_mine, MineFragment.class)
                 .setTabBarBackgroundColor(Color.parseColor("#f9feff"))
                 .isShowDivider(true);
 
@@ -134,7 +142,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabChange(int position, String name, View view) {
                 //第二个页面，显示fab
-                if (position == 1 ) {
+                if (position == 0 ) {
                     fab.setVisibility(View.VISIBLE);
                 } else {
                     fab.setVisibility(View.GONE);
@@ -207,5 +215,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    /**
+     * 从初始化页面加在进来
+     * @param context 上下文
+     * @param status 网络请求状态
+     */
+    public static void startAction(Context context, String status) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(STATUS,status);
+        context.startActivity(intent);
     }
 }
