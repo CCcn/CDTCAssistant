@@ -34,6 +34,12 @@ public class WebActivity extends BaseTopActivity {
     public static final String WEB_URL = "web_view_url";
 
     /**
+     * 浏览页面的标题
+     *  暂时无法实现实时更新页面标题，只有跳转的时候传一个标题名称
+     */
+    public static final String TITLE = "title";
+
+    /**
      * 根布局
      */
     private LinearLayout rootLayout;
@@ -81,11 +87,12 @@ public class WebActivity extends BaseTopActivity {
      * @param context 上下文
      * @param url 要打开的链接
      */
-    public static void startWeb(Context context, String url) {
+    public static void startWeb(Context context, String url, String title) {
         Intent intent = new Intent(context, WebActivity.class);
         intent.putExtra(WEB_URL, url);
+        intent.putExtra(TITLE, title);
 
-        Log.i(TAG, "startWeb: " + " url:" + url);
+        Log.i(TAG, "startWeb: " + " url:" + url +" title:" + title);
 
         context.startActivity(intent);
     }

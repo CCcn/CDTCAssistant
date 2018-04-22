@@ -121,10 +121,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
         itemView.setOnClickListener(view -> {
             String url = bannerBean.getUrls().get(position);
+            String title = bannerBean.getTips().get(position);
             Log.i(TAG, "fillBannerItem: url" + url);
             //简单验证链接的有效性，应该做一个HTPP工具类
             if (!TextUtils.isEmpty(url) && url.contains("http")) {
-                WebActivity.startWeb(activity, url);
+                WebActivity.startWeb(activity, url, title);
             } else {
                 T.showShort(activity,"链接无效");
             }

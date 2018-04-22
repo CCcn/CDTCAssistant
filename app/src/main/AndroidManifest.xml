@@ -16,13 +16,14 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <!--隐藏标题栏-->
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <!-- 隐藏标题栏 -->
         <activity android:name=".activity.BaseTopActivity" />
-        <activity android:name=".activity.WebActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".activity.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeSplash">
             <intent-filter>
@@ -31,6 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.BuyDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
