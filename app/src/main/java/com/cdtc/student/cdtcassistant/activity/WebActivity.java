@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -59,6 +60,10 @@ public class WebActivity extends BaseTopActivity {
         webView = getView(R.id.web_view);
         rootLayout = getView(R.id.root_web_view);
 
+        initTopBar("浏览");
+
+        webView.loadUrl(url);
+
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
@@ -68,6 +73,7 @@ public class WebActivity extends BaseTopActivity {
                 return true;
             }
         });
+
     }
 
     /**

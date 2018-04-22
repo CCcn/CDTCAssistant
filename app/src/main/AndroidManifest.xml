@@ -18,8 +18,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <!--隐藏标题栏-->
         <activity android:name=".activity.BaseTopActivity" />
-        <activity android:name=".activity.WebActivity" />
+        <activity android:name=".activity.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeSplash">

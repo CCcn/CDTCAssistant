@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
 
         fab =  findViewById(R.id.fab);
 
-        fab.setVisibility(View.INVISIBLE);
         //设置Navigation里面的组件要这样获取
         View headerView= navigationView.getHeaderView(0);
         headImage = headerView.findViewById(R.id.head_image);
