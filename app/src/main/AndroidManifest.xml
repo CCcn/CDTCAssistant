@@ -35,7 +35,8 @@
         <activity
             android:name=".activity.BuyDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.AboutActivity"></activity>
+        <activity android:name=".activity.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
