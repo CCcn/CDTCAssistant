@@ -10,4 +10,6 @@
     <string name="share">分享</string>
     <string name="about">关于</string>
     <string name="tools">设置</string>
+
+    <string name="feedback_contact">请输入联系方式(QQ或WeChat)</string>
 </resources>

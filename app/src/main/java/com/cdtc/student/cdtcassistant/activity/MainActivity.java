@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                 .setImgSize(64,64)
                 .setFontSize(8)
                 .setTabPadding(20,6,20)
-                .setChangeColor(Color.parseColor("#ffb900"),Color.DKGRAY)
+                .setChangeColor(Color.parseColor("#00CBAB"),Color.DKGRAY)
                 .addTabItem("首页", R.drawable.icon_index, IndexFragment.class)
                 .addTabItem("跳蚤", R.drawable.icon_buy, BuyFragment.class)
                 .addTabItem("招领", R.drawable.icon_find, FindFragment.class)
