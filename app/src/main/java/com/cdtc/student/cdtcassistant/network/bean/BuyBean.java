@@ -12,7 +12,7 @@ public class BuyBean {
     /**
      * id,用于详细页面的请求
      */
-    private Integer id;
+    private String id;
 
     /**
      * 展示的图片
@@ -22,18 +22,18 @@ public class BuyBean {
     /**
      * 描述信息
      */
-    private String description;
+    private String title;
 
     /**
      * 售价
      */
     private String price;
 
-    public Integer getId() {
+    public String  getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -45,12 +45,12 @@ public class BuyBean {
         this.img = img;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPrice() {
@@ -66,7 +66,7 @@ public class BuyBean {
         return "BuyBean{" +
                 "id=" + id +
                 ", img='" + img + '\'' +
-                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
                 ", price='" + price + '\'' +
                 '}';
     }

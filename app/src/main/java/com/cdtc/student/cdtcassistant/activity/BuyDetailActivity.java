@@ -4,10 +4,27 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
+import com.cdtc.student.cdtcassistant.network.Api;
+import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
+import com.cdtc.student.cdtcassistant.network.bean.BuyDetailBean;
+import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
+import com.cdtc.student.cdtcassistant.network.response.BuyDetailResponse;
+import com.cdtc.student.cdtcassistant.util.T;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
@@ -19,6 +36,11 @@ import com.cdtc.student.cdtcassistant.R;
  * @author pcc
  */
 public class BuyDetailActivity extends BaseTopActivity {
+
+    /**
+     * 商品id
+     */
+    private String goodsId;
 
     /**
      * 标题
@@ -84,6 +106,12 @@ public class BuyDetailActivity extends BaseTopActivity {
      */
     private static final String TITLE = "title";
 
+    /**
+     * 从列表传递过来的商品id
+     */
+    private static final String GOODS_ID = "goods_id";
+
+    private static final String TAG = "BuyDetailActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,13 +120,76 @@ public class BuyDetailActivity extends BaseTopActivity {
         initVariable();
         initView();
 
+        loadData();
     }
 
+    /**
+     * 开始请求数据
+     */
+    private void  loadData() {
+        OkHttpUtil.doGet(Api.BUY_DETAIL + goodsId, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: 请求失败" + e.getMessage());
+                runOnUiThread(() -> {
+                    T.showError(activity);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseString = response.body().string();
+                runOnUiThread(() -> {
+                    BuyDetailResponse buyDetailResponse = null;
+                    try {
+                        buyDetailResponse = new Gson().fromJson(responseString, BuyDetailResponse.class);
+                    } catch (Exception e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                        T.showError(activity);
+                    }
+
+                    if (buyDetailResponse != null && buyDetailResponse.code == HttpConstant.OK) {
+                        Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.getBuyDetail());
+                        showData(buyDetailResponse.getBuyDetail());
+                    } else {
+                        Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.message);
+                        T.showShort(activity,buyDetailResponse.message);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 展示数据
+     * @param buyDetail
+     */
+    private void showData(BuyDetailBean buyDetail) {
+        name.setText(buyDetail.getName());
+        price.setText(buyDetail.getPrice());
+        owner.setText(buyDetail.getOwner());
+        description.setText(buyDetail.getDescription());
+
+        List<ContactBean> contacts = buyDetail.getContacts();
+        for (int i = 0 ; i < contacts.size(); i++) {
+            ContactBean contact = contacts.get(i);
+            if ("wx".equals(contact.getType())) {
+                weChatLayout.setVisibility(View.VISIBLE);
+                weChat.setText(contact.getNumber());
+            } else if ("qq".equals(contact.getType())) {
+                qqLayout.setVisibility(View.VISIBLE);
+                qq.setText(contact.getNumber());
+            } else {
+                telLayout.setVisibility(View.VISIBLE);
+                tel.setText(contact.getNumber());
+            }
+        }
+    }
     private void initVariable() {
         activity = this;
 
         title = getIntent().getStringExtra(TITLE);
-
+        goodsId = getIntent().getStringExtra(GOODS_ID);
     }
 
     private void initView() {
@@ -114,11 +205,17 @@ public class BuyDetailActivity extends BaseTopActivity {
         telLayout = getView(R.id.buy_detail_layout_tel);
         weChatLayout = getView(R.id.buy_detail_layout_wx);
         description = getView(R.id.buy_detail_goods_description);
+
+
     }
 
-    public static void startAction(Context context, String title) {
+
+
+
+    public static void startAction(Context context, String title,String goodsId) {
         Intent intent = new Intent(context,BuyDetailActivity.class);
         intent.putExtra(TITLE, title);
+        intent.putExtra(GOODS_ID, goodsId);
         context.startActivity(intent);
     }
 }

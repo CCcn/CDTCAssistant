@@ -5,24 +5,32 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.activity.BuyDetailActivity;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
+import com.cdtc.student.cdtcassistant.network.Api;
+import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
+import com.cdtc.student.cdtcassistant.network.response.BuyResponse;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class BuyFragment extends Fragment {
 
@@ -31,6 +39,8 @@ public class BuyFragment extends Fragment {
     private Activity activity;
 
     private List<BuyBean> buys = new ArrayList<>();
+
+    private static final String TAG = "BuyFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,10 +69,43 @@ public class BuyFragment extends Fragment {
 
         for (int i = 0 ; i < 20; i++) {
             BuyBean buyBean = new BuyBean();
-            buyBean.setDescription("描述信息 " + i);
+            buyBean.setTitle("描述信息 " + i);
             buyBean.setPrice("¥ " + i + "元");
             buys.add(buyBean);
         }
+
+        OkHttpUtil.doGet(Api.BUY, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: " + e.getMessage());
+                activity.runOnUiThread(() -> {
+                    T.showError(activity);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseString = response.body().string();
+                Log.i(TAG, "onResponse: 响应：" + responseString);
+                activity.runOnUiThread(() -> {
+                    BuyResponse buyResponse = null;
+                    try{
+                       buyResponse = new Gson().fromJson(responseString, BuyResponse.class);
+                    }catch (Exception e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                        T.showError(activity);
+                    }
+                    if (buyResponse != null && buyResponse.code == HttpConstant.OK) {
+                        Log.i(TAG, "onResponse: 请求成功" + buyResponse.getBuys());
+                        buys = buyResponse.getBuys();
+                        showRecycler();
+                    } else {
+                        T.showShort(activity,buyResponse.message);
+                    }
+
+                });
+            }
+        });
     }
 
     /**
@@ -79,7 +122,6 @@ public class BuyFragment extends Fragment {
             initVariable();
         }
         buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-//        buyRecycler.addItemDecoration(new DividerItemDecoration(activity, LinearLayout.VERTICAL));
         buyRecycler.setAdapter(new BuyAdapter());
     }
 
@@ -96,7 +138,7 @@ public class BuyFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull BuyHolder holder, int position) {
             BuyBean buy = buys.get(position);
-            holder.description.setText(buy.getDescription());
+            holder.title.setText(buy.getTitle());
             holder.price.setText(buy.getPrice());
         }
 
@@ -110,7 +152,7 @@ public class BuyFragment extends Fragment {
     private class BuyHolder extends RecyclerView.ViewHolder{
 
         private ImageView img;
-        private TextView description;
+        private TextView title;
         private TextView price;
 
         public BuyHolder(View itemView) {
@@ -124,14 +166,14 @@ public class BuyFragment extends Fragment {
          */
         private void initView(View itemView) {
             img = itemView.findViewById(R.id.buy_img);
-            description = itemView.findViewById(R.id.buy_description);
+            title = itemView.findViewById(R.id.buy_description);
             price = itemView.findViewById(R.id.buy_price);
 
             //点击后应该跳转到展示页面，后期可以实现ViewPager
             img.setOnClickListener(v -> {
                 T.showShort(activity, "点击了"+getAdapterPosition());
-                BuyDetailActivity.startAction(activity,buys.get(getAdapterPosition()).getDescription());
-
+                BuyBean buyBean = buys.get(getAdapterPosition());
+                BuyDetailActivity.startAction(activity, buyBean.getTitle(), buyBean.getId());
             });
         }
     }

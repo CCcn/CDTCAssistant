@@ -71,6 +71,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/buy_detail_layout_wx"
         android:orientation="horizontal"
         android:layout_margin="16dp"
@@ -88,6 +89,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/buy_detail_layout_qq"
         android:orientation="horizontal"
         android:layout_margin="16dp"
@@ -105,6 +107,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/buy_detail_layout_tel"
         android:orientation="horizontal"
         android:layout_margin="16dp"

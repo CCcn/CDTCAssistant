@@ -29,4 +29,18 @@ public class Api {
      */
     public static final String FEEDBACK = HOME + "/feedback";
 
+    /**
+     *跳蚤商品
+     *  get
+     */
+    public static final String BUY = HOME + "/buy";
+
+    /**
+     * 商品详细信息
+     *   get goodsId
+     */
+    public static final String BUY_DETAIL = HOME + "/buyDetail?goodsId=";
+
+
+
 }
