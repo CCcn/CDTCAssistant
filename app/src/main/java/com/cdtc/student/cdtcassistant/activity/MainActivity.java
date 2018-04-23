@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity
         navigationView  = findViewById(R.id.nav_view);
 
         fab =  findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 
         //设置Navigation里面的组件要这样获取
         View headerView= navigationView.getHeaderView(0);
@@ -141,12 +142,12 @@ public class MainActivity extends AppCompatActivity
         mBottomTabBar.setOnTabChangeListener(new BottomTabBar.OnTabChangeListener() {
             @Override
             public void onTabChange(int position, String name, View view) {
-                //第二个页面，显示fab
-                if (position == 0 ) {
-                    fab.setVisibility(View.VISIBLE);
-                } else {
-                    fab.setVisibility(View.GONE);
-                }
+//                //第二个页面，显示fab
+//                if (position == 0 ) {
+//                    fab.setVisibility(View.VISIBLE);
+//                } else {
+//                    fab.setVisibility(View.GONE);
+//                }
 
             }
         });

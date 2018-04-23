@@ -3,7 +3,6 @@ package com.cdtc.student.cdtcassistant.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,7 +16,7 @@ import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
-import com.cdtc.student.cdtcassistant.network.bean.FeedbackBean;
+import com.cdtc.student.cdtcassistant.network.request.FeedbackRequest;
 import com.cdtc.student.cdtcassistant.network.response.FeedbackResponse;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
@@ -79,10 +78,16 @@ public class FeedbackActivity extends BaseTopActivity {
         initListener();
     }
 
+    /**
+     * 初始化变量
+     */
     private void initVariable() {
         activity = this;
     }
 
+    /**
+     * 初始化组件
+     */
     private void initView() {
         initTopBar("意见反馈");
 
@@ -92,7 +97,9 @@ public class FeedbackActivity extends BaseTopActivity {
         content = getView(R.id.feedback_content);
     }
 
-
+    /**
+     * 初始化监听
+     */
     private void initListener() {
         content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,11 +128,12 @@ public class FeedbackActivity extends BaseTopActivity {
                     inputContact = "";
                 }
 
-                FeedbackBean feedbackBean = new FeedbackBean();
+                FeedbackRequest feedbackBean = new FeedbackRequest();
                 feedbackBean.setContact(inputContact);
                 feedbackBean.setContent(inputContent);
 
                 Log.i(TAG, "initListener: 提交反馈:" + feedbackBean.toString());
+
                 OkHttpUtil.doJsonPost(Api.FEEDBACK, new Gson().toJson(feedbackBean), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -146,24 +154,26 @@ public class FeedbackActivity extends BaseTopActivity {
                                 feedbackResponse = new Gson().fromJson(responseString, FeedbackResponse.class);
                             }catch (Exception e) {
                                 Log.d(TAG, "onResponse: 解析json失败" + e.getMessage());
+                                return;
                             }
 
                             if (feedbackResponse != null && feedbackResponse.code == HttpConstant.OK) {
                                 T.showShort(activity,"谢谢你的帮助，让我更快成长！");
                                 finish();
                             } else {
-                                T.showError(activity);
+                                T.showShort(activity, feedbackResponse.message);
                             }
                         });
                     }
                 });
 
             } else {
-                T.showShort(activity,"我们很在意你的意见，多输入一点哟");
+                T.showShort(activity,"我们很重视你的意见，多输入一点哟");
             }
 
         });
     }
+
     /**
      * 打开反馈界面
      * @param context 上下文

@@ -1,4 +1,4 @@
-package com.cdtc.student.cdtcassistant.network.bean;
+package com.cdtc.student.cdtcassistant.network.request;
 
 /**
  *
@@ -8,7 +8,7 @@ package com.cdtc.student.cdtcassistant.network.bean;
  *
  * @author pcc
  */
-public class FeedbackBean {
+public class FeedbackRequest {
     /**
      * 反馈内容
      */
@@ -37,7 +37,7 @@ public class FeedbackBean {
 
     @Override
     public String toString() {
-        return "FeedbackBean{" +
+        return "FeedbackRequest{" +
                 "content='" + content + '\'' +
                 ", contact='" + contact + '\'' +
                 '}';

@@ -16,6 +16,7 @@ import java.util.List;
 public class Singleton {
 
     private static Singleton singleton;
+
     private BannerBean bannerBean;
     private Singleton() {
 
