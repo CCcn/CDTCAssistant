@@ -54,8 +54,19 @@ public class SplashActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseSting = response.body().string();
                 Log.i(TAG, "onResponse: " + responseSting);
-                BannerBean bannerBean = new Gson().fromJson(responseSting, BannerBean.class);
                 runOnUiThread(() -> {
+                    BannerBean bannerBean  = null;
+
+                    try {
+                       bannerBean = new Gson().fromJson(responseSting, BannerBean.class);
+                    } catch (Exception e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                        T.showError(activity);
+                        Singleton.getInstance(activity).setBannerBean(bannerBean);
+                        MainActivity.startAction(activity, StringConstant.FAILED);
+                        return;
+                    }
+
                     Singleton.getInstance(activity).setBannerBean(bannerBean);
                     MainActivity.startAction(activity, StringConstant.OK);
                     Log.i(TAG, "onResponse: 数据加载完成，启动到main" );

@@ -29,7 +29,7 @@
     <TextView
         android:id="@+id/feedback_count"
         android:gravity="right"
-        android:text="剩余字数：200"
+        android:text="剩余字数：400"
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"

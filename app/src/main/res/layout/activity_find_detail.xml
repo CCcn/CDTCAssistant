@@ -1,54 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.BuyDetailActivity">
+    android:orientation="vertical"
+    tools:context=".activity.FindDetailActivity">
 
-    <include layout="@layout/activity_base_top" />
-
+    <include layout="@layout/activity_base_top"/>
+    <!--地点-->
     <LinearLayout
+        android:gravity="center_vertical"
         android:layout_margin="8dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="商品名称:"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <TextView
+        android:layout_height="40dp">
+
+        <ImageView
             android:layout_marginRight="8dp"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:id="@+id/buy_detail_goods_name"
-            tools:text="钢笔"
+            android:background="@drawable/find_location"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+        <TextView
+            android:text="sdasdsda"
+            android:id="@+id/find_detail_lost_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <!--时间-->
     <LinearLayout
+
+        android:gravity="center_vertical"
         android:layout_margin="8dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="价格"
-            android:layout_weight="0.5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <TextView
+        android:layout_height="40dp">
+
+        <ImageView
             android:layout_marginRight="8dp"
-            tools:text="¥18"
-            android:gravity="right"
-            android:textColor="#f00"
-            android:layout_weight="0.5"
-            android:id="@+id/buy_detail_goods_price"
-            android:layout_width="0dp"
+            android:background="@drawable/find_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+        <TextView
+            android:text="sdasdsda"
+            android:id="@+id/find_detail_lost_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
     <TextView
         android:text="联系"
         android:layout_margin="8dp"
@@ -65,14 +63,14 @@
             android:layout_width="16dp"
             android:layout_height="16dp" />
         <TextView
-            android:id="@+id/buy_detail_goods_owner"
+            android:id="@+id/find_detail_contact_person"
             tools:text="---"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:visibility="gone"
-        android:id="@+id/buy_detail_layout_wx"
+        android:id="@+id/find_detail_layout_wx"
         android:orientation="horizontal"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
@@ -83,14 +81,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/buy_detail_contact_wx"
+            android:id="@+id/find_detail_contact_wx"
             android:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:visibility="gone"
-        android:id="@+id/buy_detail_layout_qq"
+        android:id="@+id/find_detail_layout_qq"
         android:orientation="horizontal"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
@@ -101,14 +99,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/buy_detail_contact_qq"
+            android:id="@+id/find_detail_contact_qq"
             android:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:visibility="gone"
-        android:id="@+id/buy_detail_layout_tel"
+        android:id="@+id/find_detail_layout_tel"
         android:orientation="horizontal"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
@@ -118,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/buy_detail_contact_tel"
+            android:id="@+id/find_detail_contact_tel"
             android:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -130,10 +128,9 @@
         android:layout_height="wrap_content" />
     <TextView
         android:layout_margin="16dp"
-        android:id="@+id/buy_detail_goods_description"
+        android:id="@+id/find_detail_lost_description"
         android:layout_weight="1"
         tools:text="   我是描述信息"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
-
 </LinearLayout>

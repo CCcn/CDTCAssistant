@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/find_item_layout"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/find_img"
+        android:background="@drawable/user_head_placeholder"
+        android:layout_weight="0.25"
+        android:layout_width="0dp"
+        android:layout_height="100dp" />
+   <LinearLayout
+       android:layout_weight="0.75"
+       android:orientation="vertical"
+       android:layout_width="0dp"
+       android:layout_height="match_parent">
+       <TextView
+           android:layout_weight="0.4"
+           android:layout_marginTop="5dp"
+           android:layout_marginLeft="8dp"
+           tools:text="丢失商品"
+           android:maxLines="1"
+           android:maxLength="10"
+           android:id="@+id/find_title"
+           android:layout_width="wrap_content"
+           android:layout_height="0dp" />
+      <LinearLayout
+          android:layout_weight="0.3"
+          android:gravity="center_vertical"
+          android:layout_margin="8dp"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="0dp">
+         <ImageView
+             android:layout_gravity="center"
+             android:layout_marginRight="8dp"
+            android:background="@drawable/find_location"
+             android:layout_width="16dp"
+             android:layout_height="16dp" />
+          <TextView
+              android:gravity="center"
+              android:textSize="12sp"
+              android:id="@+id/find_lost_place"
+              android:text="xxx南路"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent" />
+      </LinearLayout>
+       <LinearLayout
+           android:layout_weight="0.3"
+           android:gravity="center_vertical"
+           android:layout_margin="8dp"
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="0dp">
+           <ImageView
+               android:layout_gravity="center"
+               android:layout_marginRight="8dp"
+               android:background="@drawable/find_date"
+               android:layout_width="16dp"
+               android:layout_height="16dp" />
+           <TextView
+               android:gravity="center"
+               android:textSize="12sp"
+               android:id="@+id/find_lost_date"
+               android:text="2018-03-09"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent" />
+       </LinearLayout>
+   </LinearLayout>
+</LinearLayout>

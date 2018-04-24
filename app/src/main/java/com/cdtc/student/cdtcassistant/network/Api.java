@@ -41,6 +41,18 @@ public class Api {
      */
     public static final String BUY_DETAIL = HOME + "/buyDetail?goodsId=";
 
+    /**
+     * 失物招领
+     *   get
+     */
+    public static final String FIND = HOME + "/find";
+
+    /**
+     * 失物招领详细信息
+     *   get findId
+     */
+    public static final String FIND_DETAIL = HOME + "/findDetail?findId=";
+
 
 
 }
