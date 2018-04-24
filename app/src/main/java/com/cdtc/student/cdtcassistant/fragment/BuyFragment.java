@@ -100,7 +100,7 @@ public class BuyFragment extends Fragment {
                         buys = buyResponse.getBuys();
                         showRecycler();
                     } else {
-                        T.showShort(activity,buyResponse.message);
+                        T.showError(activity);
                     }
 
                 });
@@ -171,7 +171,7 @@ public class BuyFragment extends Fragment {
 
             //点击后应该跳转到展示页面，后期可以实现ViewPager
             img.setOnClickListener(v -> {
-                T.showShort(activity, "点击了"+getAdapterPosition());
+               // T.showShort(activity, "点击了"+getAdapterPosition());
                 BuyBean buyBean = buys.get(getAdapterPosition());
                 BuyDetailActivity.startAction(activity, buyBean.getTitle(), buyBean.getId());
             });

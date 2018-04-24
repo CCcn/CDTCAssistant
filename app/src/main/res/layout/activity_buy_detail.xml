@@ -23,7 +23,7 @@
             android:gravity="right"
             android:layout_weight="1"
             android:id="@+id/buy_detail_goods_name"
-            android:text="钢笔"
+            tools:text="钢笔"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:layout_marginRight="8dp"
-            android:text="¥18"
+            tools:text="¥18"
             android:gravity="right"
             android:textColor="#f00"
             android:layout_weight="0.5"
@@ -66,7 +66,7 @@
             android:layout_height="16dp" />
         <TextView
             android:id="@+id/buy_detail_goods_owner"
-            android:text="PCC"
+            tools:text="---"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/buy_detail_contact_wx"
-            android:text="15198285465"
+            android:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/buy_detail_contact_qq"
-            android:text="15198285465"
+            android:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/buy_detail_contact_tel"
-            android:text="15198285465"
+            android:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -132,8 +132,8 @@
         android:layout_margin="16dp"
         android:id="@+id/buy_detail_goods_description"
         android:layout_weight="1"
-        android:text="   我是描述信息"
-         android:layout_width="match_parent"
+        tools:text="   我是描述信息"
+        android:layout_width="match_parent"
         android:layout_height="0dp" />
 
 </LinearLayout>

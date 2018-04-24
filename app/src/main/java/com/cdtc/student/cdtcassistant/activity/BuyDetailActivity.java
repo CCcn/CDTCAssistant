@@ -152,8 +152,8 @@ public class BuyDetailActivity extends BaseTopActivity {
                         Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.getBuyDetail());
                         showData(buyDetailResponse.getBuyDetail());
                     } else {
-                        Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.message);
-                        T.showShort(activity,buyDetailResponse.message);
+//                        Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.message);
+                        T.showError(activity);
                     }
                 });
             }
@@ -185,6 +185,7 @@ public class BuyDetailActivity extends BaseTopActivity {
             }
         }
     }
+
     private void initVariable() {
         activity = this;
 
@@ -205,13 +206,14 @@ public class BuyDetailActivity extends BaseTopActivity {
         telLayout = getView(R.id.buy_detail_layout_tel);
         weChatLayout = getView(R.id.buy_detail_layout_wx);
         description = getView(R.id.buy_detail_goods_description);
-
-
     }
 
-
-
-
+    /**
+     * 跳转到此页面
+     * @param context 上下文
+     * @param title 商品标题
+     * @param goodsId 商品id
+     */
     public static void startAction(Context context, String title,String goodsId) {
         Intent intent = new Intent(context,BuyDetailActivity.class);
         intent.putExtra(TITLE, title);
