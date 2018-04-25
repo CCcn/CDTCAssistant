@@ -18,7 +18,6 @@
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activity.BaseTopActivity" />
         <activity
             android:name=".activity.WebActivity"
@@ -42,7 +41,25 @@
         <activity
             android:name=".activity.FeedbackActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.FindDetailActivity"
+        <activity
+            android:name=".activity.FindDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.MyFindActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.MyBuyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.MyLoveActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AddBuyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AddFindActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.AddLoveActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

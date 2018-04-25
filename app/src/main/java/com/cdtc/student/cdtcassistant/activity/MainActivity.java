@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity
                 .addTabItem("首页", R.drawable.icon_index, IndexFragment.class)
                 .addTabItem("跳蚤", R.drawable.icon_buy, BuyFragment.class)
                 .addTabItem("招领", R.drawable.icon_find, FindFragment.class)
-                .addTabItem("我的", R.drawable.icon_mine, MineFragment.class)
+//                .addTabItem("我的", R.drawable.icon_mine, MineFragment.class)
                 .setTabBarBackgroundColor(Color.parseColor("#f9feff"))
                 .isShowDivider(true);
 
@@ -154,21 +154,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            //防止无误触
-            if ((System.currentTimeMillis() - pressBack) > 2000) {
-                T.showShort(activity,"再按一次退出程序");
-                pressBack = System.currentTimeMillis();
-            } else {
-               finish();
-            }
-        }
-    }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -195,18 +181,16 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-
-//        } else
-        if (id == R.id.nav_tools) {
-
+        if (id == R.id.nav_find) {
+            MyFindActivity.startAction(activity);
+        } else if (id == R.id.nav_buy) {
+            MyBuyActivity.startAction(activity);
+        } else if (id == R.id.nav_love) {
+            MyLoveActivity.startAction(activity);
+        } else if (id == R.id.nav_feedback) {
+            FeedbackActivity.startAction(activity);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_about) {
@@ -228,5 +212,21 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(STATUS,status);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            //防止无误触
+            if ((System.currentTimeMillis() - pressBack) > 2000) {
+                T.showShort(activity,"再按一次退出程序");
+                pressBack = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+        }
     }
 }

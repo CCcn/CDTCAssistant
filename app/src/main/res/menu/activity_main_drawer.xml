@@ -4,14 +4,31 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/tools" />
+            android:id="@+id/nav_find"
+            android:icon="@drawable/ic_menu_find"
+            android:title="招领" />
+        <item
+            android:id="@+id/nav_buy"
+            android:icon="@drawable/ic_menu_buy"
+            android:title="跳蚤" />
+        <item
+            android:id="@+id/nav_love"
+            android:icon="@drawable/ic_menu_love"
+            android:title="表白" />
+        <!--<item-->
+            <!--android:id="@+id/nav_tools"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="@string/tools" />-->
     </group>
 
     <item android:title="Other">
         <menu>
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_menu_feedback"
+                android:title="反馈" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"

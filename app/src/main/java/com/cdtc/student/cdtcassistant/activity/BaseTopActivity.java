@@ -39,15 +39,14 @@ public class BaseTopActivity extends AppCompatActivity {
 
     }
 
+
     /**
-     * 右上角的按钮
-     * @param title 文字
-     * @param act activity
+     * 右上角按钮
+     * @param title 按钮文字
      */
-    protected void setBtnTopRight1(String title,final Activity act) {
+    protected void setBtnTopRight1(String title) {
         btnTopRight1.setVisibility(View.VISIBLE);
         btnTopRight1.setText(title);
-        btnTopRight1.setOnClickListener(v -> act.finish());
     }
 
     /**
