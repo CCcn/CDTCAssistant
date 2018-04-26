@@ -11,6 +11,48 @@
         android:text="我是标题"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/find_location"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+        <TextView
+            android:gravity="center"
+            android:textSize="12sp"
+            android:id="@+id/find_lost_place"
+            android:text="xxx南路"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/find_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+        <TextView
+            android:gravity="center"
+            android:textSize="12sp"
+            android:id="@+id/find_lost_date"
+            android:text="2018-03-09"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <TextView
         android:text="我是描述描述描述描述"
         android:layout_margin="8dp"

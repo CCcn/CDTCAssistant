@@ -59,7 +59,8 @@
         <activity
             android:name=".activity.AddFindActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.AddLoveActivity"
+        <activity
+            android:name=".activity.AddLoveActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

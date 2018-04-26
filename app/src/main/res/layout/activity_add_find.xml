@@ -1,9 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.AddFindActivity">
     <include layout="@layout/activity_base_top" />
-</android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:hint="物品名称"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+            <EditText
+                android:hint="地点"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+            <EditText
+                android:hint="时间"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+
+            <EditText
+                android:hint="联系人"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+            <EditText
+                android:hint="QQ"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+            <EditText
+                android:hint="电话"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+
+            <EditText
+                android:hint="详细描述"
+                android:padding="8dp"
+                android:layout_margin="8dp"
+                android:gravity="left|top"
+                android:layout_width="match_parent"
+                android:maxLength="100"
+                android:layout_height="125dp"
+                android:background="@drawable/shape_et_bg"/>
+
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@drawable/add_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="tips:联系方式至少有一个，如果不添加照片将使用默认图片"
+                android:layout_weight="1"
+                android:textColor="#bfbfbf"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+            <Button
+                android:background="@drawable/shape_btn_bg"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:id="@+id/add_buy_submit"
+                android:layout_width="match_parent" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

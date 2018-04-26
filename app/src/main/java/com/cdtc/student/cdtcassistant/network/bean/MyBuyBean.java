@@ -1,13 +1,12 @@
 package com.cdtc.student.cdtcassistant.network.bean;
 
 /**
- * 我的招领
- *
- * Created by pcc on 2018/4/25.
+ * 我的跳蚤
+ * Created by pcc on 2018/4/26.
  *
  * @author pcc
  */
-public class MyFindBean {
+public class MyBuyBean {
     /**
      * id
      */
@@ -17,16 +16,6 @@ public class MyFindBean {
      * 标题
      */
     private String title;
-
-    /**
-     * 地点
-     */
-    private String place;
-
-    /**
-     * 时间
-     */
-    private String date;
 
     /**
      * 描述
@@ -54,22 +43,6 @@ public class MyFindBean {
         this.title = title;
     }
 
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -91,8 +64,6 @@ public class MyFindBean {
         return "MyFindBean{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
-                ", place='" + place + '\'' +
-                ", date='" + date + '\'' +
                 ", description='" + description + '\'' +
                 ", img='" + img + '\'' +
                 '}';
