@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.fragment.BuyFragment;
 import com.cdtc.student.cdtcassistant.fragment.FindFragment;
 import com.cdtc.student.cdtcassistant.fragment.IndexFragment;
@@ -57,6 +58,11 @@ public class MainActivity extends AppCompatActivity
      * 底部切换按钮
      */
     private BottomTabBar mBottomTabBar;
+
+    /**
+     * 状态
+     */
+    private String status;
 
     /**
      * 从初始页启动
@@ -111,7 +117,14 @@ public class MainActivity extends AppCompatActivity
 
     private void initVariable() {
         activity = this;
+        status = getIntent().getStringExtra(STATUS);
+
+        //没有网络，给用户提示
+        if (StringConstant.FAILED.equals(status)) {
+            T.showError(activity);
+        }
     }
+
 
     private void initView() {
         navigationView  = findViewById(R.id.nav_view);
@@ -151,6 +164,8 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+
 
     }
 
