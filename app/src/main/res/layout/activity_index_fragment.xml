@@ -4,25 +4,256 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.IndexFragment">
 
-    <!--轮播图 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp">
 
-        <cn.bingoogolapple.bgabanner.BGABanner
-            android:id="@+id/index_fragment_banner"
-            style="@style/BannerDefaultStyle"
-            app:banner_indicatorGravity="bottom|center_horizontal"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_solid"
-            app:banner_transitionEffect="flip" />
-    </LinearLayout>
     <!--ScrollView-->
     <ScrollView
-        android:layout_weight="1"
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--轮播图-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+
+                <cn.bingoogolapple.bgabanner.BGABanner
+                    android:id="@+id/index_fragment_banner"
+                    style="@style/BannerDefaultStyle"
+                    app:banner_indicatorGravity="bottom|center_horizontal"
+                    app:banner_pointDrawable="@drawable/bga_banner_selector_point_solid"
+                    app:banner_transitionEffect="flip" />
+            </LinearLayout>
+
+            <!--工具栏-->
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--e card-->
+                <LinearLayout
+                    android:id="@+id/index_e_card"
+                    android:gravity="center"
+                    android:layout_weight="0.25"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:background="@drawable/index_eacrd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:text="一卡通"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <!--library-->
+                <LinearLayout
+                    android:id="@+id/index_library"
+                    android:gravity="center"
+                    android:layout_weight="0.25"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:background="@drawable/index_library"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:text="图书馆"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <!--electricity-->
+                <LinearLayout
+                    android:id="@+id/index_electricity"
+                    android:gravity="center"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.25"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:background="@drawable/index_electricity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:text="交电费"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <!--more-->
+                <LinearLayout
+                    android:id="@+id/index_more"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="0.25"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:background="@drawable/index_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:text="更多"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--表白墙-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:background="@drawable/tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="#00CBAB"
+                        android:text="表白墙"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/index_love_recycler"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <TextView
+                android:background="#f3f3f3"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
+            <!--跳蚤-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:background="@drawable/tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="#00CBAB"
+                        android:text="跳蚤"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/index_buy_recycler"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <TextView
+                android:background="#f3f3f3"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+
+            <!--失物招领-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:background="@drawable/tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="#00CBAB"
+                        android:text="失物招领"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/index_find_recycler"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 

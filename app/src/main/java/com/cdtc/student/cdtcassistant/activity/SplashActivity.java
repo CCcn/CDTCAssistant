@@ -47,7 +47,6 @@ public class SplashActivity extends AppCompatActivity {
                 Log.i(TAG, "onFailure: 网络异常" + e.getMessage());
                 runOnUiThread( ()-> {
                     MainActivity.startAction(activity, StringConstant.FAILED);
-                    Log.d(TAG, "onResponse: 数据失败，启动到main，网络错误" );
                     finish();
                 });
             }

@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+
+    /**
+     * 底部切换按钮
+     */
+    private BottomTabBar mBottomTabBar;
+
     /**
      * 左侧的头像和文字
      */
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity
      * floatingBtn
      */
     FloatingActionButton fab;
+
     /**
      * navigation 中的图片
      */
@@ -54,10 +61,6 @@ public class MainActivity extends AppCompatActivity
      */
     private long pressBack;
 
-    /**
-     * 底部切换按钮
-     */
-    private BottomTabBar mBottomTabBar;
 
     /**
      * 状态
@@ -96,11 +99,7 @@ public class MainActivity extends AppCompatActivity
         initView();
         initListener();
 
-
-
     }
-
-
 
     private void initListener() {
 
@@ -216,7 +215,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     /**
      * 从初始化页面加在进来
