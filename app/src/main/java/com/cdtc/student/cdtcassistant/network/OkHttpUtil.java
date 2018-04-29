@@ -25,7 +25,7 @@ public class OkHttpUtil {
     /**
      * json请求头
      */
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
 
     /**
      * 异步get请求

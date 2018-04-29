@@ -36,6 +36,16 @@
                 android:maxLength="15"
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
+
+            <EditText
+                android:hint="价格"
+                android:paddingLeft="4dp"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+
             <EditText
                 android:hint="QQ"
                 android:paddingLeft="4dp"
@@ -59,7 +69,7 @@
                 android:layout_margin="8dp"
                 android:gravity="left|top"
                 android:layout_width="match_parent"
-                android:maxLength="100"
+                android:maxLength="200"
                 android:layout_height="125dp"
                 android:background="@drawable/shape_et_bg"/>
 

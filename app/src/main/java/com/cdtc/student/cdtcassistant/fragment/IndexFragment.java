@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.activity.WebActivity;
+import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
 import com.cdtc.student.cdtcassistant.network.bean.MyBuyBean;
@@ -283,7 +284,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     @Override
     public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
         Glide.with(itemView.getContext())
-                .load(model)
+                .load(Api.HOME + model)
                 .placeholder(R.drawable.holder)
                 .error(R.drawable.holder)
                 .dontAnimate()

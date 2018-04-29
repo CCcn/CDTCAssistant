@@ -25,6 +25,8 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -95,6 +97,8 @@ public class FeedbackActivity extends BaseTopActivity {
         submit = getView(R.id.feedback_submit);
         contact = getView(R.id.feedback_contact);
         content = getView(R.id.feedback_content);
+
+
     }
 
     /**
@@ -134,7 +138,9 @@ public class FeedbackActivity extends BaseTopActivity {
 
                 Log.i(TAG, "initListener: 提交反馈:" + feedbackBean.toString());
 
-                OkHttpUtil.doJsonPost(Api.FEEDBACK, new Gson().toJson(feedbackBean), new Callback() {
+
+
+                OkHttpUtil.doJsonPost(Api.FEEDBACK,new Gson().toJson(feedbackBean) , new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d(TAG, "onFailure: " + e.getMessage());

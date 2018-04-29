@@ -9,6 +9,12 @@ package com.cdtc.student.cdtcassistant.network.request;
  * @author pcc
  */
 public class FeedbackRequest {
+
+    /**
+     * 当前登陆用户id
+     */
+    private Integer userId;
+
     /**
      * 反馈内容
      */
@@ -18,6 +24,15 @@ public class FeedbackRequest {
      * 联系方式
      */
     private String contact;
+
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getContent() {
         return content;
@@ -38,7 +53,8 @@ public class FeedbackRequest {
     @Override
     public String toString() {
         return "FeedbackRequest{" +
-                "content='" + content + '\'' +
+                "userId=" + userId +
+                ", content='" + content + '\'' +
                 ", contact='" + contact + '\'' +
                 '}';
     }

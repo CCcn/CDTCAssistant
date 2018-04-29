@@ -12,6 +12,11 @@ import java.util.List;
 public class FindDetailBean {
 
     /**
+     * 物品名称
+     */
+    private String name;
+
+    /**
      * 联系人
      */
     private String contactPerson;
@@ -35,6 +40,14 @@ public class FindDetailBean {
      * 描述
      */
     private String description;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getContactPerson() {
         return contactPerson;
@@ -79,7 +92,8 @@ public class FindDetailBean {
     @Override
     public String toString() {
         return "FindDetailBean{" +
-                "contactPerson='" + contactPerson + '\'' +
+                "name='" + name + '\'' +
+                ", contactPerson='" + contactPerson + '\'' +
                 ", lostDate='" + lostDate + '\'' +
                 ", lostPlace='" + lostPlace + '\'' +
                 ", contacts=" + contacts +

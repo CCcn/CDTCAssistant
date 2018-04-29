@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
+import com.cdtc.student.cdtcassistant.network.response.InitResponse;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
 
@@ -56,22 +58,29 @@ public class SplashActivity extends AppCompatActivity {
                 String responseSting = response.body().string();
                 Log.i(TAG, "onResponse: " + responseSting);
                 runOnUiThread(() -> {
-                    BannerBean bannerBean  = null;
+                    InitResponse initResponse  = null;
 
                     try {
-                       bannerBean = new Gson().fromJson(responseSting, BannerBean.class);
+                       initResponse = new Gson().fromJson(responseSting, InitResponse.class);
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
                         T.showError(activity);
-                        Singleton.getInstance(activity).setBannerBean(bannerBean);
                         MainActivity.startAction(activity, StringConstant.FAILED);
                         return;
                     }
 
-                    Singleton.getInstance(activity).setBannerBean(bannerBean);
-                    MainActivity.startAction(activity, StringConstant.OK);
-                    Log.i(TAG, "onResponse: 数据加载完成，启动到main" );
-                    finish();
+                    if (initResponse.code == HttpConstant.OK) {
+                        Singleton.getInstance(activity).setBannerBean(initResponse.getBanner());
+                        MainActivity.startAction(activity, StringConstant.OK);
+                        Log.i(TAG, "onResponse: 数据加载完成，启动到main" );
+                        finish();
+                    } else {
+                        Log.d(TAG, "onResponse: " + initResponse.message);
+                        MainActivity.startAction(activity, StringConstant.FAILED);
+                        return;
+                    }
+
+
                 });
             }
         });
