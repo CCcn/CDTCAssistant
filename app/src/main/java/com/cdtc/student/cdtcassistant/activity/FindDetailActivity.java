@@ -127,7 +127,7 @@ public class FindDetailActivity extends BaseTopActivity {
      * 做网络请求
      */
     private void loadData() {
-        OkHttpUtil.doGet(Api.FIND_DETAIL + findId, new Callback() {
+        OkHttpUtil.doGet(Api.FIND_USER_ALL + findId, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: " + e.getMessage());

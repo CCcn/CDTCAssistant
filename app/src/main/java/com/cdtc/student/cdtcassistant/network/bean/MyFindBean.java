@@ -14,6 +14,12 @@ public class MyFindBean {
     private String id;
 
     /**
+     * 图片
+     */
+    private String img;
+
+
+    /**
      * 标题
      */
     private String title;
@@ -33,10 +39,7 @@ public class MyFindBean {
      */
     private String description;
 
-    /**
-     * 图片
-     */
-    private String img;
+
 
     public String getId() {
         return id;

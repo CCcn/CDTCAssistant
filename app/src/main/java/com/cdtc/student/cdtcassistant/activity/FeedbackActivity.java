@@ -16,6 +16,7 @@ import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
+import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.request.FeedbackRequest;
 import com.cdtc.student.cdtcassistant.network.response.FeedbackResponse;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -135,9 +136,10 @@ public class FeedbackActivity extends BaseTopActivity {
                 FeedbackRequest feedbackBean = new FeedbackRequest();
                 feedbackBean.setContact(inputContact);
                 feedbackBean.setContent(inputContent);
+                feedbackBean.setUserId(Singleton.getInstance(activity).getUser().getId());
 
                 Log.i(TAG, "initListener: 提交反馈:" + feedbackBean.toString());
-
+                TextUtils.isEmpty("sdasd");
 
 
                 OkHttpUtil.doJsonPost(Api.FEEDBACK,new Gson().toJson(feedbackBean) , new Callback() {

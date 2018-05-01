@@ -56,6 +56,18 @@ public class T {
     }
 
     /**
+     * 解析数据错误时展示的提示
+     * @param context
+     */
+    public static void showDataError(Context context) {
+        if (toast == null) {
+            toast = Toast.makeText(context,"网络错误，请稍后再试",Toast.LENGTH_SHORT);
+        } else {
+            toast.setText("数据，请稍后再试");
+        }
+        toast.show();
+    }
+    /**
      * 取消显示
      */
     public static void cancel() {

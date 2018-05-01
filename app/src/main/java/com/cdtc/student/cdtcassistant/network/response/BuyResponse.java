@@ -13,20 +13,20 @@ import java.util.List;
  */
 public class BuyResponse extends BaseResponse{
 
-    private List<BuyBean> buys;
+    private List<BuyBean> data;
 
-    public List<BuyBean> getBuys() {
-        return buys;
+    public List<BuyBean> getData() {
+        return data;
     }
 
-    public void setBuys(List<BuyBean> buys) {
-        this.buys = buys;
+    public void setData(List<BuyBean> data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
         return "BuyResponse{" +
-                "buys=" + buys +
+                "data=" + data +
                 '}';
     }
 }

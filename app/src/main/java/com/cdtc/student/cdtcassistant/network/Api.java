@@ -19,6 +19,11 @@ public class Api {
     public static final String HOME = "http://192.168.1.110:8080";
 
     /**
+     * 登陆 get/post
+     */
+    public static final String LOGIN = HOME + "/user/login";
+
+    /**
      * 加在初始化数据
      *   get
      *
@@ -33,9 +38,9 @@ public class Api {
 
     /**
      *跳蚤商品
-     *  get
+     *
      */
-    public static final String BUY = HOME + "/buy";
+    public static final String BUY = HOME + "/buy/allBuys";
 
     /**
      * 商品详细信息
@@ -50,11 +55,9 @@ public class Api {
     public static final String FIND = HOME + "/find";
 
     /**
-     * 失物招领详细信息
-     *   get findId
+     * 用户的所有失物招领
+     *   post/get userId
      */
-    public static final String FIND_DETAIL = HOME + "/findDetail?findId=";
-
-
+    public static final String FIND_USER_ALL = HOME + "/find/showUserFinds";
 
 }

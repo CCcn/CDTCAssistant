@@ -3,6 +3,7 @@ package com.cdtc.student.cdtcassistant.network;
 import android.content.Context;
 
 import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
+import com.cdtc.student.cdtcassistant.network.bean.UserBean;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class Singleton {
     private static Singleton singleton;
 
     private BannerBean bannerBean;
+
+    private UserBean user;
     private Singleton() {
 
     }
@@ -29,6 +32,13 @@ public class Singleton {
         return singleton;
     }
 
+    public UserBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
 
     public BannerBean getBannerBean() {
         return bannerBean;

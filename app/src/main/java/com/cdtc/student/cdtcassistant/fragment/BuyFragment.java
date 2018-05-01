@@ -38,7 +38,7 @@ public class BuyFragment extends Fragment {
 
     private Activity activity;
 
-    private List<BuyBean> buys = new ArrayList<>();
+    private List<BuyBean> buys;
 
     private static final String TAG = "BuyFragment";
 
@@ -57,7 +57,7 @@ public class BuyFragment extends Fragment {
 
         initVariable();
         initView(view);
-        showRecycler();
+        loadData();
         return view;
     }
 
@@ -66,14 +66,9 @@ public class BuyFragment extends Fragment {
      */
     private void initVariable() {
         activity = getActivity();
+    }
 
-        for (int i = 0 ; i < 20; i++) {
-            BuyBean buyBean = new BuyBean();
-            buyBean.setTitle("描述信息 " + i);
-            buyBean.setPrice("¥ " + i + "元");
-            buys.add(buyBean);
-        }
-
+    private void loadData() {
         OkHttpUtil.doGet(Api.BUY, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -90,14 +85,14 @@ public class BuyFragment extends Fragment {
                 activity.runOnUiThread(() -> {
                     BuyResponse buyResponse = null;
                     try{
-                       buyResponse = new Gson().fromJson(responseString, BuyResponse.class);
+                        buyResponse = new Gson().fromJson(responseString, BuyResponse.class);
                     }catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
                         T.showError(activity);
                     }
                     if (buyResponse != null && buyResponse.code == HttpConstant.OK) {
-                        Log.i(TAG, "onResponse: 请求成功" + buyResponse.getBuys());
-                        buys = buyResponse.getBuys();
+                        Log.i(TAG, "onResponse: 请求成功" + buyResponse.getData());
+                        buys = buyResponse.getData();
                         showRecycler();
                     } else {
                         T.showError(activity);
@@ -117,9 +112,10 @@ public class BuyFragment extends Fragment {
     }
 
     private void showRecycler() {
-        if (buys == null) {
-            //做数据请求
-            initVariable();
+
+        if (buys == null || buys.isEmpty()) {
+            T.showShort(activity,"没有数据");
+            return;
         }
         buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         buyRecycler.setAdapter(new BuyAdapter());

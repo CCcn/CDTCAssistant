@@ -1,12 +1,15 @@
 package com.cdtc.student.cdtcassistant.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,13 +20,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.fragment.BuyFragment;
 import com.cdtc.student.cdtcassistant.fragment.FindFragment;
 import com.cdtc.student.cdtcassistant.fragment.IndexFragment;
 import com.cdtc.student.cdtcassistant.fragment.MineFragment;
+import com.cdtc.student.cdtcassistant.network.Api;
+import com.cdtc.student.cdtcassistant.network.Singleton;
+import com.cdtc.student.cdtcassistant.network.bean.UserBean;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.hjm.bottomtabbar.BottomTabBar;
 
@@ -49,10 +57,13 @@ public class MainActivity extends AppCompatActivity
     FloatingActionButton fab;
 
     /**
-     * navigation 中的图片
+     * navigation 中的组件
      */
     private ImageView headImage;
 
+    private TextView userName;
+
+    private TextView className;
 
     private Activity activity;
 
@@ -75,6 +86,10 @@ public class MainActivity extends AppCompatActivity
     private static final String STATUS = "status";
 
 
+    private IntentFilter intentFilter;
+    private BroadcastReceiver localReceiver;
+    private LocalBroadcastManager localBroadcastManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,13 +109,31 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         initVariable();
+
+        registerLoginBroadcast();
         initView();
         initListener();
 
     }
 
+
+    /**
+     * 注册监听登陆广播
+     */
+    private void registerLoginBroadcast() {
+
+        intentFilter = new IntentFilter(StringConstant.LOGIN_ACTION);
+        localReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUser();
+            }
+        };
+        localBroadcastManager = LocalBroadcastManager.getInstance(activity);
+
+        localBroadcastManager.registerReceiver(localReceiver,intentFilter);
+    }
     private void initListener() {
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -124,6 +157,33 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    /**
+     * 当用户登陆后需要更新头像、用户名和密码
+     */
+    private void updateUser() {
+
+        UserBean user = Singleton.getInstance(activity).getUser();
+
+        if (user != null) {
+            //设置Navigation里面的组件要这样获取
+            View headerView= navigationView.getHeaderView(0);
+            headImage = headerView.findViewById(R.id.head_image);
+            userName = headerView.findViewById(R.id.head_name);
+            className = headerView.findViewById(R.id.head_class);
+
+            Glide.with(activity)
+                    .load(Api.HOME + user.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .dontAnimate()
+                    .centerCrop()
+                    .into(headImage);
+            userName.setText(user.getName());
+            className.setText(user.getClassName());
+        }
+
+    }
 
     private void initView() {
         navigationView  = findViewById(R.id.nav_view);
@@ -197,6 +257,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        //未登陆
+        if (Singleton.getInstance(activity).getUser() == null) {
+            LoginActivity.startAction(activity);
+
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
         if (id == R.id.nav_find) {
             MyFindActivity.startAction(activity);
         } else if (id == R.id.nav_buy) {
@@ -241,5 +310,15 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
         }
+    }
+
+    /**
+     * 注销广播
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        localBroadcastManager.unregisterReceiver(localReceiver);
     }
 }

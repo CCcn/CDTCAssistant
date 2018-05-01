@@ -123,7 +123,7 @@ public class FindFragment extends Fragment {
 
                     if (findResponse.code == HttpConstant.OK) {
                         Log.i(TAG, "onResponse: 请求成功："+ findResponse.toString());
-                        finds = findResponse.getFinds();
+                        finds = findResponse.getData();
                         showRecycler();
                     } else {
                         Log.d(TAG, "onResponse: 响应异常 " + findResponse);

@@ -11,20 +11,13 @@ import java.util.List;
  * @author pcc
  */
 public class FindResponse extends BaseResponse{
-    private List<FindBean> finds;
+    private List<FindBean> data;
 
-    public List<FindBean> getFinds() {
-        return finds;
+    public List<FindBean> getData() {
+        return data;
     }
 
-    public void setFinds(List<FindBean> finds) {
-        this.finds = finds;
-    }
-
-    @Override
-    public String toString() {
-        return "FindResponse{" +
-                "finds=" + finds +
-                '}';
+    public void setData(List<FindBean> data) {
+        this.data = data;
     }
 }

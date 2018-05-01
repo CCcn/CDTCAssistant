@@ -18,4 +18,14 @@ public class StringConstant {
      */
     public static final String FAILED = "failed";
 
+    /**
+     * 登陆的action
+     */
+    public static final String LOGIN_ACTION = "login";
+
+    /**
+     * 状态
+     */
+    public static final String STATUS = "status";
+
 }

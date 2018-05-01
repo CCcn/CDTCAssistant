@@ -34,6 +34,31 @@ public class FindBean {
      */
     private String date;
 
+    /**
+     * 是否已找到
+     *  0:未完成（未找到）
+     *  1:已完成（已找到）
+     */
+    private Integer finished;
+
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Integer finished) {
+        this.finished = finished;
+    }
+
     public String getId() {
         return id;
     }
