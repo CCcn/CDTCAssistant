@@ -8,25 +8,25 @@ package com.cdtc.student.cdtcassistant.network.bean;
  */
 public class ContactBean {
 
+
     /**
-     * 类别
-     *  电话
-     *  qq
-     *  微信
+     * 联系方式 u类型
+     *   wx
+     *   qq
+     *   phone
      */
-    private String type;
+    private String contactType;
 
     /**
      * 号码
      */
     private String number;
-
-    public String getType() {
-        return type;
+    public String getContactType() {
+        return contactType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setContactType(String contactType) {
+        this.contactType = contactType;
     }
 
     public String getNumber() {
@@ -40,7 +40,7 @@ public class ContactBean {
     @Override
     public String toString() {
         return "ContactBean{" +
-                "type='" + type + '\'' +
+                "contactType='" + contactType + '\'' +
                 ", number='" + number + '\'' +
                 '}';
     }

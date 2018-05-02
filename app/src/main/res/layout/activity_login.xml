@@ -28,6 +28,7 @@
                 android:layout_height="match_parent" />
 
             <EditText
+                android:inputType="number"
                 android:paddingLeft="4dp"
                 android:hint="account"
                 android:layout_margin="8dp"

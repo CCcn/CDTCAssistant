@@ -179,7 +179,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             banner.setData(bannerBean.getImgs(), bannerBean.getTips());
         } else {
             Log.d(TAG, "loadBannerData: 轮播数据错误，从单例中取出的数据是空" );
-            T.showShort(activity,"数据错误");
+//            T.showShort(activity,"数据错误");
         }
     }
 

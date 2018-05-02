@@ -18,6 +18,18 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/add_find_title"
+                android:inputType="text"
+                android:hint="标题"
+                android:paddingLeft="4dp"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+            <EditText
+                android:inputType="text"
+                android:id="@+id/add_find_name"
                 android:hint="物品名称"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -26,6 +38,8 @@
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
             <EditText
+                android:inputType="text"
+                android:id="@+id/add_find_place"
                 android:paddingLeft="4dp"
                 android:hint="地点"
                 android:layout_margin="8dp"
@@ -34,6 +48,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
             <EditText
+                android:id="@+id/add_find_date"
                 android:hint="时间"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -41,8 +56,8 @@
                 android:maxLength="15"
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
-
             <EditText
+                android:id="@+id/add_find_contact_person"
                 android:hint="联系人"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -51,6 +66,8 @@
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
             <EditText
+                android:inputType="number"
+                android:id="@+id/add_find_qq"
                 android:hint="QQ"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -59,6 +76,8 @@
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
             <EditText
+                android:inputType="phone"
+                android:id="@+id/add_find_phone"
                 android:hint="电话"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -68,6 +87,7 @@
                 android:background="@drawable/shape_et_bg"/>
 
             <EditText
+                android:id="@+id/add_find_description"
                 android:hint="详细描述"
                 android:padding="8dp"
                 android:layout_margin="8dp"
@@ -101,7 +121,7 @@
                 android:text="提交"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:id="@+id/add_buy_submit"
+                android:id="@+id/add_find_submit"
                 android:layout_width="match_parent" />
         </LinearLayout>
     </ScrollView>

@@ -60,4 +60,10 @@ public class Api {
      */
     public static final String FIND_USER_ALL = HOME + "/find/showUserFinds";
 
+    /**
+     * 提交一个查找
+     *   post json
+     */
+    public static final String CREATE_FIND = HOME + "/find/createFind";
+
 }

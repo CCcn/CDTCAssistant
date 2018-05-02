@@ -180,10 +180,10 @@ public class FindDetailActivity extends BaseTopActivity {
         List<ContactBean> contacts = findDetailBean.getContacts();
         for (int i = 0 ; i < contacts.size(); i++) {
             ContactBean contact = contacts.get(i);
-            if ("wx".equals(contact.getType())) {
+            if ("wx".equals(contact.getContactType())) {
                 weChatLayout.setVisibility(View.VISIBLE);
                 weChat.setText(contact.getNumber());
-            } else if ("qq".equals(contact.getType())) {
+            } else if ("qq".equals(contact.getContactType())) {
                 qqLayout.setVisibility(View.VISIBLE);
                 qq.setText(contact.getNumber());
             } else {

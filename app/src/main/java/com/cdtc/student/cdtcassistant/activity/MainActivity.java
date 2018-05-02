@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -85,10 +86,14 @@ public class MainActivity extends AppCompatActivity
      */
     private static final String STATUS = "status";
 
-
+    /**
+     * 本地广播，登陆后启动收广播更新用户数据
+     */
     private IntentFilter intentFilter;
     private BroadcastReceiver localReceiver;
     private LocalBroadcastManager localBroadcastManager;
+
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         localReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.i(TAG, "onReceive: " + "收到本地广播:" + intent.getAction() +" data" + intent.getStringExtra(StringConstant.STATUS));
                 updateUser();
             }
         };
@@ -138,12 +144,9 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        fab.setOnClickListener(view -> {
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         });
     }
 
