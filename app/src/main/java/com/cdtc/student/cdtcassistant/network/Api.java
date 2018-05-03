@@ -15,7 +15,8 @@ public class Api {
      *服务器地址
      */
 //    public static final String HOME = "http://119.23.52.87:8080/Dian";
-    public static final String HOME = "http://192.168.1.102:8080";
+//    public static final String HOME = "http://192.168.1.102:8080";
+    public static final String HOME = "http://192.168.1.10:8080";
 //    public static final String HOME = "http://192.168.1.110:8080";
 
     /**
@@ -58,13 +59,13 @@ public class Api {
      * 商品详细信息
      *   get goodsId
      */
-    public static final String BUY_DETAIL = HOME + "/buyDetail?goodsId=";
+    public static final String BUY_DETAIL = HOME + "/buy/showBuy";
 
     /**
      * 失物招领
      *   get
      */
-    public static final String FIND = HOME + "/find";
+    public static final String FIND = HOME + "/find/allFinds";
 
     /**
      * 用户的所有失物招领
@@ -77,6 +78,12 @@ public class Api {
      *   post json
      */
     public static final String CREATE_FIND = HOME + "/find/createFind";
+
+    /**
+     * 失物招领详细信息
+     *  get
+     */
+    public static final String FIND_DETAIL = HOME + "/find/showFind";
 
 
     /**

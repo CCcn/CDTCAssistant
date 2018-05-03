@@ -14,6 +14,7 @@ import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
+import com.cdtc.student.cdtcassistant.network.bean.FindDetail;
 import com.cdtc.student.cdtcassistant.network.bean.FindDetailBean;
 import com.cdtc.student.cdtcassistant.network.response.FindDetailResponse;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -113,21 +114,21 @@ public class FindDetailActivity extends BaseTopActivity {
 
         qq = getView(R.id.find_detail_contact_qq);
         tel = getView(R.id.find_detail_contact_tel);
-        weChat = getView(R.id.buy_detail_contact_wx);
-        qqLayout = getView(R.id.buy_detail_layout_qq);
+        weChat = getView(R.id.find_detail_contact_wx);
+        qqLayout = getView(R.id.find_detail_layout_qq);
         lostDate = getView(R.id.find_detail_lost_date);
-        telLayout = getView(R.id.buy_detail_layout_tel);
+        telLayout = getView(R.id.find_detail_layout_tel);
         lostPlace = getView(R.id.find_detail_lost_place);
-        weChatLayout = getView(R.id.buy_detail_layout_wx);
+        weChatLayout = getView(R.id.find_detail_layout_wx);
         contactPerson = getView(R.id.find_detail_contact_person);
-        description = getView(R.id.buy_detail_goods_description);
+        description = getView(R.id.find_detail_lost_description);
     }
 
     /**
      * 做网络请求
      */
     private void loadData() {
-        OkHttpUtil.doGet(Api.FIND_USER_ALL + findId, new Callback() {
+        OkHttpUtil.doGet(Api.FIND_DETAIL + "?id=" + findId, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: " + e.getMessage());
@@ -146,19 +147,18 @@ public class FindDetailActivity extends BaseTopActivity {
 
                     try {
                         findDetailResponse = new Gson().fromJson(responseString, FindDetailResponse.class);
+
+                        if (findDetailResponse.code == HttpConstant.OK) {
+                            Log.i(TAG, "onResponse: 响应成功" + findDetailResponse.getData());
+                            showData(findDetailResponse.getData().getFindDetail(), findDetailResponse.getData().getContacts());
+                        } else {
+                            Log.i(TAG, "onResponse: 响应出错" + findDetailResponse.message);
+                            T.showShort(activity,findDetailResponse.message);
+                        }
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: 响应失败：" + e.getMessage());
                         T.showError(activity);
                         return;
-                    }
-
-                    if (findDetailResponse.code == HttpConstant.OK) {
-                        Log.i(TAG, "onResponse: 响应成功" + findDetailResponse.getFindDetail());
-                        FindDetailBean findDetailBean = findDetailResponse.getFindDetail();
-                        showData(findDetailBean);
-                    } else {
-                        Log.i(TAG, "onResponse: 响应出错" + findDetailResponse.message);
-                        T.showShort(activity,findDetailResponse.message);
                     }
 
                 });
@@ -170,14 +170,13 @@ public class FindDetailActivity extends BaseTopActivity {
      * 请求成功后展示数据
      * @param findDetailBean 请求得到的数据
      */
-    private void showData(FindDetailBean findDetailBean) {
+    private void showData(FindDetailBean findDetailBean, List<ContactBean> contacts) {
 
         contactPerson.setText(findDetailBean.getContactPerson());
         lostPlace.setText(findDetailBean.getLostPlace());
         lostDate.setText(findDetailBean.getLostDate());
         description.setText(findDetailBean.getDescription());
 
-        List<ContactBean> contacts = findDetailBean.getContacts();
         for (int i = 0 ; i < contacts.size(); i++) {
             ContactBean contact = contacts.get(i);
             if ("wx".equals(contact.getContactType())) {

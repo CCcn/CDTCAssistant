@@ -6,6 +6,8 @@ package com.cdtc.student.cdtcassistant.network.bean;
  * @author pcc
  */
 public class LoveBean {
+
+    private Integer id;
     /**
      *标题
      */
@@ -15,6 +17,14 @@ public class LoveBean {
      * 内容
      */
     private String content;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -35,7 +45,8 @@ public class LoveBean {
     @Override
     public String toString() {
         return "LoveBean{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 '}';
     }

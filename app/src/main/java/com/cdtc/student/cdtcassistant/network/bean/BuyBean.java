@@ -29,6 +29,11 @@ public class BuyBean {
      */
     private String price;
 
+    /**
+     * 交易完成状态
+     */
+    private Integer finished;
+
     public String  getId() {
         return id;
     }
@@ -61,13 +66,22 @@ public class BuyBean {
         this.price = price;
     }
 
+    public Integer getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Integer finished) {
+        this.finished = finished;
+    }
+
     @Override
     public String toString() {
         return "BuyBean{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", img='" + img + '\'' +
                 ", title='" + title + '\'' +
                 ", price='" + price + '\'' +
+                ", finished=" + finished +
                 '}';
     }
 }

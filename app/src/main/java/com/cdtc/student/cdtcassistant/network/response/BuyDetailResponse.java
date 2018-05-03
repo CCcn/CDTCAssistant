@@ -1,6 +1,6 @@
 package com.cdtc.student.cdtcassistant.network.response;
 
-import com.cdtc.student.cdtcassistant.network.bean.BuyDetailBean;
+import com.cdtc.student.cdtcassistant.network.bean.BuyDetail;
 
 /**
  * 商品详情请求响应
@@ -9,13 +9,14 @@ import com.cdtc.student.cdtcassistant.network.bean.BuyDetailBean;
  * @author pcc
  */
 public class BuyDetailResponse extends BaseResponse{
-    private BuyDetailBean buyDetail;
 
-    public BuyDetailBean getBuyDetail() {
-        return buyDetail;
+    private BuyDetail data;
+
+    public BuyDetail getData() {
+        return data;
     }
 
-    public void setBuyDetail(BuyDetailBean buyDetail) {
-        this.buyDetail = buyDetail;
+    public void setData(BuyDetail data) {
+        this.data = data;
     }
 }

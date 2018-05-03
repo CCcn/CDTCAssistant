@@ -8,6 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
+        android:scaleType="fitXY"
         android:id="@+id/find_img"
         android:background="@drawable/user_head_placeholder"
         android:layout_weight="0.25"

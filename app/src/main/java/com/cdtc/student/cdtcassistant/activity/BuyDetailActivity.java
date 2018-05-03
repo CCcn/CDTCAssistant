@@ -15,6 +15,7 @@ import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.BuyDetailBean;
 import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
+import com.cdtc.student.cdtcassistant.network.bean.BuyDetail;
 import com.cdtc.student.cdtcassistant.network.response.BuyDetailResponse;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
@@ -127,7 +128,7 @@ public class BuyDetailActivity extends BaseTopActivity {
      * 开始请求数据
      */
     private void  loadData() {
-        OkHttpUtil.doGet(Api.BUY_DETAIL + goodsId, new Callback() {
+        OkHttpUtil.doGet(Api.BUY_DETAIL + "?id=" + goodsId, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: 请求失败" + e.getMessage());
@@ -143,16 +144,14 @@ public class BuyDetailActivity extends BaseTopActivity {
                     BuyDetailResponse buyDetailResponse = null;
                     try {
                         buyDetailResponse = new Gson().fromJson(responseString, BuyDetailResponse.class);
+                        if (buyDetailResponse.code == HttpConstant.OK) {
+                            BuyDetail buyDetail = buyDetailResponse.getData();
+                            Log.i(TAG, "onResponse: 响应成功：" + buyDetail.getBuyDetail());
+
+                            showData(buyDetail.getBuyDetail(),buyDetail.getContacts());
+                        }
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
-                        T.showError(activity);
-                    }
-
-                    if (buyDetailResponse != null && buyDetailResponse.code == HttpConstant.OK) {
-                        Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.getBuyDetail());
-                        showData(buyDetailResponse.getBuyDetail());
-                    } else {
-//                        Log.i(TAG, "onResponse: 响应成功：" + buyDetailResponse.message);
                         T.showError(activity);
                     }
                 });
@@ -164,13 +163,11 @@ public class BuyDetailActivity extends BaseTopActivity {
      * 展示数据
      * @param buyDetail
      */
-    private void showData(BuyDetailBean buyDetail) {
+    private void showData(BuyDetailBean buyDetail,List<ContactBean> contacts) {
         name.setText(buyDetail.getName());
         price.setText(buyDetail.getPrice());
         owner.setText(buyDetail.getOwner());
         description.setText(buyDetail.getDescription());
-
-        List<ContactBean> contacts = buyDetail.getContacts();
         for (int i = 0 ; i < contacts.size(); i++) {
             ContactBean contact = contacts.get(i);
             if ("wx".equals(contact.getContactType())) {

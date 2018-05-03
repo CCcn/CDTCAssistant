@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
@@ -22,9 +23,10 @@ import com.cdtc.student.cdtcassistant.activity.WebActivity;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
-import com.cdtc.student.cdtcassistant.network.bean.MyBuyBean;
-import com.cdtc.student.cdtcassistant.network.bean.MyFindBean;
-import com.cdtc.student.cdtcassistant.network.bean.MyLoveBean;
+import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
+import com.cdtc.student.cdtcassistant.network.bean.FindBean;
+import com.cdtc.student.cdtcassistant.network.bean.LoveBean;
+
 import com.cdtc.student.cdtcassistant.util.T;
 
 import java.util.ArrayList;
@@ -59,15 +61,15 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
     private RecyclerView loveRecycler;
 
-    private List<MyLoveBean> loves = new ArrayList<>();
+    private List<LoveBean> loves = new ArrayList<>();
 
     private RecyclerView buyRecycler;
 
-    private List<MyBuyBean> buys = new ArrayList<>();
+    private List<BuyBean> buys = new ArrayList<>();
 
     private RecyclerView findRecycler;
 
-    private List<MyFindBean> finds = new ArrayList<>();
+    private List<FindBean> finds = new ArrayList<>();
 
     private Activity activity;
 
@@ -147,20 +149,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private void initVariable() {
         activity = this.getActivity();
 
-        for (int i = 0 ; i < 10 ; i++) {
-            MyLoveBean myLoveBean = new MyLoveBean();
-            loves.add(myLoveBean);
-        }
+       loves = Singleton.getInstance(activity).getLoves();
 
-        for (int i = 0 ; i < 10 ; i++) {
-            MyBuyBean myBuyBean = new MyBuyBean();
-            buys.add(myBuyBean);
-        }
+        buys = Singleton.getInstance(activity).getBuys();
 
-        for (int i = 0; i < 10 ; i++) {
-            MyFindBean myFindBean = new MyFindBean();
-            finds.add(myFindBean);
-        }
+       finds = Singleton.getInstance(activity).getFinds();
     }
 
     /**
@@ -196,6 +189,10 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             if (position % 2 ==0) {
                 holder.root.setBackgroundColor(Color.parseColor("#fffed955"));
             }
+            LoveBean loveBean = loves.get(position);
+            holder.title.setText(loveBean.getTitle());
+            holder.content.setText(loveBean.getContent());
+
         }
 
         @Override
@@ -207,9 +204,14 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private class LoveHolder extends RecyclerView.ViewHolder{
 
         private LinearLayout root;
+
+        private TextView title;
+        private TextView content;
         public LoveHolder(View itemView) {
             super(itemView);
             root = itemView.findViewById(R.id.my_love_root);
+            title = itemView.findViewById(R.id.my_love_title);
+            content = itemView.findViewById(R.id.my_love_content);
         }
     }
 
@@ -224,9 +226,18 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
         @Override
         public void onBindViewHolder(@NonNull BuyHolder holder, int position) {
-            if (position % 2 == 0) {
+            if (position % 1 == 0) {
                 holder.root.setBackgroundColor(Color.parseColor("#fffed955"));
             }
+            BuyBean buyBean = buys.get(position);
+            holder.price.setText(buyBean.getPrice());
+            holder.title.setText(buyBean.getTitle());
+            Glide.with(activity)
+                    .load(Api.HOME + buyBean.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(holder.imageView);
+
         }
 
         @Override
@@ -238,10 +249,18 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private class BuyHolder extends RecyclerView.ViewHolder {
 
         private LinearLayout root;
+
+        private TextView title;
+        private TextView price;
+        private ImageView imageView;
+
         public BuyHolder(View itemView) {
             super(itemView);
 
             root = itemView.findViewById(R.id.my_buy_root);
+            title = itemView.findViewById(R.id.my_buy_item_title);
+            price = itemView.findViewById(R.id.my_buy_item_price);
+            imageView = itemView.findViewById(R.id.my_buy_item_img);
         }
     }
 
@@ -258,6 +277,16 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             if (position % 2 == 0) {
                 holder.root.setBackgroundColor(Color.parseColor("#fffed955"));
             }
+            FindBean findBean = finds.get(position);
+            holder.title.setText(findBean.getTitle());
+            holder.place.setText(findBean.getPlace());
+            holder.date.setText(findBean.getDate());
+            holder.description.setText(findBean.getDescription());
+            Glide.with(activity)
+                    .load(Api.HOME + findBean.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(holder.img);
         }
 
         @Override
@@ -268,10 +297,24 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
     private class FindHolder extends RecyclerView.ViewHolder {
 
+        private TextView title;
+
+        private TextView place;
+        private TextView date;
+        private TextView description;
+        private ImageView img;
+
+
         private LinearLayout root;
         public FindHolder(View itemView) {
             super(itemView);
             root = itemView.findViewById(R.id.my_find_root);
+
+            title = itemView.findViewById(R.id.my_find_item_title);
+            place = itemView.findViewById(R.id.my_find_item_place);
+            date = itemView.findViewById(R.id.my_find_item_date);
+            description = itemView.findViewById(R.id.my_find_item_description);
+            img = itemView.findViewById(R.id.my_find_item_img);
         }
     }
     /**

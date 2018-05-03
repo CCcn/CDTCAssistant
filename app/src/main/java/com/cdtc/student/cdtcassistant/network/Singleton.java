@@ -3,6 +3,9 @@ package com.cdtc.student.cdtcassistant.network;
 import android.content.Context;
 
 import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
+import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
+import com.cdtc.student.cdtcassistant.network.bean.FindBean;
+import com.cdtc.student.cdtcassistant.network.bean.LoveBean;
 import com.cdtc.student.cdtcassistant.network.bean.UserBean;
 
 import java.util.List;
@@ -19,6 +22,12 @@ public class Singleton {
     private static Singleton singleton;
 
     private BannerBean bannerBean;
+
+    private List<LoveBean> loves;
+
+    private List<FindBean> finds;
+
+    private List<BuyBean> buys;
 
     private UserBean user;
     private Singleton() {
@@ -46,5 +55,29 @@ public class Singleton {
 
     public void setBannerBean(BannerBean bannerBean) {
         this.bannerBean = bannerBean;
+    }
+
+    public List<LoveBean> getLoves() {
+        return loves;
+    }
+
+    public void setLoves(List<LoveBean> loves) {
+        this.loves = loves;
+    }
+
+    public List<FindBean> getFinds() {
+        return finds;
+    }
+
+    public void setFinds(List<FindBean> finds) {
+        this.finds = finds;
+    }
+
+    public List<BuyBean> getBuys() {
+        return buys;
+    }
+
+    public void setBuys(List<BuyBean> buys) {
+        this.buys = buys;
     }
 }

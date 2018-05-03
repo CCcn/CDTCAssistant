@@ -58,7 +58,7 @@ public class BuyFragment extends Fragment {
 
         initVariable();
         initView(view);
-        loadData();
+
         return view;
     }
 
@@ -67,6 +67,7 @@ public class BuyFragment extends Fragment {
      */
     private void initVariable() {
         activity = getActivity();
+        loadData();
     }
 
     private void loadData() {

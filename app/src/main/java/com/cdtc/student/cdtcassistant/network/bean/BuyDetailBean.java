@@ -30,10 +30,7 @@ public class BuyDetailBean {
      */
     private String owner;
 
-    /**
-     * 联系方式
-     */
-    private List<ContactBean> contacts;
+    private Integer finished;
 
     public String getName() {
         return name;
@@ -67,12 +64,12 @@ public class BuyDetailBean {
         this.owner = owner;
     }
 
-    public List<ContactBean> getContacts() {
-        return contacts;
+    public Integer getFinished() {
+        return finished;
     }
 
-    public void setContacts(List<ContactBean> contacts) {
-        this.contacts = contacts;
+    public void setFinished(Integer finished) {
+        this.finished = finished;
     }
 
     @Override
@@ -82,7 +79,7 @@ public class BuyDetailBean {
                 ", price='" + price + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
-                ", contacts=" + contacts +
+                ", finished=" + finished +
                 '}';
     }
 }

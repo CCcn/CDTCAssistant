@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.activity.FindDetailActivity;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
@@ -60,8 +61,7 @@ public class FindFragment extends Fragment {
         initVariable();
 
         initView(view);
-        loadData();
-        showRecycler();
+
         return view;
     }
 
@@ -77,12 +77,7 @@ public class FindFragment extends Fragment {
 
     private void initVariable() {
         activity = getActivity();
-
-        for (int i = 0 ; i < 20 ; i++) {
-            FindBean findBean = new FindBean();
-            findBean.setTitle(i +" " + "enen");
-            finds.add(findBean);
-        }
+        loadData();
 
     }
 
@@ -143,7 +138,19 @@ public class FindFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull FindHolder holder, int position) {
-            holder.lostTitle.setText(finds.get(position).getTitle());
+            FindBean findBean = finds.get(position);
+            holder.lostTitle.setText(findBean.getTitle());
+            holder.lostPlace.setText(findBean.getPlace());
+            holder.lostDate.setText(findBean.getDate());
+            Glide.with(activity)
+                    .load(Api.HOME + findBean.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(holder.findImg);
+
+
+
+
         }
 
         @Override
@@ -193,7 +200,6 @@ public class FindFragment extends Fragment {
             itemLayout = view.findViewById(R.id.find_item_layout);
 
             itemLayout.setOnClickListener(v -> {
-//                T.showShort(activity,"点击了 + " + getAdapterPosition());
                 FindBean findBean = finds.get(getAdapterPosition());
                 FindDetailActivity.startAction(activity, findBean.getTitle(), findBean.getId());
             });

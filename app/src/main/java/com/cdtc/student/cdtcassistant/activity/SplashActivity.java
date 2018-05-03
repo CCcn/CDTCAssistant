@@ -40,14 +40,14 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * 载入数据
-     *   这时候应该加在app初始化数据
+     * 这时候应该加在app初始化数据
      */
     private void loadInitData() {
         OkHttpUtil.doGet(Api.INIT, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i(TAG, "onFailure: 网络异常" + e.getMessage());
-                runOnUiThread( ()-> {
+                runOnUiThread(() -> {
                     MainActivity.startAction(activity, StringConstant.FAILED);
                     finish();
                 });
@@ -58,28 +58,29 @@ public class SplashActivity extends AppCompatActivity {
                 String responseSting = response.body().string();
                 Log.i(TAG, "onResponse: " + responseSting);
                 runOnUiThread(() -> {
-                    InitResponse initResponse  = null;
+                    InitResponse initResponse = null;
 
                     try {
-                       initResponse = new Gson().fromJson(responseSting, InitResponse.class);
+                        initResponse = new Gson().fromJson(responseSting, InitResponse.class);
+                        if (initResponse.code == HttpConstant.OK) {
+                            Singleton.getInstance(activity).setBannerBean(initResponse.getBanner());
+                            Singleton.getInstance(activity).setBuys(initResponse.getBuys());
+                            Singleton.getInstance(activity).setFinds(initResponse.getFinds());
+                            Singleton.getInstance(activity).setLoves(initResponse.getLoves());
+                            MainActivity.startAction(activity, StringConstant.OK);
+                            Log.i(TAG, "onResponse: 数据加载完成，启动到main");
+                            finish();
+                            return;
+                        }
+
+                        Log.d(TAG, "onResponse: " + initResponse.message);
+                        MainActivity.startAction(activity, StringConstant.FAILED);
+                        return;
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
                         T.showError(activity);
                         MainActivity.startAction(activity, StringConstant.FAILED);
-                        return;
                     }
-
-                    if (initResponse.code == HttpConstant.OK) {
-                        Singleton.getInstance(activity).setBannerBean(initResponse.getBanner());
-                        MainActivity.startAction(activity, StringConstant.OK);
-                        Log.i(TAG, "onResponse: 数据加载完成，启动到main" );
-                        finish();
-                    } else {
-                        Log.d(TAG, "onResponse: " + initResponse.message);
-                        MainActivity.startAction(activity, StringConstant.FAILED);
-                        return;
-                    }
-
 
                 });
             }

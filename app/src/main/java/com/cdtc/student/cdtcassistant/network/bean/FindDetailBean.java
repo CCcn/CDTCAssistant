@@ -32,14 +32,11 @@ public class FindDetailBean {
     private String lostPlace;
 
     /**
-     * 联系方式
-     */
-    private List<ContactBean> contacts;
-
-    /**
      * 描述
      */
     private String description;
+
+    private Integer finished;
 
     public String getName() {
         return name;
@@ -73,13 +70,6 @@ public class FindDetailBean {
         this.lostPlace = lostPlace;
     }
 
-    public List<ContactBean> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<ContactBean> contacts) {
-        this.contacts = contacts;
-    }
 
     public String getDescription() {
         return description;
@@ -89,6 +79,14 @@ public class FindDetailBean {
         this.description = description;
     }
 
+    public Integer getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Integer finished) {
+        this.finished = finished;
+    }
+
     @Override
     public String toString() {
         return "FindDetailBean{" +
@@ -96,8 +94,8 @@ public class FindDetailBean {
                 ", contactPerson='" + contactPerson + '\'' +
                 ", lostDate='" + lostDate + '\'' +
                 ", lostPlace='" + lostPlace + '\'' +
-                ", contacts=" + contacts +
                 ", description='" + description + '\'' +
+                ", finished=" + finished +
                 '}';
     }
 }

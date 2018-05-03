@@ -1,5 +1,6 @@
 package com.cdtc.student.cdtcassistant.network.response;
 
+import com.cdtc.student.cdtcassistant.network.bean.FindDetail;
 import com.cdtc.student.cdtcassistant.network.bean.FindDetailBean;
 
 /**
@@ -10,20 +11,13 @@ import com.cdtc.student.cdtcassistant.network.bean.FindDetailBean;
  */
 public class FindDetailResponse extends BaseResponse{
 
-    private FindDetailBean findDetail;
+   private FindDetail data;
 
-    public FindDetailBean getFindDetail() {
-        return findDetail;
+    public FindDetail getData() {
+        return data;
     }
 
-    public void setFindDetail(FindDetailBean findDetail) {
-        this.findDetail = findDetail;
-    }
-
-    @Override
-    public String toString() {
-        return "FindDetailResponse{" +
-                "findDetail=" + findDetail +
-                '}';
+    public void setData(FindDetail data) {
+        this.data = data;
     }
 }
