@@ -8,47 +8,36 @@ package com.cdtc.student.cdtcassistant.network.bean;
  */
 public class MyBuyBean {
     /**
-     * id
+     * id,用于详细页面的请求
      */
-    private String id;
+    private Integer id;
 
     /**
-     * 标题
+     * 展示的图片
+     */
+    private String img;
+
+    /**
+     * 描述信息
      */
     private String title;
 
     /**
-     * 描述
+     * 售价
      */
-    private String description;
+    private String price;
 
     /**
-     * 图片
+     * 是否完成交易
      */
-    private String img;
+    private Integer finished;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getImg() {
@@ -59,13 +48,38 @@ public class MyBuyBean {
         this.img = img;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public Integer getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Integer finished) {
+        this.finished = finished;
+    }
+
     @Override
     public String toString() {
-        return "MyFindBean{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
+        return "MyBuyBean{" +
+                "id=" + id +
                 ", img='" + img + '\'' +
+                ", title='" + title + '\'' +
+                ", price='" + price + '\'' +
+                ", finished=" + finished +
                 '}';
     }
 }

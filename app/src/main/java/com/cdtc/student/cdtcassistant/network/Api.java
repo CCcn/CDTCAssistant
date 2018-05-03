@@ -15,8 +15,8 @@ public class Api {
      *服务器地址
      */
 //    public static final String HOME = "http://119.23.52.87:8080/Dian";
-//    public static final String HOME = "http://192.168.1.102:8080";
-    public static final String HOME = "http://192.168.1.110:8080";
+    public static final String HOME = "http://192.168.1.102:8080";
+//    public static final String HOME = "http://192.168.1.110:8080";
 
     /**
      * 登陆 get/post
@@ -41,6 +41,19 @@ public class Api {
      *
      */
     public static final String BUY = HOME + "/buy/allBuys";
+
+    /**
+     * 用户所有的跳蚤商品
+     */
+    public static final String BUY_USER_ALL = HOME + "/buy/showUserBuys";
+
+    /**
+     * 提交一个二手商品
+     *  post json
+     */
+    public static final String CREATE_BUY = HOME + "/buy/createBuy";
+
+
 
     /**
      * 商品详细信息

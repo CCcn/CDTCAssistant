@@ -9,26 +9,44 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
+import com.cdtc.student.cdtcassistant.network.Api;
+import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
+import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.MyBuyBean;
 import com.cdtc.student.cdtcassistant.network.bean.MyFindBean;
+import com.cdtc.student.cdtcassistant.network.response.MyBuyBeanResponse;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class MyBuyActivity extends BaseTopActivity {
 
     private RecyclerView myBuyRecycler;
 
-    private List<MyBuyBean> myBuys = new ArrayList<>();
+    private Integer userId;
+
+    private List<MyBuyBean> myBuys;
+
     private Activity activity;
 
+    private static final String TAG = "MyBuyActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +55,44 @@ public class MyBuyActivity extends BaseTopActivity {
         initVariable();
 
         initView();
-
-        showData();
     }
 
 
 
     private void loadData(){
+        OkHttpUtil.doGet(Api.BUY_USER_ALL + "?userId=" + userId, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i(TAG, "onFailure: " + e.getMessage());
+
+                runOnUiThread(() -> {
+                    T.showError(activity);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseString = response.body().string();
+
+                runOnUiThread(() -> {
+                    MyBuyBeanResponse buyBeanResponse =null;
+
+                    try {
+                        buyBeanResponse = new Gson().fromJson(responseString, MyBuyBeanResponse.class);
+
+                        if (buyBeanResponse.code == HttpConstant.OK) {
+                            myBuys = buyBeanResponse.getData();
+                            showData();
+                        } else {
+                            T.showShort(activity, buyBeanResponse.message);
+                        }
+
+                    } catch (Exception e) {
+                        T.showDataError(activity);
+                    }
+                });
+            }
+        });
 
     }
 
@@ -55,11 +104,10 @@ public class MyBuyActivity extends BaseTopActivity {
 
     private void initVariable() {
         activity = this;
-        for (int i = 0 ; i < 20 ;i++) {
-            MyBuyBean myBuyBean = new MyBuyBean();
-            myBuyBean.setTitle("我是标题" + i);
-            myBuys.add(myBuyBean);
-        }
+
+        userId = Singleton.getInstance(activity).getUser().getId();
+
+        loadData();
     }
 
     private void initView() {
@@ -93,6 +141,12 @@ public class MyBuyActivity extends BaseTopActivity {
         public void onBindViewHolder(@NonNull MyBuyActivity.MyBuyViewHolder holder, int position) {
             MyBuyBean myBuyBean = myBuys.get(position);
             holder.title.setText(myBuyBean.getTitle());
+            holder.price.setText(myBuyBean.getPrice());
+            Glide.with(activity)
+                    .load(Api.HOME + myBuyBean.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(holder.img);
         }
 
         @Override
@@ -109,14 +163,14 @@ public class MyBuyActivity extends BaseTopActivity {
         private TextView title;
 
         /**
-         * 描述
-         */
-        private TextView description;
-
-        /**
          * 图片
          */
         private ImageView img;
+
+        /**
+         * 价格
+         */
+        private TextView price;
 
         public MyBuyViewHolder(View itemView) {
             super(itemView);
@@ -126,8 +180,7 @@ public class MyBuyActivity extends BaseTopActivity {
         private void initView(View view) {
             img = view.findViewById(R.id.my_buy_item_img);
             title = view.findViewById(R.id.my_buy_item_title);
-            description = view.findViewById(R.id.my_buy_item_description);
-
+            price = view.findViewById(R.id.my_buy_item_price);
             img.setOnClickListener(v -> {
                 T.showShort(activity, getAdapterPosition() + "点击了");
             });

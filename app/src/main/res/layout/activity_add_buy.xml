@@ -20,7 +20,8 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:hint="商品标题"
+                android:id="@+id/add_buy_title"
+                android:hint="标题"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
@@ -29,6 +30,16 @@
                 android:background="@drawable/shape_et_bg"/>
 
             <EditText
+                android:id="@+id/add_buy_name"
+                android:hint="商品名称"
+                android:paddingLeft="4dp"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:maxLength="15"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_et_bg"/>
+            <EditText
+                android:id="@+id/add_buy_contact_person"
                 android:hint="联系人"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -38,6 +49,7 @@
                 android:background="@drawable/shape_et_bg"/>
 
             <EditText
+                android:id="@+id/add_buy_price"
                 android:hint="价格"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -47,6 +59,7 @@
                 android:background="@drawable/shape_et_bg"/>
 
             <EditText
+                android:id="@+id/add_buy_qq"
                 android:hint="QQ"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -55,6 +68,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/shape_et_bg"/>
             <EditText
+                android:id="@+id/add_buy_phone"
                 android:hint="电话"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
@@ -64,6 +78,7 @@
                 android:background="@drawable/shape_et_bg"/>
 
             <EditText
+                android:id="@+id/add_buy_description"
                 android:hint="详细描述"
                 android:padding="8dp"
                 android:layout_margin="8dp"
