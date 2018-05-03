@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.activity.BuyDetailActivity;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
@@ -136,6 +137,11 @@ public class BuyFragment extends Fragment {
             BuyBean buy = buys.get(position);
             holder.title.setText(buy.getTitle());
             holder.price.setText(buy.getPrice());
+            Glide.with(activity)
+                    .load(Api.HOME + buy.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(holder.img);
         }
 
         @Override

@@ -54,7 +54,6 @@ public class Api {
     public static final String CREATE_BUY = HOME + "/buy/createBuy";
 
 
-
     /**
      * 商品详细信息
      *   get goodsId
@@ -78,5 +77,20 @@ public class Api {
      *   post json
      */
     public static final String CREATE_FIND = HOME + "/find/createFind";
+
+
+    /**
+     * 用户所有的表白
+     *   get userId
+     */
+    public static final String LOVE_USER_ALL = HOME + "/love/showUserLoves";
+
+    /**
+     * 提交一个love
+     *  post json
+     */
+    public static final String CREATE_LOVE = HOME + "/love/createLove";
+
+
 
 }

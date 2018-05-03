@@ -9,19 +9,30 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
+import com.cdtc.student.cdtcassistant.network.Api;
+import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
+import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.MyLoveBean;
+import com.cdtc.student.cdtcassistant.network.response.LoveResponse;
+import com.cdtc.student.cdtcassistant.util.T;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 public class MyLoveActivity extends BaseTopActivity {
-
-
 
     private RecyclerView myLoveRecycler;
 
@@ -29,16 +40,55 @@ public class MyLoveActivity extends BaseTopActivity {
 
     private Activity activity;
 
+    private Integer userId;
+
+    private static final String TAG = "MyLoveActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_love);
 
         initVariable();
+
         initView();
-        showData();
+
     }
 
+    private void loadData() {
+        OkHttpUtil.doGet(Api.LOVE_USER_ALL + "?userId=" + userId, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: " + e.getMessage());
+                runOnUiThread(() -> {
+                    T.showError(activity);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String responseString = response.body().string();
+                runOnUiThread(() -> {
+                    LoveResponse loveResponse = null;
+
+                    try {
+                        loveResponse = new Gson().fromJson(responseString, LoveResponse.class);
+
+                        if (loveResponse.code == HttpConstant.OK) {
+                            myLoves = loveResponse.getData();
+                            showData();
+
+                        } else {
+                            T.showShort(activity,loveResponse.message);
+                        }
+                    } catch (Exception e) {
+                        T.showDataError(activity);
+                    }
+                });
+            }
+        });
+    }
 
     private void showData() {
         myLoveRecycler.setLayoutManager(new LinearLayoutManager(activity));
@@ -47,12 +97,9 @@ public class MyLoveActivity extends BaseTopActivity {
     }
     private void initVariable() {
         activity = this;
+        userId = Singleton.getInstance(activity).getUser().getId();
 
-        for (int i = 0; i < 20; i++) {
-            MyLoveBean myLoveBean = new MyLoveBean();
-            myLoveBean.setTitle("我是标题：" + i);
-            myLoves.add(myLoveBean);
-        }
+        loadData();
     }
 
     private void initView() {
@@ -74,6 +121,7 @@ public class MyLoveActivity extends BaseTopActivity {
         public void onBindViewHolder(@NonNull MyLoveHolder holder, int position) {
             MyLoveBean myLoveBean = myLoves.get(position);
             holder.title.setText(myLoveBean.getTitle());
+            holder.content.setText(myLoveBean.getContent());
         }
 
         @Override

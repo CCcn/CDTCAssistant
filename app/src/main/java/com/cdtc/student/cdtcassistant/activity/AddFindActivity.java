@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
@@ -154,7 +155,7 @@ public class AddFindActivity extends BaseTopActivity {
 
                         try {
                             addFindResponse = new Gson().fromJson(responseString, AddFindResponse.class);
-                            if (addFindResponse.code == 200) {
+                            if (addFindResponse.code == HttpConstant.OK) {
                                 T.showShort(activity, "提交成功");
                                 Log.i(TAG, "onResponse: " + addFindResponse.message);
                                 finish();
