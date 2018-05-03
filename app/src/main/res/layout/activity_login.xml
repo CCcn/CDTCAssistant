@@ -64,6 +64,17 @@
                 android:background="@drawable/shape_et_bg"/>/>
         </LinearLayout>
 
+        <CheckBox
+            android:textColor="#c0bec5"
+            android:textSize="18sp"
+            android:text="记住密码"
+            android:theme="@style/My_CheckBox"
+            android:paddingLeft="4dp"
+            android:layout_margin="8dp"
+            android:id="@+id/login_remember_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Button
             android:background="@drawable/shape_btn_bg"
             android:layout_height="45dp"

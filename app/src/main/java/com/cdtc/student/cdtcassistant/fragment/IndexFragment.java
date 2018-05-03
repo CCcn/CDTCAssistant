@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
+import com.cdtc.student.cdtcassistant.activity.BuyDetailActivity;
+import com.cdtc.student.cdtcassistant.activity.FindDetailActivity;
 import com.cdtc.student.cdtcassistant.activity.WebActivity;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.Singleton;
@@ -261,6 +263,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             title = itemView.findViewById(R.id.my_buy_item_title);
             price = itemView.findViewById(R.id.my_buy_item_price);
             imageView = itemView.findViewById(R.id.my_buy_item_img);
+
+            root.setOnClickListener(view ->{
+                BuyBean buyBean = buys.get(getAdapterPosition());
+                BuyDetailActivity.startAction(activity,buyBean.getTitle(),buyBean.getId());
+            });
         }
     }
 
@@ -315,6 +322,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             date = itemView.findViewById(R.id.my_find_item_date);
             description = itemView.findViewById(R.id.my_find_item_description);
             img = itemView.findViewById(R.id.my_find_item_img);
+
+            root.setOnClickListener(view -> {
+                FindBean findBean = finds.get(getAdapterPosition());
+                FindDetailActivity.startAction(activity, findBean.getTitle(), findBean.getId());
+            });
         }
     }
     /**

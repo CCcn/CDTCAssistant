@@ -3,6 +3,7 @@ package com.cdtc.student.cdtcassistant.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.cdtc.student.cdtcassistant.R;
@@ -51,6 +53,16 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
 
     private LocalBroadcastManager localBroadcastManager;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
+    private CheckBox rememberMe;
+
+    private static final String ACCOUNT ="account";
+    private static final String PASSWORD ="password";
+    private static final String REMEMBER_ME ="remember";
+
+
     private static final String TAG = "LoginActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,25 +72,45 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
         initVariable();
 
         initView();
+
+        loadAccount();
     }
 
     private void initVariable() {
 
         activity = this;
 
-        studentNumber = getView(R.id.login_account);
-        password = getView(R.id.login_password);
-        login = getView(R.id.login_submit);
-
-        login.setOnClickListener(this::onClick);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);
+
+
+        sharedPreferences = getSharedPreferences("remember",MODE_PRIVATE);
+
+        editor = sharedPreferences.edit();
+
+
+
     }
 
     private void initView() {
         initTopBar("登陆");
 
+        studentNumber = getView(R.id.login_account);
+        password = getView(R.id.login_password);
+        login = getView(R.id.login_submit);
 
+        rememberMe = getView(R.id.login_remember_me);
+
+        login.setOnClickListener(this::onClick);
+    }
+
+    private void loadAccount() {
+        boolean isRemember = sharedPreferences.getBoolean(REMEMBER_ME,false);
+        if (isRemember) {
+            studentNumber.setText(sharedPreferences.getString(ACCOUNT,""));
+            password.setText(sharedPreferences.getString(PASSWORD,""));
+            rememberMe.setChecked(true);
+        }
     }
 
     @Override
@@ -93,6 +125,7 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
         }
 
         Log.i(TAG, "onClick: password " + inputPassword);
+        String finalInputPassword = inputPassword;
 
         //将密码加密
         inputPassword = Md5Utils.getMD5String(inputPassword);
@@ -101,6 +134,7 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
                 .add("studentNumber",inputAccount)
                 .add("password",inputPassword)
                 .build();
+
 
 
         OkHttpUtil.doPost(Api.LOGIN, requestBody, new Callback() {
@@ -128,6 +162,18 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
                         if (userResponse.code == HttpConstant.OK) {
                             Log.i(TAG, "onResponse: 登陆成功" + userResponse);
                             Singleton.getInstance(activity).setUser(userResponse.getData());
+
+
+                            //记住用户名和密码
+                            if (rememberMe.isChecked()) {
+                                editor.putString(ACCOUNT,inputAccount);
+                                editor.putString(PASSWORD, finalInputPassword);
+                                editor.putBoolean(REMEMBER_ME,true);
+                                editor.apply();
+                            } else {
+                                editor.putBoolean(REMEMBER_ME,false);
+                                editor.apply();
+                            }
 
                             //发广播
                             Intent intent = new Intent(StringConstant.LOGIN_ACTION);
