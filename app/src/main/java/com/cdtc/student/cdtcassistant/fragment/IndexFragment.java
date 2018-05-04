@@ -123,6 +123,13 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         eCardLayout.setOnClickListener(this::onClick);
         libraryLayout.setOnClickListener(this::onClick);
         electricityLayout.setOnClickListener(this::onClick);
+
+
+        if(loves == null || buys == null || finds == null) {
+            T.showError(activity);
+            return;
+        }
+        showLoveData();
     }
 
     private void showLoveData() {
@@ -155,11 +162,6 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
        finds = Singleton.getInstance(activity).getFinds();
 
-       if(loves == null || buys == null || finds == null) {
-           T.showError(activity);
-           return;
-       }
-       showLoveData();
     }
 
     /**
