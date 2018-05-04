@@ -99,8 +99,6 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         initView(view);
 
         loadBannerData(bgaBanner);
-
-        showLoveData();
         return view;
     }
 
@@ -156,6 +154,12 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         buys = Singleton.getInstance(activity).getBuys();
 
        finds = Singleton.getInstance(activity).getFinds();
+
+       if(loves == null || buys == null || finds == null) {
+           T.showError(activity);
+           return;
+       }
+       showLoveData();
     }
 
     /**
