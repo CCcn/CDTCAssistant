@@ -4,13 +4,14 @@
     android:id="@+id/my_love_root"
     android:orientation="vertical"
     android:layout_margin="8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="100dp">
 
     <TextView
         android:text="我是标题"
+        android:gravity="center"
         android:id="@+id/my_love_title"
         android:layout_margin="8dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/my_love_content"

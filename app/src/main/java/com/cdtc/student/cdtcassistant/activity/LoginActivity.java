@@ -21,6 +21,7 @@ import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.response.UserResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.Md5Utils;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
@@ -116,6 +117,7 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         login.setEnabled(false);
+        LoadDialogUtils.showDialogForLogin(activity);
         String inputAccount = studentNumber.getText().toString();
         String inputPassword = password.getText().toString();
 
@@ -144,6 +146,7 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
                 runOnUiThread(() -> {
                     T.showError(activity);
                     login.setEnabled(true);
+                    LoadDialogUtils.hide(activity);
                 });
             }
 
@@ -154,6 +157,7 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
                 String responseSting = response.body().string();
 
                 runOnUiThread(() -> {
+                    LoadDialogUtils.hide(activity);
                     UserResponse userResponse = null;
 
                     try {

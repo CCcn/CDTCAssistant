@@ -21,7 +21,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp" />
         <TextView
-            android:text="sdasdsda"
+            tools:text="sdasdsda"
             android:id="@+id/find_detail_lost_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -42,7 +42,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp" />
         <TextView
-            android:text="sdasdsda"
+            tools:text="sdasdsda"
             android:id="@+id/find_detail_lost_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/find_detail_contact_qq"
-            android:text="--------"
+            tools:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/find_detail_contact_tel"
-            android:text="--------"
+            tools:text="--------"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

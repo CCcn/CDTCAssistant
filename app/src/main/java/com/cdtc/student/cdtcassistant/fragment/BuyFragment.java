@@ -174,7 +174,7 @@ public class BuyFragment extends Fragment {
         public void onBindViewHolder(@NonNull BuyHolder holder, int position) {
             BuyBean buy = buys.get(position);
             holder.title.setText(buy.getTitle());
-            holder.price.setText(buy.getPrice());
+            holder.price.setText("¥ " + buy.getPrice());
             Glide.with(activity)
                     .load(Api.HOME + buy.getImg())
                     .placeholder(R.drawable.holder)

@@ -33,7 +33,6 @@ public class LoadDialogUtils {
         mLoadingDialog.setCancelable(false);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
-
         mLoadingDialog.show();
         avLoadingIndicatorView.smoothToShow();
         mLoadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
@@ -54,16 +53,13 @@ public class LoadDialogUtils {
      *
      * @param context 上下文
      */
-    public static void showDialogForLoading(Context context, String msg) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_loading_dialog, null);
-        TextView loadingText = view.findViewById(R.id.id_tv_loading_dialog_text);
+    public static void showDialogForLogin(Context context) {
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_login_dialog, null);
         AVLoadingIndicatorView avLoadingIndicatorView = view.findViewById(R.id.loading_indicator);
-        loadingText.setText(msg);
-        mLoadingDialog = new Dialog(context, R.style.loading_dialog_style);
+        mLoadingDialog = new Dialog(context, R.style.login_dialog_style);
         mLoadingDialog.setCancelable(false);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
-
         mLoadingDialog.show();
         avLoadingIndicatorView.smoothToShow();
         mLoadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {

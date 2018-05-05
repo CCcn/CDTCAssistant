@@ -52,14 +52,13 @@ import okhttp3.Response;
 
 
 /**
- *
  * 首页
- *
+ * <p>
  * Created by pcc on 2018/4/18.
  *
  * @author pcc
  */
-public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageView, String> , View.OnClickListener{
+public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageView, String>, View.OnClickListener {
 
     /**
      * 首页轮播
@@ -124,6 +123,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
     /**
      * 初始化View
+     *
      * @param view container
      */
     private void initView(View view) {
@@ -168,11 +168,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         libraryLayout.setOnClickListener(this::onClick);
         electricityLayout.setOnClickListener(this::onClick);
 
-        if(loves == null || buys == null || finds == null) {
+        if (loves == null || buys == null || finds == null) {
             T.showError(activity);
             return;
         }
-        
+
         showData();
     }
 
@@ -246,11 +246,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private void initVariable() {
         activity = this.getActivity();
 
-       loves = Singleton.getInstance(activity).getLoves();
+        loves = Singleton.getInstance(activity).getLoves();
 
         buys = Singleton.getInstance(activity).getBuys();
 
-       finds = Singleton.getInstance(activity).getFinds();
+        finds = Singleton.getInstance(activity).getFinds();
 
     }
 
@@ -266,7 +266,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         if (bannerBean != null) {
             banner.setData(bannerBean.getImgs(), bannerBean.getTips());
         } else {
-            Log.d(TAG, "loadBannerData: 轮播数据错误，从单例中取出的数据是空" );
+            Log.d(TAG, "loadBannerData: 轮播数据错误，从单例中取出的数据是空");
         }
     }
 
@@ -275,17 +275,17 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         @NonNull
         @Override
         public LoveHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new LoveHolder(getLayoutInflater().inflate(R.layout.my_love_item_layout,parent,false));
+            return new LoveHolder(getLayoutInflater().inflate(R.layout.my_love_item_layout, parent, false));
         }
 
         @Override
         public void onBindViewHolder(@NonNull LoveHolder holder, int position) {
-            if (position % 2 ==0) {
+            if (position % 2 == 0) {
                 holder.root.setBackgroundColor(Color.parseColor("#fffed955"));
             }
             LoveBean loveBean = loves.get(position);
             holder.title.setText(loveBean.getTitle());
-            holder.content.setText(loveBean.getContent());
+            holder.content.setText("  " + loveBean.getContent());
 
         }
 
@@ -295,12 +295,13 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         }
     }
 
-    private class LoveHolder extends RecyclerView.ViewHolder{
+    private class LoveHolder extends RecyclerView.ViewHolder {
 
         private LinearLayout root;
 
         private TextView title;
         private TextView content;
+
         public LoveHolder(View itemView) {
             super(itemView);
             root = itemView.findViewById(R.id.my_love_root);
@@ -315,7 +316,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         @NonNull
         @Override
         public BuyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new BuyHolder(getLayoutInflater().inflate(R.layout.my_buy_item_layout,parent,false));
+            return new BuyHolder(getLayoutInflater().inflate(R.layout.my_buy_item_layout, parent, false));
         }
 
         @Override
@@ -324,7 +325,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
                 holder.root.setBackgroundColor(Color.parseColor("#fffed955"));
             }
             BuyBean buyBean = buys.get(position);
-            holder.price.setText(buyBean.getPrice());
+            holder.price.setText("¥ " + buyBean.getPrice());
             holder.title.setText(buyBean.getTitle());
             Glide.with(activity)
                     .load(Api.HOME + buyBean.getImg())
@@ -356,9 +357,9 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             price = itemView.findViewById(R.id.my_buy_item_price);
             imageView = itemView.findViewById(R.id.my_buy_item_img);
 
-            root.setOnClickListener(view ->{
+            root.setOnClickListener(view -> {
                 BuyBean buyBean = buys.get(getAdapterPosition());
-                BuyDetailActivity.startAction(activity,buyBean.getTitle(),buyBean.getId());
+                BuyDetailActivity.startAction(activity, buyBean.getTitle(), buyBean.getId());
             });
         }
     }
@@ -368,7 +369,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         @NonNull
         @Override
         public FindHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new FindHolder(getLayoutInflater().inflate(R.layout.my_find_item_layout,parent,false));
+            return new FindHolder(getLayoutInflater().inflate(R.layout.my_find_item_layout, parent, false));
         }
 
         @Override
@@ -405,6 +406,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
 
 
         private LinearLayout root;
+
         public FindHolder(View itemView) {
             super(itemView);
             root = itemView.findViewById(R.id.my_find_root);
@@ -421,8 +423,10 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             });
         }
     }
+
     /**
      * 轮播填充数据
+     *
      * @param banner
      * @param itemView
      * @param model
@@ -446,7 +450,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             if (!TextUtils.isEmpty(url) && url.contains("http")) {
                 WebActivity.startWeb(activity, url, title);
             } else {
-                T.showShort(activity,"链接无效");
+                T.showShort(activity, "链接无效");
             }
         });
     }
@@ -455,7 +459,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     public void onClick(View v) {
         switch (v.getId()) {
             default:
-                T.showShort(activity,"敬请期待！");
+                T.showShort(activity, "敬请期待！");
                 break;
         }
     }

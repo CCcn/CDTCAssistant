@@ -169,7 +169,7 @@ public class MyBuyActivity extends BaseTopActivity {
         public void onBindViewHolder(@NonNull MyBuyActivity.MyBuyViewHolder holder, int position) {
             MyBuyBean myBuyBean = myBuys.get(position);
             holder.title.setText(myBuyBean.getTitle());
-            holder.price.setText(myBuyBean.getPrice());
+            holder.price.setText("¥ " + myBuyBean.getPrice());
             Glide.with(activity)
                     .load(Api.HOME + myBuyBean.getImg())
                     .placeholder(R.drawable.holder)

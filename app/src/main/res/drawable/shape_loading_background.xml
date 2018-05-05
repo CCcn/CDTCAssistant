@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <corners android:radius="12dp"/>
-    <solid android:color="#88000000"/>
+    <solid android:color="#5eb342" />
+
+    <corners android:topLeftRadius="8px"
+        android:topRightRadius="8px"
+    android:bottomRightRadius="8px"
+    android:bottomLeftRadius="8px"/>
+
 </selector>

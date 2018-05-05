@@ -168,7 +168,7 @@ public class BuyDetailActivity extends BaseTopActivity {
      */
     private void showData(BuyDetailBean buyDetail,List<ContactBean> contacts) {
         name.setText(buyDetail.getName());
-        price.setText(buyDetail.getPrice());
+        price.setText("¥ " + buyDetail.getPrice());
         owner.setText(buyDetail.getOwner());
         description.setText(buyDetail.getDescription());
         for (int i = 0 ; i < contacts.size(); i++) {
