@@ -15,6 +15,14 @@ public class T {
     private static Toast toast;
 
     /**
+     * 没有更多数据
+     * @param context
+     */
+    public static void showNoMoreData(Context context) {
+        T.showShort(context,"没有更多数据啦");
+    }
+
+    /**
      * 显示一个较短时间的提示
      * @param context 上下文
      * @param message 显示的文字

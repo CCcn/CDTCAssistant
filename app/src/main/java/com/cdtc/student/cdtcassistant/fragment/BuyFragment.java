@@ -21,6 +21,7 @@ import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
+import com.cdtc.student.cdtcassistant.network.request.BasePageRequest;
 import com.cdtc.student.cdtcassistant.network.response.BuyResponse;
 import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -42,7 +43,7 @@ public class BuyFragment extends Fragment {
 
     private Activity activity;
 
-    private List<BuyBean> buys;
+    private List<BuyBean> buys = new ArrayList<>();
 
     private MaterialRefreshLayout refreshLayout;
 
@@ -50,12 +51,17 @@ public class BuyFragment extends Fragment {
 
     private static final String TAG = "BuyFragment";
 
+    private Integer pageNum = 1;
+    private Integer pageSize = 10;
+    private boolean hasLoadAll = false;
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
 
     @Nullable
     @Override
@@ -78,13 +84,17 @@ public class BuyFragment extends Fragment {
     }
 
     private void loadData() {
-        OkHttpUtil.doGet(Api.BUY, new Callback() {
+        BasePageRequest pageRequest = new BasePageRequest();
+        pageRequest.setPageNum(pageNum);
+        pageRequest.setPageSize(pageSize);
+        OkHttpUtil.doJsonPost(Api.BUY, new Gson().toJson(pageRequest),new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 activity.runOnUiThread(() -> {
                     T.showError(activity);
                     refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
                     LoadDialogUtils.hide(activity);
                 });
             }
@@ -95,24 +105,30 @@ public class BuyFragment extends Fragment {
                 Log.i(TAG, "onResponse: 响应：" + responseString);
                 activity.runOnUiThread(() -> {
                     BuyResponse buyResponse = null;
+
+                    refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
+
                     try {
                         buyResponse = new Gson().fromJson(responseString, BuyResponse.class);
                         if (buyResponse != null && buyResponse.code == HttpConstant.OK) {
                             Log.i(TAG, "onResponse: 请求成功" + buyResponse.getData());
-                            buys = buyResponse.getData();
+                            if (buyResponse.getData().isEmpty()) {
+                                hasLoadAll = true;
+                                T.showNoMoreData(activity);
+                                return;
+                            }
+                            hasLoadAll = false;
+                            buys.addAll(buyResponse.getData());
                             showRecycler();
-                            refreshLayout.finishRefresh();
                             LoadDialogUtils.hide(activity);
                             return;
                         }
-
-                        refreshLayout.finishRefresh();
                         T.showError(activity);
                         LoadDialogUtils.hide(activity);
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
                         T.showError(activity);
-                        refreshLayout.finishRefresh();
                         LoadDialogUtils.hide(activity);
                     }
 
@@ -132,10 +148,27 @@ public class BuyFragment extends Fragment {
         buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
         refreshLayout = view.findViewById(R.id.buy_refresh);
+        refreshLayout.setLoadMore(true);
 
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                pageNum = 1;
+                if (!buys.isEmpty()) {
+                    buys.clear();
+                    hasLoadAll = false;
+                }
+                loadData();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                if (hasLoadAll) {
+                    T.showNoMoreData(activity);
+                    refreshLayout.finishRefreshLoadMore();
+                    return;
+                }
+                pageNum += 1;
                 loadData();
             }
         });
@@ -147,7 +180,7 @@ public class BuyFragment extends Fragment {
     private void showRecycler() {
 
         if (buys == null || buys.isEmpty()) {
-            T.showShort(activity, "没有数据");
+            T.showNoMoreData(activity);
             return;
         }
 

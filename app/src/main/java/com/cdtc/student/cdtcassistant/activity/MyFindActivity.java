@@ -24,6 +24,7 @@ import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.FindBean;
 import com.cdtc.student.cdtcassistant.network.bean.MyFindBean;
+import com.cdtc.student.cdtcassistant.network.request.FindUsersPageRequest;
 import com.cdtc.student.cdtcassistant.network.response.FindResponse;
 import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -54,11 +55,15 @@ public class MyFindActivity extends BaseTopActivity {
 
     private MyFindAdapter myFindAdapter;
 
-    private List<FindBean> myFinds;
+    private List<FindBean> myFinds = new ArrayList<>();
 
     private Integer userId;
 
     private static final String TAG = "FeedbackActivity";
+
+    private Integer pageNum = 1;
+    private Integer pageSize = 10;
+    private boolean hasLoadAll = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +95,27 @@ public class MyFindActivity extends BaseTopActivity {
         myFindRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
 
         refreshLayout = getView(R.id.my_find_refresh);
+        refreshLayout.setLoadMore(true);
 
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                pageNum = 1;
+                if (!myFinds.isEmpty()) {
+                    myFinds.clear();
+                    hasLoadAll = false;
+                }
+                loadData();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                if (hasLoadAll) {
+                    T.showNoMoreData(activity);
+                    refreshLayout.finishRefreshLoadMore();
+                    return;
+                }
+                pageNum += 1;
                 loadData();
             }
         });
@@ -102,13 +124,19 @@ public class MyFindActivity extends BaseTopActivity {
     }
 
     private void loadData() {
-        OkHttpUtil.doGet(Api.FIND_USER_ALL + "?userId=" + userId, new Callback() {
+        FindUsersPageRequest pageRequest = new FindUsersPageRequest();
+        pageRequest.setUserId(userId);
+        pageRequest.setPageNum(pageNum);
+        pageRequest.setPageSize(pageSize);
+
+        OkHttpUtil.doJsonPost(Api.FIND_USER_ALL, new Gson().toJson(pageRequest), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 runOnUiThread(() -> {
                     T.showError(activity);
                     refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
                     LoadDialogUtils.hide(activity);
                 });
             }
@@ -121,19 +149,26 @@ public class MyFindActivity extends BaseTopActivity {
 
                     FindResponse findResponse = null;
                     LoadDialogUtils.hide(activity);
+                    refreshLayout.finishRefreshLoadMore();
+                    refreshLayout.finishRefresh();
+
                     try {
                         findResponse = new Gson().fromJson(responseString, FindResponse.class);
                         if (findResponse.code == HttpConstant.OK) {
-                            myFinds = findResponse.getData();
+                            if (findResponse.getData().isEmpty()) {
+                                hasLoadAll = true;
+                                T.showNoMoreData(activity);
+                                return;
+                            }
+                            hasLoadAll = false;
+                            myFinds.addAll(findResponse.getData());
                             showDate();
-                            refreshLayout.finishRefresh();
                             return;
                         }
                         T.showShort(activity, findResponse.message);
-                        refreshLayout.finishRefresh();
+
                     } catch (Exception e) {
                         T.showDataError(activity);
-                        refreshLayout.finishRefresh();
                     }
 
                 });
@@ -142,15 +177,8 @@ public class MyFindActivity extends BaseTopActivity {
     }
 
     private void showDate() {
-
-        if (myFinds == null) {
-            T.showShort(activity, "没有更多数据");
-            return;
-        }
-
         if (myFinds.isEmpty()) {
             T.showShort(activity, "没有数据");
-
             return;
         }
 

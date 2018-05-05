@@ -3,7 +3,6 @@ package com.cdtc.student.cdtcassistant.fragment;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,10 +23,10 @@ import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.FindBean;
+import com.cdtc.student.cdtcassistant.network.request.BasePageRequest;
 import com.cdtc.student.cdtcassistant.network.response.FindResponse;
 import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
-import com.cjj.MaterialHeadListener;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
@@ -56,6 +55,11 @@ public class FindFragment extends Fragment {
     private FindAdapter findAdapter;
 
     private static final String TAG = "FindFragment";
+
+    private Integer pageNum = 1;
+    private Integer pageSize = 10;
+    private boolean hasLoadAll = false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,36 +101,61 @@ public class FindFragment extends Fragment {
 
     /**
      * 初始化View
+     *
      * @param view container
      */
     private void initView(View view) {
         findRecycler = view.findViewById(R.id.find_recycler);
 
         refreshLayout = view.findViewById(R.id.find_refresh);
+        refreshLayout.setLoadMore(true);
 
         findRecycler.setLayoutManager(new LinearLayoutManager(activity));
-        findRecycler.addItemDecoration(new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL));
+        findRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
 
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             //加在中
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                pageNum = 1;
+                if (!finds.isEmpty()) {
+                    hasLoadAll = false;
+                    finds.clear();
+                }
                 loadData();
             }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                if (hasLoadAll) {
+                    T.showNoMoreData(activity);
+                    refreshLayout.finishRefreshLoadMore();
+                    return;
+                }
+                pageNum += 1;
+                loadData();
+
+            }
         });
+
 
         LoadDialogUtils.showDialogForLoading(activity);
 
     }
 
     private void loadData() {
-        OkHttpUtil.doGet(Api.FIND, new Callback() {
+        BasePageRequest pageRequest = new BasePageRequest();
+        pageRequest.setPageNum(pageNum);
+        pageRequest.setPageSize(pageSize);
+
+        OkHttpUtil.doJsonPost(Api.FIND_ALL, new Gson().toJson(pageRequest), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: 请求失败：" + e.getMessage());
                 activity.runOnUiThread(() -> {
                     T.showError(activity);
                     refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
                     LoadDialogUtils.hide(activity);
                 });
             }
@@ -138,23 +167,31 @@ public class FindFragment extends Fragment {
                 activity.runOnUiThread(() -> {
                     FindResponse findResponse = null;
 
+                    refreshLayout.finishRefreshLoadMore();
+                    refreshLayout.finishRefresh();
                     try {
                         findResponse = new Gson().fromJson(responseString, FindResponse.class);
                         if (findResponse.code == HttpConstant.OK) {
-                            Log.i(TAG, "onResponse: 请求成功："+ findResponse.toString());
-                            finds = findResponse.getData();
+                            Log.i(TAG, "onResponse: 请求成功：" + findResponse.toString());
+                            if (findResponse.getData().isEmpty()) {
+                                T.showNoMoreData(activity);
+                                hasLoadAll = true;
+                                return;
+                            }
+                            hasLoadAll = false;
+                            finds.addAll(findResponse.getData());
                             showRecycler();
                             LoadDialogUtils.hide(activity);
-                        } else {
-                            Log.d(TAG, "onResponse: 响应异常 " + findResponse);
-                            T.showShort(activity, findResponse.message);
-                            LoadDialogUtils.hide(activity);
+                            return;
                         }
-                        refreshLayout.finishRefresh();
+                        Log.d(TAG, "onResponse: 响应异常 " + findResponse);
+                        T.showShort(activity, findResponse.message);
+                        LoadDialogUtils.hide(activity);
+
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: 请求失败：" + e.getMessage());
                         T.showError(activity);
-                        refreshLayout.finishRefresh();
+
                         LoadDialogUtils.hide(activity);
                     }
                 });
@@ -167,7 +204,7 @@ public class FindFragment extends Fragment {
         @NonNull
         @Override
         public FindHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new FindHolder(getLayoutInflater().inflate(R.layout.find_item_layout,parent,false));
+            return new FindHolder(getLayoutInflater().inflate(R.layout.find_item_layout, parent, false));
         }
 
         @Override

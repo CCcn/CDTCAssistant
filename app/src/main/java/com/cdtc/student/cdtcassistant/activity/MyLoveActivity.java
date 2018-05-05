@@ -20,6 +20,7 @@ import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.MyLoveBean;
+import com.cdtc.student.cdtcassistant.network.request.LoveUsersPageRequest;
 import com.cdtc.student.cdtcassistant.network.response.LoveResponse;
 import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -39,7 +40,7 @@ public class MyLoveActivity extends BaseTopActivity {
 
     private RecyclerView myLoveRecycler;
 
-    private List<MyLoveBean> myLoves;
+    private List<MyLoveBean> myLoves = new ArrayList<>();
 
     private MaterialRefreshLayout refreshLayout;
 
@@ -51,6 +52,10 @@ public class MyLoveActivity extends BaseTopActivity {
 
     private static final String TAG = "MyLoveActivity";
 
+    private Integer pageNum = 1;
+    private Integer pageSize = 10;
+    private boolean hasLoadAll = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,61 +64,6 @@ public class MyLoveActivity extends BaseTopActivity {
         initVariable();
 
         initView();
-
-    }
-
-    private void loadData() {
-        OkHttpUtil.doGet(Api.LOVE_USER_ALL + "?userId=" + userId, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: " + e.getMessage());
-                runOnUiThread(() -> {
-                    T.showError(activity);
-                    refreshLayout.finishRefresh();
-                    LoadDialogUtils.hide(activity);
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                String responseString = response.body().string();
-                runOnUiThread(() -> {
-                    LoveResponse loveResponse = null;
-                    LoadDialogUtils.hide(activity);
-                    try {
-                        loveResponse = new Gson().fromJson(responseString, LoveResponse.class);
-                        if (loveResponse.code == HttpConstant.OK) {
-                            myLoves = loveResponse.getData();
-                            showData();
-                            refreshLayout.finishRefresh();
-                            return;
-                        }
-                        T.showShort(activity, loveResponse.message);
-                        refreshLayout.finishRefresh();
-                    } catch (Exception e) {
-                        T.showDataError(activity);
-                        refreshLayout.finishRefresh();
-                    }
-                });
-            }
-        });
-    }
-
-    private void showData() {
-        if (myLoves == null || myLoves.isEmpty()) {
-            T.showShort(activity, "没有更多数据");
-            return;
-        }
-
-        if (myLoveAdapter == null) {
-            myLoveAdapter = new MyLoveAdapter();
-            myLoveRecycler.setAdapter(myLoveAdapter);
-            return;
-        }
-
-        myLoveAdapter.notifyDataSetChanged();
-
 
     }
 
@@ -133,9 +83,27 @@ public class MyLoveActivity extends BaseTopActivity {
         myLoveRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
 
         refreshLayout = getView(R.id.my_love_refresh);
+        refreshLayout.setLoadMore(true);
+
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                pageNum = 1;
+                if (!myLoves.isEmpty()) {
+                    myLoves.clear();
+                    hasLoadAll = false;
+                }
+                loadData();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                if (hasLoadAll) {
+                    T.showNoMoreData(activity);
+                    refreshLayout.finishRefreshLoadMore();
+                    return;
+                }
+                pageNum += 1;
                 loadData();
             }
         });
@@ -143,6 +111,74 @@ public class MyLoveActivity extends BaseTopActivity {
         LoadDialogUtils.showDialogForLoading(activity);
 
     }
+
+    private void loadData() {
+        LoveUsersPageRequest pageRequest = new LoveUsersPageRequest();
+        pageRequest.setUserId(userId);
+        pageRequest.setPageNum(pageNum);
+        pageRequest.setPageSize(pageSize);
+        OkHttpUtil.doJsonPost(Api.LOVE_USER_ALL, new Gson().toJson(pageRequest), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: " + e.getMessage());
+                runOnUiThread(() -> {
+                    T.showError(activity);
+                    refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
+                    LoadDialogUtils.hide(activity);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String responseString = response.body().string();
+                runOnUiThread(() -> {
+                    LoveResponse loveResponse = null;
+                    refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
+                    LoadDialogUtils.hide(activity);
+                    try {
+                        loveResponse = new Gson().fromJson(responseString, LoveResponse.class);
+                        if (loveResponse.code == HttpConstant.OK) {
+                            if (loveResponse.getData().isEmpty()) {
+                                hasLoadAll = true;
+                                T.showNoMoreData(activity);
+                                return;
+                            }
+                            hasLoadAll = false;
+                            myLoves.addAll(loveResponse.getData());
+                            showData();
+                            return;
+                        }
+                        T.showShort(activity, loveResponse.message);
+                        refreshLayout.finishRefresh();
+                    } catch (Exception e) {
+                        T.showDataError(activity);
+                    }
+                });
+            }
+        });
+    }
+
+    private void showData() {
+        if (myLoves.isEmpty()) {
+            T.showShort(activity, "没有更多数据");
+            return;
+        }
+
+        if (myLoveAdapter == null) {
+            myLoveAdapter = new MyLoveAdapter();
+            myLoveRecycler.setAdapter(myLoveAdapter);
+            return;
+        }
+
+        myLoveAdapter.notifyDataSetChanged();
+
+
+    }
+
+
 
     private class MyLoveAdapter extends RecyclerView.Adapter<MyLoveHolder> {
 

@@ -24,6 +24,7 @@ import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.MyBuyBean;
 import com.cdtc.student.cdtcassistant.network.bean.MyFindBean;
+import com.cdtc.student.cdtcassistant.network.request.BuyUsersPageRequest;
 import com.cdtc.student.cdtcassistant.network.response.MyBuyBeanResponse;
 import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -45,7 +46,7 @@ public class MyBuyActivity extends BaseTopActivity {
 
     private Integer userId;
 
-    private List<MyBuyBean> myBuys;
+    private List<MyBuyBean> myBuys = new ArrayList<>();
 
     private MyBuyAdapter myBuyAdapter;
 
@@ -55,6 +56,12 @@ public class MyBuyActivity extends BaseTopActivity {
 
     private static final String TAG = "MyBuyActivity";
 
+
+    private Integer pageNum = 1;
+    private Integer pageSize = 10;
+    private boolean hasLoadAll = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,60 +70,6 @@ public class MyBuyActivity extends BaseTopActivity {
         initVariable();
 
         initView();
-    }
-
-
-    private void loadData() {
-        OkHttpUtil.doGet(Api.BUY_USER_ALL + "?userId=" + userId, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.i(TAG, "onFailure: " + e.getMessage());
-
-                runOnUiThread(() -> {
-                    T.showError(activity);
-                    refreshLayout.finishRefresh();
-                    LoadDialogUtils.hide(activity);
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseString = response.body().string();
-
-                runOnUiThread(() -> {
-                    MyBuyBeanResponse buyBeanResponse = null;
-
-                    try {
-                        buyBeanResponse = new Gson().fromJson(responseString, MyBuyBeanResponse.class);
-
-                        if (buyBeanResponse.code == HttpConstant.OK) {
-                            myBuys = buyBeanResponse.getData();
-                            showData();
-                            refreshLayout.finishRefresh();
-                            LoadDialogUtils.hide(activity);
-                            return;
-                        }
-                        T.showShort(activity, buyBeanResponse.message);
-                        refreshLayout.finishRefresh();
-                        LoadDialogUtils.hide(activity);
-                    } catch (Exception e) {
-                        T.showDataError(activity);
-                        refreshLayout.finishRefresh();
-                        LoadDialogUtils.hide(activity);
-                    }
-                });
-            }
-        });
-
-    }
-
-    private void showData() {
-        if (myBuyAdapter == null) {
-            myBuyAdapter = new MyBuyAdapter();
-            myBuyRecycler.setAdapter(myBuyAdapter);
-            return;
-        }
-        myBuyAdapter.notifyDataSetChanged();
     }
 
     private void initVariable() {
@@ -135,16 +88,102 @@ public class MyBuyActivity extends BaseTopActivity {
         myBuyRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
 
         refreshLayout = getView(R.id.my_buy_refresh);
+        refreshLayout.setLoadMore(true);
 
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                pageNum = 1;
+                if (!myBuys.isEmpty()) {
+                    myBuys.clear();
+                    hasLoadAll = false;
+                }
                 loadData();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                if (hasLoadAll) {
+                    refreshLayout.finishRefreshLoadMore();
+                    T.showNoMoreData(activity);
+                    return;
+                }
+
+                pageNum += 1;
+                loadData();
+
             }
         });
 
         LoadDialogUtils.showDialogForLoading(activity);
     }
+
+
+    private void loadData() {
+        BuyUsersPageRequest pageRequest = new BuyUsersPageRequest();
+        pageRequest.setUserId(userId);
+        pageRequest.setPageNum(pageNum);
+        pageRequest.setPageSize(pageSize);
+
+        OkHttpUtil.doJsonPost(Api.BUY_USER_ALL, new Gson().toJson(pageRequest), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i(TAG, "onFailure: " + e.getMessage());
+
+                runOnUiThread(() -> {
+                    T.showError(activity);
+                    refreshLayout.finishRefresh();
+                    refreshLayout.finishRefreshLoadMore();
+                    LoadDialogUtils.hide(activity);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseString = response.body().string();
+
+                runOnUiThread(() -> {
+                    MyBuyBeanResponse buyBeanResponse = null;
+                    refreshLayout.finishRefreshLoadMore();
+                    refreshLayout.finishRefresh();
+                    LoadDialogUtils.hide(activity);
+
+                    try {
+                        buyBeanResponse = new Gson().fromJson(responseString, MyBuyBeanResponse.class);
+
+                        if (buyBeanResponse.code == HttpConstant.OK) {
+                            if (buyBeanResponse.getData().isEmpty()) {
+                                hasLoadAll = true;
+                                T.showNoMoreData(activity);
+                                return;
+                            }
+                            hasLoadAll = false;
+                            myBuys.addAll(buyBeanResponse.getData());
+                            showData();
+                            return;
+                        }
+                        T.showShort(activity, buyBeanResponse.message);
+
+                        LoadDialogUtils.hide(activity);
+                    } catch (Exception e) {
+                        T.showDataError(activity);
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void showData() {
+        if (myBuyAdapter == null) {
+            myBuyAdapter = new MyBuyAdapter();
+            myBuyRecycler.setAdapter(myBuyAdapter);
+            return;
+        }
+        myBuyAdapter.notifyDataSetChanged();
+    }
+
+
 
 
     @Override

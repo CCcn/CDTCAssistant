@@ -14,10 +14,10 @@ public class Api {
     /**
      *服务器地址
      */
-    public static final String HOME = "http://119.23.52.87:8087";
+//    public static final String HOME = "http://119.23.52.87:8087";
 //    public static final String HOME = "http://192.168.1.102:8080";
 //    public static final String HOME = "http://192.168.1.10:8080";
-//    public static final String HOME = "http://192.168.1.110:8080";
+    public static final String HOME = "http://192.168.1.110:8087";
 
     /**
      * 登陆 get/post
@@ -39,12 +39,13 @@ public class Api {
 
     /**
      *跳蚤商品
-     *
+     * post pageNum pageSize
      */
     public static final String BUY = HOME + "/buy/allBuys";
 
     /**
      * 用户所有的跳蚤商品
+     *  post userId pageNum pageSize
      */
     public static final String BUY_USER_ALL = HOME + "/buy/showUserBuys";
 
@@ -63,13 +64,13 @@ public class Api {
 
     /**
      * 失物招领
-     *   get
+     *  post  pageNum，pageSize
      */
-    public static final String FIND = HOME + "/find/allFinds";
+    public static final String FIND_ALL = HOME + "/find/allFinds";
 
     /**
      * 用户的所有失物招领
-     *   post/get userId
+     *   post
      */
     public static final String FIND_USER_ALL = HOME + "/find/showUserFinds";
 
