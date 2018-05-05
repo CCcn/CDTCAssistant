@@ -22,7 +22,10 @@ import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
 import com.cdtc.student.cdtcassistant.network.response.BuyResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -40,6 +43,10 @@ public class BuyFragment extends Fragment {
     private Activity activity;
 
     private List<BuyBean> buys;
+
+    private MaterialRefreshLayout refreshLayout;
+
+    private BuyAdapter buyAdapter;
 
     private static final String TAG = "BuyFragment";
 
@@ -77,6 +84,8 @@ public class BuyFragment extends Fragment {
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 activity.runOnUiThread(() -> {
                     T.showError(activity);
+                    refreshLayout.finishRefresh();
+                    LoadDialogUtils.hide(activity);
                 });
             }
 
@@ -86,19 +95,27 @@ public class BuyFragment extends Fragment {
                 Log.i(TAG, "onResponse: 响应：" + responseString);
                 activity.runOnUiThread(() -> {
                     BuyResponse buyResponse = null;
-                    try{
+                    try {
                         buyResponse = new Gson().fromJson(responseString, BuyResponse.class);
-                    }catch (Exception e) {
+                        if (buyResponse != null && buyResponse.code == HttpConstant.OK) {
+                            Log.i(TAG, "onResponse: 请求成功" + buyResponse.getData());
+                            buys = buyResponse.getData();
+                            showRecycler();
+                            refreshLayout.finishRefresh();
+                            LoadDialogUtils.hide(activity);
+                            return;
+                        }
+
+                        refreshLayout.finishRefresh();
+                        T.showError(activity);
+                        LoadDialogUtils.hide(activity);
+                    } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
                         T.showError(activity);
+                        refreshLayout.finishRefresh();
+                        LoadDialogUtils.hide(activity);
                     }
-                    if (buyResponse != null && buyResponse.code == HttpConstant.OK) {
-                        Log.i(TAG, "onResponse: 请求成功" + buyResponse.getData());
-                        buys = buyResponse.getData();
-                        showRecycler();
-                    } else {
-                        T.showError(activity);
-                    }
+
 
                 });
             }
@@ -107,20 +124,40 @@ public class BuyFragment extends Fragment {
 
     /**
      * 初始化View
+     *
      * @param view Container
      */
     private void initView(View view) {
         buyRecycler = view.findViewById(R.id.buy_recycler);
+        buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
+        refreshLayout = view.findViewById(R.id.buy_refresh);
+
+        refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                loadData();
+            }
+        });
+
+        LoadDialogUtils.showDialogForLoading(activity);
+
     }
 
     private void showRecycler() {
 
         if (buys == null || buys.isEmpty()) {
-            T.showShort(activity,"没有数据");
+            T.showShort(activity, "没有数据");
             return;
         }
-        buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        buyRecycler.setAdapter(new BuyAdapter());
+
+        if (buyAdapter == null) {
+            buyAdapter = new BuyAdapter();
+            buyRecycler.setAdapter(buyAdapter);
+            return;
+        }
+
+        buyAdapter.notifyDataSetChanged();
     }
 
 
@@ -152,7 +189,7 @@ public class BuyFragment extends Fragment {
     }
 
 
-    private class BuyHolder extends RecyclerView.ViewHolder{
+    private class BuyHolder extends RecyclerView.ViewHolder {
 
         private ImageView img;
         private TextView title;
@@ -165,6 +202,7 @@ public class BuyFragment extends Fragment {
 
         /**
          * 初始化item中的view
+         *
          * @param itemView
          */
         private void initView(View itemView) {
@@ -174,7 +212,7 @@ public class BuyFragment extends Fragment {
 
             //点击后应该跳转到展示页面，后期可以实现ViewPager
             img.setOnClickListener(v -> {
-               // T.showShort(activity, "点击了"+getAdapterPosition());
+                // T.showShort(activity, "点击了"+getAdapterPosition());
                 BuyBean buyBean = buys.get(getAdapterPosition());
                 BuyDetailActivity.startAction(activity, buyBean.getTitle(), buyBean.getId());
             });

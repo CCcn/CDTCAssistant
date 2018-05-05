@@ -17,6 +17,7 @@ import com.cdtc.student.cdtcassistant.network.bean.BuyDetailBean;
 import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
 import com.cdtc.student.cdtcassistant.network.bean.BuyDetail;
 import com.cdtc.student.cdtcassistant.network.response.BuyDetailResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
 
@@ -133,6 +134,7 @@ public class BuyDetailActivity extends BaseTopActivity {
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: 请求失败" + e.getMessage());
                 runOnUiThread(() -> {
+                    LoadDialogUtils.hide(activity);
                     T.showError(activity);
                 });
             }
@@ -141,6 +143,7 @@ public class BuyDetailActivity extends BaseTopActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseString = response.body().string();
                 runOnUiThread(() -> {
+                    LoadDialogUtils.hide(activity);
                     BuyDetailResponse buyDetailResponse = null;
                     try {
                         buyDetailResponse = new Gson().fromJson(responseString, BuyDetailResponse.class);
@@ -203,6 +206,8 @@ public class BuyDetailActivity extends BaseTopActivity {
         telLayout = getView(R.id.buy_detail_layout_tel);
         weChatLayout = getView(R.id.buy_detail_layout_wx);
         description = getView(R.id.buy_detail_goods_description);
+
+        LoadDialogUtils.showDialogForLoading(activity);
     }
 
     /**

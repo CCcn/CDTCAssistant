@@ -25,7 +25,11 @@ import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.bean.FindBean;
 import com.cdtc.student.cdtcassistant.network.response.FindResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.cjj.MaterialHeadListener;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -43,6 +47,13 @@ public class FindFragment extends Fragment {
     private Activity activity;
 
     private List<FindBean> finds = new ArrayList<>();
+
+    /**
+     * 下拉刷新
+     */
+    private MaterialRefreshLayout refreshLayout;
+
+    private FindAdapter findAdapter;
 
     private static final String TAG = "FindFragment";
 
@@ -70,15 +81,18 @@ public class FindFragment extends Fragment {
         if (finds == null) {
             initVariable();
         }
-        findRecycler.setLayoutManager(new LinearLayoutManager(activity));
-        findRecycler.addItemDecoration(new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL));
-        findRecycler.setAdapter(new FindAdapter());
+        if (findRecycler.getAdapter() == null) {
+            findAdapter = new FindAdapter();
+            findRecycler.setAdapter(findAdapter);
+            return;
+        }
+        //刷新数据
+        findAdapter.notifyDataSetChanged();
     }
 
     private void initVariable() {
         activity = getActivity();
         loadData();
-
     }
 
     /**
@@ -88,8 +102,22 @@ public class FindFragment extends Fragment {
     private void initView(View view) {
         findRecycler = view.findViewById(R.id.find_recycler);
 
-    }
+        refreshLayout = view.findViewById(R.id.find_refresh);
 
+        findRecycler.setLayoutManager(new LinearLayoutManager(activity));
+        findRecycler.addItemDecoration(new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL));
+
+        refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            //加在中
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                loadData();
+            }
+        });
+
+        LoadDialogUtils.showDialogForLoading(activity);
+
+    }
 
     private void loadData() {
         OkHttpUtil.doGet(Api.FIND, new Callback() {
@@ -98,6 +126,8 @@ public class FindFragment extends Fragment {
                 Log.d(TAG, "onFailure: 请求失败：" + e.getMessage());
                 activity.runOnUiThread(() -> {
                     T.showError(activity);
+                    refreshLayout.finishRefresh();
+                    LoadDialogUtils.hide(activity);
                 });
             }
 
@@ -110,24 +140,28 @@ public class FindFragment extends Fragment {
 
                     try {
                         findResponse = new Gson().fromJson(responseString, FindResponse.class);
+                        if (findResponse.code == HttpConstant.OK) {
+                            Log.i(TAG, "onResponse: 请求成功："+ findResponse.toString());
+                            finds = findResponse.getData();
+                            showRecycler();
+                            LoadDialogUtils.hide(activity);
+                        } else {
+                            Log.d(TAG, "onResponse: 响应异常 " + findResponse);
+                            T.showShort(activity, findResponse.message);
+                            LoadDialogUtils.hide(activity);
+                        }
+                        refreshLayout.finishRefresh();
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: 请求失败：" + e.getMessage());
                         T.showError(activity);
-                        return;
-                    }
-
-                    if (findResponse.code == HttpConstant.OK) {
-                        Log.i(TAG, "onResponse: 请求成功："+ findResponse.toString());
-                        finds = findResponse.getData();
-                        showRecycler();
-                    } else {
-                        Log.d(TAG, "onResponse: 响应异常 " + findResponse);
-                        T.showShort(activity, findResponse.message);
+                        refreshLayout.finishRefresh();
+                        LoadDialogUtils.hide(activity);
                     }
                 });
             }
         });
     }
+
     private class FindAdapter extends RecyclerView.Adapter<FindHolder> {
 
         @NonNull
@@ -147,10 +181,6 @@ public class FindFragment extends Fragment {
                     .placeholder(R.drawable.holder)
                     .error(R.drawable.holder)
                     .into(holder.findImg);
-
-
-
-
         }
 
         @Override

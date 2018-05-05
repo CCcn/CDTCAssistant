@@ -21,21 +21,34 @@ import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.activity.BuyDetailActivity;
 import com.cdtc.student.cdtcassistant.activity.FindDetailActivity;
+import com.cdtc.student.cdtcassistant.activity.MainActivity;
 import com.cdtc.student.cdtcassistant.activity.WebActivity;
+import com.cdtc.student.cdtcassistant.common.HttpConstant;
+import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
+import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
 import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
 import com.cdtc.student.cdtcassistant.network.bean.FindBean;
 import com.cdtc.student.cdtcassistant.network.bean.LoveBean;
 
+import com.cdtc.student.cdtcassistant.network.response.InitResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.transformer.TransitionEffect;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
@@ -61,6 +74,8 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private LinearLayout electricityLayout;
     private LinearLayout moreLayout;
 
+    private MaterialRefreshLayout refreshLayout;
+
     private RecyclerView loveRecycler;
 
     private List<LoveBean> loves = new ArrayList<>();
@@ -72,6 +87,11 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private RecyclerView findRecycler;
 
     private List<FindBean> finds = new ArrayList<>();
+
+    private LoveAdapter loveAdapter;
+    private FindAdapter findAdapter;
+    private BuyAdapter buyAdapter;
+
 
     private Activity activity;
 
@@ -109,6 +129,8 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
     private void initView(View view) {
         bgaBanner = view.findViewById(R.id.index_fragment_banner);
         bgaBanner.setTransitionEffect(TransitionEffect.Default);
+        bgaBanner.setAutoPlayAble(true);
+        bgaBanner.setAdapter(IndexFragment.this);
 
         moreLayout = view.findViewById(R.id.index_more);
         eCardLayout = view.findViewById(R.id.index_e_card);
@@ -119,37 +141,105 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         buyRecycler = view.findViewById(R.id.index_buy_recycler);
         findRecycler = view.findViewById(R.id.index_find_recycler);
 
+
+        LinearLayoutManager managerLove = new LinearLayoutManager(activity);
+        managerLove.setOrientation(LinearLayoutManager.HORIZONTAL);
+        loveRecycler.setLayoutManager(managerLove);
+
+        LinearLayoutManager managerBuy = new LinearLayoutManager(activity);
+        managerBuy.setOrientation(LinearLayoutManager.HORIZONTAL);
+        buyRecycler.setLayoutManager(managerBuy);
+
+        LinearLayoutManager managerFind = new LinearLayoutManager(activity);
+        managerFind.setOrientation(LinearLayoutManager.HORIZONTAL);
+        findRecycler.setLayoutManager(managerFind);
+
+        refreshLayout = view.findViewById(R.id.index_refresh);
+
+        refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                loadInitData();
+            }
+        });
+
         moreLayout.setOnClickListener(this::onClick);
         eCardLayout.setOnClickListener(this::onClick);
         libraryLayout.setOnClickListener(this::onClick);
         electricityLayout.setOnClickListener(this::onClick);
 
-
         if(loves == null || buys == null || finds == null) {
             T.showError(activity);
             return;
         }
-        showLoveData();
+        
+        showData();
     }
 
-    private void showLoveData() {
-        LinearLayoutManager managerLove = new LinearLayoutManager(activity);
-        managerLove.setOrientation(LinearLayoutManager.HORIZONTAL);
+    private void loadInitData() {
+        OkHttpUtil.doGet(Api.INIT, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i(TAG, "onFailure: 网络异常" + e.getMessage());
+                activity.runOnUiThread(() -> {
+                    T.showError(activity);
+                    refreshLayout.finishRefresh();
+                });
+            }
 
-        loveRecycler.setLayoutManager(managerLove);
-        loveRecycler.setAdapter(new LoveAdapter());
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseSting = response.body().string();
+                Log.i(TAG, "onResponse: " + responseSting);
+                activity.runOnUiThread(() -> {
+                    InitResponse initResponse = null;
+                    try {
+                        initResponse = new Gson().fromJson(responseSting, InitResponse.class);
+                        if (initResponse.code == HttpConstant.OK) {
+                            bannerBean = initResponse.getBanner();
+                            buys = initResponse.getBuys();
+                            finds = initResponse.getFinds();
+                            loves = initResponse.getLoves();
 
-        LinearLayoutManager managerBuy = new LinearLayoutManager(activity);
-        managerBuy.setOrientation(LinearLayoutManager.HORIZONTAL);
+                            showRefreshData();
+                            refreshLayout.finishRefresh();
+                            return;
+                        }
+                        T.showError(activity);
+                        refreshLayout.finishRefresh();
+                    } catch (Exception e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                        T.showError(activity);
+                        refreshLayout.finishRefresh();
+                    }
+                });
+            }
+        });
+    }
 
-        buyRecycler.setLayoutManager(managerBuy);
-        buyRecycler.setAdapter(new BuyAdapter());
+    private void showRefreshData() {
+        bgaBanner.setData(bannerBean.getImgs(), bannerBean.getTips());
 
-        LinearLayoutManager managerFind = new LinearLayoutManager(activity);
-        managerFind.setOrientation(LinearLayoutManager.HORIZONTAL);
+        if (loveRecycler.getAdapter() == null || findRecycler.getAdapter() == null || buyRecycler.getAdapter() == null) {
+            showData();
+            return;
+        }
+        findAdapter.notifyDataSetChanged();
+        loveAdapter.notifyDataSetChanged();
+        buyAdapter.notifyDataSetChanged();
+    }
 
-        findRecycler.setLayoutManager(managerFind);
-        findRecycler.setAdapter(new FindAdapter());
+    private void showData() {
+        loveAdapter = new LoveAdapter();
+        findAdapter = new FindAdapter();
+        buyAdapter = new BuyAdapter();
+
+        loveRecycler.setAdapter(loveAdapter);
+
+
+        buyRecycler.setAdapter(buyAdapter);
+
+        findRecycler.setAdapter(findAdapter);
 
     }
 
@@ -173,14 +263,10 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
      */
     private void loadBannerData(BGABanner banner) {
         bannerBean = Singleton.getInstance(getContext()).getBannerBean();
-
         if (bannerBean != null) {
-            banner.setAutoPlayAble(true);
-            banner.setAdapter(IndexFragment.this);
             banner.setData(bannerBean.getImgs(), bannerBean.getTips());
         } else {
             Log.d(TAG, "loadBannerData: 轮播数据错误，从单例中取出的数据是空" );
-//            T.showShort(activity,"数据错误");
         }
     }
 

@@ -21,7 +21,10 @@ import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.MyLoveBean;
 import com.cdtc.student.cdtcassistant.network.response.LoveResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -36,7 +39,11 @@ public class MyLoveActivity extends BaseTopActivity {
 
     private RecyclerView myLoveRecycler;
 
-    private List<MyLoveBean> myLoves = new ArrayList<>();
+    private List<MyLoveBean> myLoves;
+
+    private MaterialRefreshLayout refreshLayout;
+
+    private MyLoveAdapter myLoveAdapter;
 
     private Activity activity;
 
@@ -62,6 +69,8 @@ public class MyLoveActivity extends BaseTopActivity {
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 runOnUiThread(() -> {
                     T.showError(activity);
+                    refreshLayout.finishRefresh();
+                    LoadDialogUtils.hide(activity);
                 });
             }
 
@@ -71,19 +80,20 @@ public class MyLoveActivity extends BaseTopActivity {
                 String responseString = response.body().string();
                 runOnUiThread(() -> {
                     LoveResponse loveResponse = null;
-
+                    LoadDialogUtils.hide(activity);
                     try {
                         loveResponse = new Gson().fromJson(responseString, LoveResponse.class);
-
                         if (loveResponse.code == HttpConstant.OK) {
                             myLoves = loveResponse.getData();
                             showData();
-
-                        } else {
-                            T.showShort(activity,loveResponse.message);
+                            refreshLayout.finishRefresh();
+                            return;
                         }
+                        T.showShort(activity, loveResponse.message);
+                        refreshLayout.finishRefresh();
                     } catch (Exception e) {
                         T.showDataError(activity);
+                        refreshLayout.finishRefresh();
                     }
                 });
             }
@@ -91,10 +101,22 @@ public class MyLoveActivity extends BaseTopActivity {
     }
 
     private void showData() {
-        myLoveRecycler.setLayoutManager(new LinearLayoutManager(activity));
-        myLoveRecycler.addItemDecoration(new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL));
-        myLoveRecycler.setAdapter(new MyLoveAdapter());
+        if (myLoves == null || myLoves.isEmpty()) {
+            T.showShort(activity, "没有更多数据");
+            return;
+        }
+
+        if (myLoveAdapter == null) {
+            myLoveAdapter = new MyLoveAdapter();
+            myLoveRecycler.setAdapter(myLoveAdapter);
+            return;
+        }
+
+        myLoveAdapter.notifyDataSetChanged();
+
+
     }
+
     private void initVariable() {
         activity = this;
         userId = Singleton.getInstance(activity).getUser().getId();
@@ -107,6 +129,19 @@ public class MyLoveActivity extends BaseTopActivity {
         setBtnTopRight1("添加");
 
         myLoveRecycler = getView(R.id.my_love_recycler);
+        myLoveRecycler.setLayoutManager(new LinearLayoutManager(activity));
+        myLoveRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+
+        refreshLayout = getView(R.id.my_love_refresh);
+        refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                loadData();
+            }
+        });
+
+        LoadDialogUtils.showDialogForLoading(activity);
+
     }
 
     private class MyLoveAdapter extends RecyclerView.Adapter<MyLoveHolder> {
@@ -149,13 +184,12 @@ public class MyLoveActivity extends BaseTopActivity {
     @Override
     protected void setBtnTopRight1(String title) {
         super.setBtnTopRight1(title);
-        btnTopRight1.setOnClickListener( v -> {
+        btnTopRight1.setOnClickListener(v -> {
             AddLoveActivity.startAction(activity);
         });
     }
 
     /**
-     *
      * @param context 上下文
      */
     public static void startAction(Context context) {

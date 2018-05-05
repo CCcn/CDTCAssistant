@@ -25,7 +25,10 @@ import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.FindBean;
 import com.cdtc.student.cdtcassistant.network.bean.MyFindBean;
 import com.cdtc.student.cdtcassistant.network.response.FindResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -38,6 +41,7 @@ import okhttp3.Response;
 
 /**
  * 个人跳蚤管理
+ *
  * @author pcc
  */
 public class MyFindActivity extends BaseTopActivity {
@@ -45,6 +49,10 @@ public class MyFindActivity extends BaseTopActivity {
     private RecyclerView myFindRecycler;
 
     private Activity activity;
+
+    private MaterialRefreshLayout refreshLayout;
+
+    private MyFindAdapter myFindAdapter;
 
     private List<FindBean> myFinds;
 
@@ -76,7 +84,21 @@ public class MyFindActivity extends BaseTopActivity {
     private void initView() {
         initTopBar("我的招领");
         setBtnTopRight1("添加");
+
         myFindRecycler = getView(R.id.my_find_recycler);
+        myFindRecycler.setLayoutManager(new LinearLayoutManager(activity));
+        myFindRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+
+        refreshLayout = getView(R.id.my_find_refresh);
+
+        refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                loadData();
+            }
+        });
+
+        LoadDialogUtils.showDialogForLoading(activity);
     }
 
     private void loadData() {
@@ -86,6 +108,8 @@ public class MyFindActivity extends BaseTopActivity {
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 runOnUiThread(() -> {
                     T.showError(activity);
+                    refreshLayout.finishRefresh();
+                    LoadDialogUtils.hide(activity);
                 });
             }
 
@@ -96,17 +120,20 @@ public class MyFindActivity extends BaseTopActivity {
                 runOnUiThread(() -> {
 
                     FindResponse findResponse = null;
-
+                    LoadDialogUtils.hide(activity);
                     try {
                         findResponse = new Gson().fromJson(responseString, FindResponse.class);
                         if (findResponse.code == HttpConstant.OK) {
                             myFinds = findResponse.getData();
                             showDate();
-                        } else {
-                            T.showShort(activity,findResponse.message);
+                            refreshLayout.finishRefresh();
+                            return;
                         }
+                        T.showShort(activity, findResponse.message);
+                        refreshLayout.finishRefresh();
                     } catch (Exception e) {
                         T.showDataError(activity);
+                        refreshLayout.finishRefresh();
                     }
 
                 });
@@ -116,19 +143,23 @@ public class MyFindActivity extends BaseTopActivity {
 
     private void showDate() {
 
-        if (myFinds== null) {
-            T.showShort(activity,"没有更多数据");
+        if (myFinds == null) {
+            T.showShort(activity, "没有更多数据");
             return;
         }
 
         if (myFinds.isEmpty()) {
-            T.showShort(activity,"没有数据");
+            T.showShort(activity, "没有数据");
 
             return;
         }
-        myFindRecycler.setLayoutManager(new  LinearLayoutManager(activity));
-        myFindRecycler.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
-        myFindRecycler.setAdapter(new MyFindAdapter());
+
+        if (myFindAdapter == null) {
+            myFindAdapter = new MyFindAdapter();
+            myFindRecycler.setAdapter(myFindAdapter);
+            return;
+        }
+        myFindAdapter.notifyDataSetChanged();
     }
 
 

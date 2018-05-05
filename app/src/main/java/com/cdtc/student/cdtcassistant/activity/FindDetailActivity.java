@@ -17,6 +17,7 @@ import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
 import com.cdtc.student.cdtcassistant.network.bean.FindDetail;
 import com.cdtc.student.cdtcassistant.network.bean.FindDetailBean;
 import com.cdtc.student.cdtcassistant.network.response.FindDetailResponse;
+import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
 
@@ -122,6 +123,8 @@ public class FindDetailActivity extends BaseTopActivity {
         weChatLayout = getView(R.id.find_detail_layout_wx);
         contactPerson = getView(R.id.find_detail_contact_person);
         description = getView(R.id.find_detail_lost_description);
+
+        LoadDialogUtils.showDialogForLoading(activity);
     }
 
     /**
@@ -134,6 +137,7 @@ public class FindDetailActivity extends BaseTopActivity {
                 Log.d(TAG, "onFailure: " + e.getMessage());
                 runOnUiThread(() -> {
                     T.showError(activity);
+                    LoadDialogUtils.hide(activity);
                 });
             }
 
@@ -144,6 +148,7 @@ public class FindDetailActivity extends BaseTopActivity {
 
                 runOnUiThread(() -> {
                     FindDetailResponse findDetailResponse = null;
+                    LoadDialogUtils.hide(activity);
 
                     try {
                         findDetailResponse = new Gson().fromJson(responseString, FindDetailResponse.class);
