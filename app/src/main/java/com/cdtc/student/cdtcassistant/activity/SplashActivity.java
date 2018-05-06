@@ -11,7 +11,6 @@ import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
-import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
 import com.cdtc.student.cdtcassistant.network.response.InitResponse;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;

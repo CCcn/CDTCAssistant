@@ -32,6 +32,16 @@ public class BuyDetailBean {
 
     private Integer finished;
 
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     public String getName() {
         return name;
     }
@@ -80,6 +90,7 @@ public class BuyDetailBean {
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
                 ", finished=" + finished +
+                ", img='" + img + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,5 @@
 package com.cdtc.student.cdtcassistant.util;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +7,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cdtc.student.cdtcassistant.R;
 import com.wang.avi.AVLoadingIndicatorView;

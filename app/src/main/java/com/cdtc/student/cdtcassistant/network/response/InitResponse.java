@@ -4,7 +4,6 @@ import com.cdtc.student.cdtcassistant.network.bean.BannerBean;
 import com.cdtc.student.cdtcassistant.network.bean.BuyBean;
 import com.cdtc.student.cdtcassistant.network.bean.FindBean;
 import com.cdtc.student.cdtcassistant.network.bean.LoveBean;
-import com.cdtc.student.cdtcassistant.network.bean.MyBuyBean;
 
 import java.util.List;
 

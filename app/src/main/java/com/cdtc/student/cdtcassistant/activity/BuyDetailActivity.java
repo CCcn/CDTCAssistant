@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
@@ -101,6 +103,9 @@ public class BuyDetailActivity extends BaseTopActivity {
     private LinearLayout telLayout;
 
 
+    private LinearLayout imgLayout;
+
+
     private Activity activity;
 
     /**
@@ -149,9 +154,9 @@ public class BuyDetailActivity extends BaseTopActivity {
                         buyDetailResponse = new Gson().fromJson(responseString, BuyDetailResponse.class);
                         if (buyDetailResponse.code == HttpConstant.OK) {
                             BuyDetail buyDetail = buyDetailResponse.getData();
-                            Log.i(TAG, "onResponse: 响应成功：" + buyDetail.getBuyDetail());
+                            Log.i(TAG, "onResponse: 响应成功：" + buyDetail);
 
-                            showData(buyDetail.getBuyDetail(),buyDetail.getContacts());
+                            showData(buyDetail.getBuyDetail(),buyDetail.getContacts(),buyDetail.getImgs());
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
@@ -166,7 +171,7 @@ public class BuyDetailActivity extends BaseTopActivity {
      * 展示数据
      * @param buyDetail
      */
-    private void showData(BuyDetailBean buyDetail,List<ContactBean> contacts) {
+    private void showData(BuyDetailBean buyDetail,List<ContactBean> contacts,List<String> imgs) {
         name.setText(buyDetail.getName());
         price.setText("¥ " + buyDetail.getPrice());
         owner.setText(buyDetail.getOwner());
@@ -183,6 +188,37 @@ public class BuyDetailActivity extends BaseTopActivity {
                 telLayout.setVisibility(View.VISIBLE);
                 tel.setText(contact.getNumber());
             }
+        }
+        //clear linearlayout
+        imgLayout.removeAllViews();
+        /**
+         * 有多张图片
+         */
+        if (imgs != null && !imgs.isEmpty()) {
+
+            for (int i = 0; i < imgs.size(); i++) {
+                ImageView imageView = new ImageView(activity);
+                //设置图片宽高
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                //动态添加图片
+                imgLayout.addView(imageView);
+                Glide.with(activity)
+                        .load(Api.HOME + imgs.get(i))
+                        .placeholder(R.drawable.holder)
+                        .error(R.drawable.holder)
+                        .into(imageView);
+            }
+        }else {
+            ImageView imageView = new ImageView(activity);
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            //动态添加图片
+            imgLayout.addView(imageView);
+            Glide.with(activity)
+                    .load(Api.HOME + buyDetail.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(imageView);
         }
     }
 
@@ -206,6 +242,8 @@ public class BuyDetailActivity extends BaseTopActivity {
         telLayout = getView(R.id.buy_detail_layout_tel);
         weChatLayout = getView(R.id.buy_detail_layout_wx);
         description = getView(R.id.buy_detail_goods_description);
+
+        imgLayout = getView(R.id.buy_detail_imgs);
 
         LoadDialogUtils.showDialogForLoading(activity);
     }

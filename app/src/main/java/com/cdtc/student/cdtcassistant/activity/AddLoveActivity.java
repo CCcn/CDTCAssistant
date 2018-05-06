@@ -3,14 +3,11 @@ package com.cdtc.student.cdtcassistant.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.MessagePattern;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;

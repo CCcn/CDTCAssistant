@@ -1,8 +1,5 @@
 package com.cdtc.student.cdtcassistant.network.bean;
 
-import com.cdtc.student.cdtcassistant.network.bean.BuyDetailBean;
-import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
-
 import java.util.List;
 
 /**
@@ -19,6 +16,16 @@ public class BuyDetail {
      * 联系方式
      */
     private List<ContactBean> contacts;
+
+    private List<String> imgs;
+
+    public List<String> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(List<String> imgs) {
+        this.imgs = imgs;
+    }
 
     public List<ContactBean> getContacts() {
         return contacts;
@@ -38,9 +45,10 @@ public class BuyDetail {
 
     @Override
     public String toString() {
-        return "BuyDetailResponse{" +
+        return "BuyDetail{" +
                 "buyDetail=" + buyDetail +
                 ", contacts=" + contacts +
+                ", imgs=" + imgs +
                 '}';
     }
 }

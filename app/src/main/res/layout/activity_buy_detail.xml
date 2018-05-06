@@ -9,131 +9,151 @@
 
     <include layout="@layout/activity_base_top" />
 
-    <LinearLayout
-        android:layout_margin="8dp"
+    <ScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="商品名称:"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_marginRight="8dp"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:id="@+id/buy_detail_goods_name"
-            tools:text="钢笔"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_margin="8dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="价格"
-            android:layout_weight="0.5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_marginRight="8dp"
-            tools:text="¥18"
-            android:gravity="right"
-            android:textColor="#f00"
-            android:layout_weight="0.5"
-            android:id="@+id/buy_detail_goods_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:text="联系"
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <LinearLayout
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_marginRight="8dp"
-            android:background="@drawable/contact"
-            android:layout_width="16dp"
-            android:layout_height="16dp" />
-        <TextView
-            android:id="@+id/buy_detail_goods_owner"
-            tools:text="---"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/buy_detail_layout_wx"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="商品名称:"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="8dp"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:id="@+id/buy_detail_goods_name"
+                    tools:text="钢笔"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-        <TextView
-            android:text="WX："
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/buy_detail_contact_wx"
-            android:text="--------"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/buy_detail_layout_qq"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="价格"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="8dp"
+                    tools:text="¥18"
+                    android:gravity="right"
+                    android:textColor="#f00"
+                    android:layout_weight="0.5"
+                    android:id="@+id/buy_detail_goods_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-        <TextView
-            android:text="QQ："
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/buy_detail_contact_qq"
-            android:text="--------"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/buy_detail_layout_tel"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="Tel："
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/buy_detail_contact_tel"
-            android:text="--------"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <TextView
-        android:layout_margin="8dp"
-        android:text="详细描述"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_margin="16dp"
-        android:id="@+id/buy_detail_goods_description"
-        android:layout_weight="1"
-        tools:text="   我是描述信息"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
+            <TextView
+                android:text="联系"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_margin="16dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/contact"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp" />
+                <TextView
+                    android:id="@+id/buy_detail_goods_owner"
+                    tools:text="---"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/buy_detail_layout_wx"
+                android:orientation="horizontal"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:text="WX："
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/buy_detail_contact_wx"
+                    android:text="--------"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/buy_detail_layout_qq"
+                android:orientation="horizontal"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="QQ："
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/buy_detail_contact_qq"
+                    android:text="--------"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/buy_detail_layout_tel"
+                android:orientation="horizontal"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Tel："
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/buy_detail_contact_tel"
+                    android:text="--------"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:layout_margin="8dp"
+                android:text="详细描述"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_margin="16dp"
+                android:id="@+id/buy_detail_goods_description"
+                android:layout_weight="1"
+                tools:text="   我是描述信息"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/buy_detail_imgs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

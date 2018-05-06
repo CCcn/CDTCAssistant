@@ -1,5 +1,7 @@
 package com.cdtc.student.cdtcassistant.network;
 
+import android.widget.ScrollView;
+
 /**
  *
  *
@@ -17,7 +19,7 @@ public class Api {
 //    public static final String HOME = "http://119.23.52.87:8087";
 //    public static final String HOME = "http://192.168.1.102:8080";
 //    public static final String HOME = "http://192.168.1.10:8080";
-    public static final String HOME = "http://192.168.1.110:8087";
+    public static final String HOME = "http://192.168.1.6:8087";
 
     /**
      * 登陆 get/post
@@ -63,6 +65,12 @@ public class Api {
     public static final String BUY_DETAIL = HOME + "/buy/showBuy";
 
     /**
+     * 删除
+     *  get id
+     */
+    public static final String BUY_DELETE = HOME + "/buy/deleteBuy";
+
+    /**
      * 失物招领
      *  post  pageNum，pageSize
      */
@@ -94,11 +102,22 @@ public class Api {
     public static final String LOVE_USER_ALL = HOME + "/love/showUserLoves";
 
     /**
+     * 删除表白信息
+     *
+     *   get id
+     */
+    public static final String DELETE_LOVE = HOME + "/love/deleteLove";
+
+    /**
      * 提交一个love
      *  post json
      */
     public static final String CREATE_LOVE = HOME + "/love/createLove";
 
+    /**
+     * 图片上传
+     */
+    public static final String FILE_UPLOAD = HOME + "/file/upload";
 
 
 }

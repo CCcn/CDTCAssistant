@@ -19,6 +19,16 @@ public class AddFindRequest{
      */
     private List<ContactBean> contacts;
 
+    private List<String> imgs;
+
+    public List<String> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(List<String> imgs) {
+        this.imgs = imgs;
+    }
+
     public AddFindBean getFind() {
         return find;
     }

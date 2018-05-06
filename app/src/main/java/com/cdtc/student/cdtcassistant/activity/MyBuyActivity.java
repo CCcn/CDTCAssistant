@@ -1,10 +1,11 @@
 package com.cdtc.student.cdtcassistant.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,8 +24,8 @@ import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.MyBuyBean;
-import com.cdtc.student.cdtcassistant.network.bean.MyFindBean;
 import com.cdtc.student.cdtcassistant.network.request.BuyUsersPageRequest;
+import com.cdtc.student.cdtcassistant.network.response.BaseResponse;
 import com.cdtc.student.cdtcassistant.network.response.MyBuyBeanResponse;
 import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
@@ -184,8 +185,6 @@ public class MyBuyActivity extends BaseTopActivity {
     }
 
 
-
-
     @Override
     protected void setBtnTopRight1(String title) {
         super.setBtnTopRight1(title);
@@ -216,6 +215,12 @@ public class MyBuyActivity extends BaseTopActivity {
                     .into(holder.img);
         }
 
+        public void removeItem(int position) {
+            myBuys.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, myBuys.size() - position);
+        }
+
         @Override
         public int getItemCount() {
             return myBuys.size();
@@ -239,6 +244,8 @@ public class MyBuyActivity extends BaseTopActivity {
          */
         private TextView price;
 
+        private LinearLayout myBuyRoot;
+
         public MyBuyViewHolder(View itemView) {
             super(itemView);
             initView(itemView);
@@ -248,8 +255,53 @@ public class MyBuyActivity extends BaseTopActivity {
             img = view.findViewById(R.id.my_buy_item_img);
             title = view.findViewById(R.id.my_buy_item_title);
             price = view.findViewById(R.id.my_buy_item_price);
-            img.setOnClickListener(v -> {
-                T.showShort(activity, getAdapterPosition() + "点击了");
+
+            myBuyRoot = view.findViewById(R.id.my_buy_root);
+
+            myBuyRoot.setOnLongClickListener(v -> {
+                Integer position = getAdapterPosition();
+
+                Integer buyId = myBuys.get(position).getId();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                        .setTitle("删除")
+                        .setMessage("删除该记录？")
+                        .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                OkHttpUtil.doGet(Api.BUY_DELETE + "?id=" + buyId, new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        Log.d(TAG, "onFailure: " + e.getMessage());
+                                        runOnUiThread(() -> {
+                                            T.showError(activity);
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        String responseString = response.body().string();
+                                        runOnUiThread(() -> {
+                                            try {
+                                                BaseResponse baseResponse = new Gson().fromJson(responseString, BaseResponse.class);
+                                                if (baseResponse.code == HttpConstant.OK) {
+                                                    T.showShort(activity, "删除成功");
+                                                    myBuyAdapter.removeItem(position);
+                                                    return;
+                                                }
+                                                T.showShort(activity, baseResponse.message);
+                                            } catch (Exception e) {
+                                                T.showError(activity);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                builder.setPositiveButton("取消", null);
+                builder.create().show();
+
+                return false;
             });
         }
 

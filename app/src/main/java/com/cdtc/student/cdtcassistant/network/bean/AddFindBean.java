@@ -1,7 +1,5 @@
 package com.cdtc.student.cdtcassistant.network.bean;
 
-import java.util.List;
-
 /**
  * Created by pcc on 2018/5/2.
  *
@@ -68,6 +66,14 @@ public class AddFindBean {
      * 1:有图片
      */
     private Integer hasImg = 0;
+
+    public Integer getHasImg() {
+        return hasImg;
+    }
+
+    public void setHasImg(Integer hasImg) {
+        this.hasImg = hasImg;
+    }
 
     public Integer getUserId() {
         return userId;

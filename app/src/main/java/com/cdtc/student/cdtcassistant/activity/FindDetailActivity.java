@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
@@ -81,6 +83,9 @@ public class FindDetailActivity extends BaseTopActivity {
      */
     private LinearLayout telLayout;
 
+
+    private LinearLayout imgLayout;
+
     private Activity activity;
 
     /**
@@ -124,6 +129,9 @@ public class FindDetailActivity extends BaseTopActivity {
         contactPerson = getView(R.id.find_detail_contact_person);
         description = getView(R.id.find_detail_lost_description);
 
+
+        imgLayout = getView(R.id.find_detail_img);
+
         LoadDialogUtils.showDialogForLoading(activity);
     }
 
@@ -155,7 +163,8 @@ public class FindDetailActivity extends BaseTopActivity {
 
                         if (findDetailResponse.code == HttpConstant.OK) {
                             Log.i(TAG, "onResponse: 响应成功" + findDetailResponse.getData());
-                            showData(findDetailResponse.getData().getFindDetail(), findDetailResponse.getData().getContacts());
+                            FindDetail findDetail = findDetailResponse.getData();
+                            showData(findDetail.getFindDetail(), findDetail.getContacts(),findDetail.getImgs());
                         } else {
                             Log.i(TAG, "onResponse: 响应出错" + findDetailResponse.message);
                             T.showShort(activity,findDetailResponse.message);
@@ -175,7 +184,7 @@ public class FindDetailActivity extends BaseTopActivity {
      * 请求成功后展示数据
      * @param findDetailBean 请求得到的数据
      */
-    private void showData(FindDetailBean findDetailBean, List<ContactBean> contacts) {
+    private void showData(FindDetailBean findDetailBean, List<ContactBean> contacts,List<String> imgs) {
 
         contactPerson.setText(findDetailBean.getContactPerson());
         lostPlace.setText(findDetailBean.getLostPlace());
@@ -194,6 +203,38 @@ public class FindDetailActivity extends BaseTopActivity {
                 telLayout.setVisibility(View.VISIBLE);
                 tel.setText(contact.getNumber());
             }
+        }
+
+
+        imgLayout.removeAllViews();
+        /**
+         * 有多张图片
+         */
+        if (imgs != null && !imgs.isEmpty()) {
+
+            for (int i = 0; i < imgs.size(); i++) {
+                ImageView imageView = new ImageView(activity);
+                //设置图片宽高
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                //动态添加图片
+                imgLayout.addView(imageView);
+                Glide.with(activity)
+                        .load(Api.HOME + imgs.get(i))
+                        .placeholder(R.drawable.holder)
+                        .error(R.drawable.holder)
+                        .into(imageView);
+            }
+        }else {
+            ImageView imageView = new ImageView(activity);
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            //动态添加图片
+            imgLayout.addView(imageView);
+            Glide.with(activity)
+                    .load(Api.HOME + findDetailBean.getImg())
+                    .placeholder(R.drawable.holder)
+                    .error(R.drawable.holder)
+                    .into(imageView);
         }
     }
 

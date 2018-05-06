@@ -29,7 +29,6 @@ import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.fragment.BuyFragment;
 import com.cdtc.student.cdtcassistant.fragment.FindFragment;
 import com.cdtc.student.cdtcassistant.fragment.IndexFragment;
-import com.cdtc.student.cdtcassistant.fragment.MineFragment;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.bean.UserBean;

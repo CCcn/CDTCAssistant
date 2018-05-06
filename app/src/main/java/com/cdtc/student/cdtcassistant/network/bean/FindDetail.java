@@ -13,6 +13,16 @@ public class FindDetail {
 
     private List<ContactBean> contacts;
 
+    private List<String> imgs;
+
+    public List<String> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(List<String> imgs) {
+        this.imgs = imgs;
+    }
+
     public FindDetailBean getFindDetail() {
         return findDetail;
     }
@@ -34,6 +44,7 @@ public class FindDetail {
         return "FindDetail{" +
                 "findDetail=" + findDetail +
                 ", contacts=" + contacts +
+                ", imgs=" + imgs +
                 '}';
     }
 }

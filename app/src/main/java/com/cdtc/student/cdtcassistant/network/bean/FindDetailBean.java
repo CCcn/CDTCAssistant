@@ -1,6 +1,5 @@
 package com.cdtc.student.cdtcassistant.network.bean;
 
-import java.util.List;
 
 /**
  *
@@ -37,6 +36,16 @@ public class FindDetailBean {
     private String description;
 
     private Integer finished;
+
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getName() {
         return name;

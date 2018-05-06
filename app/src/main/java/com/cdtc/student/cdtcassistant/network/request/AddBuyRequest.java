@@ -20,6 +20,15 @@ public class AddBuyRequest {
      */
     private List<ContactBean> contacts;
 
+    private List<String> imgs;
+
+    public List<String> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(List<String> imgs) {
+        this.imgs = imgs;
+    }
 
     public List<ContactBean> getContacts() {
         return contacts;
@@ -42,6 +51,7 @@ public class AddBuyRequest {
         return "AddBuyRequest{" +
                 "buy=" + buy +
                 ", contacts=" + contacts +
+                ", imgs=" + imgs +
                 '}';
     }
 }

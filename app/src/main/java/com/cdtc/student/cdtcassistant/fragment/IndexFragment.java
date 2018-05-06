@@ -21,10 +21,8 @@ import com.bumptech.glide.Glide;
 import com.cdtc.student.cdtcassistant.R;
 import com.cdtc.student.cdtcassistant.activity.BuyDetailActivity;
 import com.cdtc.student.cdtcassistant.activity.FindDetailActivity;
-import com.cdtc.student.cdtcassistant.activity.MainActivity;
 import com.cdtc.student.cdtcassistant.activity.WebActivity;
 import com.cdtc.student.cdtcassistant.common.HttpConstant;
-import com.cdtc.student.cdtcassistant.common.StringConstant;
 import com.cdtc.student.cdtcassistant.network.Api;
 import com.cdtc.student.cdtcassistant.network.OkHttpUtil;
 import com.cdtc.student.cdtcassistant.network.Singleton;
@@ -34,7 +32,6 @@ import com.cdtc.student.cdtcassistant.network.bean.FindBean;
 import com.cdtc.student.cdtcassistant.network.bean.LoveBean;
 
 import com.cdtc.student.cdtcassistant.network.response.InitResponse;
-import com.cdtc.student.cdtcassistant.util.LoadDialogUtils;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
