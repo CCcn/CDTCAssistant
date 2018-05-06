@@ -94,6 +94,12 @@ public class Api {
      */
     public static final String FIND_DETAIL = HOME + "/find/showFind";
 
+    /**
+     * 删除失物招领
+     * get id
+     */
+    public static final String FIND_DELETE = HOME + "/find/deleteFind";
+
 
     /**
      * 用户所有的表白

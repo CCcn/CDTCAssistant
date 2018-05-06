@@ -283,7 +283,7 @@ public class MyFindActivity extends BaseTopActivity {
                         .setNegativeButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                OkHttpUtil.doGet(Api.BUY_DELETE + "?id=" + buyId, new Callback() {
+                                OkHttpUtil.doGet(Api.FIND_DELETE + "?id=" + buyId, new Callback() {
                                     @Override
                                     public void onFailure(Call call, IOException e) {
                                         Log.d(TAG, "onFailure: " + e.getMessage());
