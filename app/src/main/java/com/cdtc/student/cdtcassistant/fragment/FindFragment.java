@@ -169,6 +169,7 @@ public class FindFragment extends Fragment {
 
                     refreshLayout.finishRefreshLoadMore();
                     refreshLayout.finishRefresh();
+                    LoadDialogUtils.hide(activity);
                     try {
                         findResponse = new Gson().fromJson(responseString, FindResponse.class);
                         if (findResponse.code == HttpConstant.OK) {
@@ -186,13 +187,11 @@ public class FindFragment extends Fragment {
                         }
                         Log.d(TAG, "onResponse: 响应异常 " + findResponse);
                         T.showShort(activity, findResponse.message);
-                        LoadDialogUtils.hide(activity);
+
 
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: 请求失败：" + e.getMessage());
                         T.showError(activity);
-
-                        LoadDialogUtils.hide(activity);
                     }
                 });
             }

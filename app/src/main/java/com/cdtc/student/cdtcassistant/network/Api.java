@@ -16,10 +16,10 @@ public class Api {
     /**
      *服务器地址
      */
-//    public static final String HOME = "http://119.23.52.87:8087";
+    public static final String HOME = "http://47.106.85.0";
 //    public static final String HOME = "http://192.168.1.102:8080";
 //    public static final String HOME = "http://192.168.1.10:8080";
-    public static final String HOME = "http://192.168.1.6:8087";
+//    public static final String HOME = "http://192.168.1.6:8087";
 
     /**
      * 登陆 get/post
