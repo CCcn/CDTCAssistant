@@ -62,6 +62,7 @@
                 android:id="@+id/add_buy_qq"
                 android:hint="QQ"
                 android:paddingLeft="4dp"
+                android:inputType="number"
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:maxLength="15"
@@ -70,6 +71,7 @@
             <EditText
                 android:id="@+id/add_buy_phone"
                 android:hint="电话"
+                android:inputType="phone"
                 android:paddingLeft="4dp"
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"

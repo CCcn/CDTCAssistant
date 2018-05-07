@@ -10,7 +10,7 @@
     <ImageView
         android:scaleType="fitXY"
         android:id="@+id/find_img"
-        android:background="@drawable/user_head_placeholder"
+        android:background="@mipmap/icon"
         android:layout_weight="0.25"
         android:layout_width="0dp"
         android:layout_height="100dp" />

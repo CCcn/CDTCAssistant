@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:background="@mipmap/ic_launcher"
+            android:background="@mipmap/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
