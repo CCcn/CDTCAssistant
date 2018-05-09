@@ -2,7 +2,6 @@ package com.cdtc.student.cdtcassistant.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -79,6 +79,7 @@ public class AddFindActivity extends BaseTopActivity {
      */
     private List<String> paths = new ArrayList<>();
 
+    private AlertDialog.Builder builder;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -189,6 +190,26 @@ public class AddFindActivity extends BaseTopActivity {
 
             addFindRequest.setFind(addFindBean);
             addFindRequest.setContacts(contacts);
+
+
+            //未选择图片，也未上传
+            if (paths.isEmpty() && imgs.isEmpty()) {
+                if (builder == null) {
+                    builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("请选择图片")
+                            .setMessage("不添加图片将使用默认图片")
+                            .setCancelable(false);
+                    builder.setNegativeButton("不使用", ((dialog, which) -> {
+                        submitData(addFindRequest);
+                    }));
+                    builder.setPositiveButton("添加图片", ((dialog,with)->{
+                        submit.setEnabled(true);
+                    }));
+                }
+
+                builder.create().show();
+                return;
+            }
 
             //未选择图片
             if (!paths.isEmpty()) {

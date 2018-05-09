@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -54,7 +56,6 @@ public class AddBuyActivity extends BaseTopActivity {
 
     private ImageView addPicture;
 
-
     private Activity activity;
 
     private Integer userId;
@@ -75,6 +76,7 @@ public class AddBuyActivity extends BaseTopActivity {
      */
     private List<String> paths = new ArrayList<>();
 
+    private AlertDialog.Builder builder;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -83,6 +85,7 @@ public class AddBuyActivity extends BaseTopActivity {
     };
 
     private final String TAG = "AddBuyActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +128,7 @@ public class AddBuyActivity extends BaseTopActivity {
 
         submit = getView(R.id.add_buy_submit);
 
-        submit.setOnClickListener( view -> {
+        submit.setOnClickListener(view -> {
 
             submit.setEnabled(false);
 
@@ -183,27 +186,48 @@ public class AddBuyActivity extends BaseTopActivity {
             request.setBuy(addBuyBean);
             request.setContacts(contacts);
 
-            //未选择图片
+            //未选择图片，也未上传
+            if (paths.isEmpty() && imgs.isEmpty()) {
+                if (builder == null) {
+                    builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("请选择图片")
+                            .setMessage("不添加图片将使用默认图片")
+                            .setCancelable(false);
+                    builder.setNegativeButton("不使用", ((dialog, which) -> {
+                        submitData(request);
+                    }));
+                    builder.setPositiveButton("添加图片",((dialog, which) -> {
+                        submit.setEnabled(true);
+                    }));
+
+                }
+
+                builder.create().show();
+                return;
+            }
+
+            //图片未传完
             if (!paths.isEmpty()) {
-                T.showShort(activity,"正在上传图片，请耐心等待！");
+                T.showShort(activity, "正在上传图片，请耐心等待！");
                 submit.setEnabled(true);
                 return;
             }
 
-            submitDate(request);
+            submitData(request);
         });
     }
 
     /**
      * 提交数据
+     *
      * @param request
      */
-    private void submitDate(AddBuyRequest request) {
+    private void submitData(AddBuyRequest request) {
 
         OkHttpUtil.doJsonPost(Api.CREATE_BUY, new Gson().toJson(request), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: 请求失败" + e.getMessage() );
+                Log.d(TAG, "onFailure: 请求失败" + e.getMessage());
 
                 runOnUiThread(() -> {
                     T.showError(activity);
@@ -259,7 +283,7 @@ public class AddBuyActivity extends BaseTopActivity {
                 // imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bm, 100, 100));
                 // 显得到bitmap图片
                 // imageView.setImageBitmap(bm);
-                String[] proj = { MediaStore.Images.Media.DATA };
+                String[] proj = {MediaStore.Images.Media.DATA};
                 // 好像是android多媒体数据库的封装接口，具体的看Android文档
                 Cursor cursor = managedQuery(originalUri, proj, null, null, null);
 
@@ -283,15 +307,14 @@ public class AddBuyActivity extends BaseTopActivity {
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     paths.add(compressImage);
                     uploadPicture(compressImage);
-                }else {
-                    T.showShort(activity,"请开启文件读写权限");
+                } else {
+                    T.showShort(activity, "请开启文件读写权限");
                 }
 
             } catch (IOException e) {
                 Log.e("TAG-->Error", e.toString());
 
-            }
-            finally {
+            } finally {
                 return;
             }
         }
@@ -302,6 +325,7 @@ public class AddBuyActivity extends BaseTopActivity {
 
     /**
      * 上传图片
+     *
      * @param compressImage
      */
     private void uploadPicture(String compressImage) {
@@ -309,7 +333,7 @@ public class AddBuyActivity extends BaseTopActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(() -> {
-                    T.showShort(activity,e.getMessage());
+                    T.showShort(activity, e.getMessage());
                 });
             }
 
@@ -324,7 +348,7 @@ public class AddBuyActivity extends BaseTopActivity {
                             paths.remove(compressImage);
                         }
                     } catch (Exception e) {
-                        T.showShort(activity,"图片上传失败" + e.getMessage());
+                        T.showShort(activity, "图片上传失败" + e.getMessage());
                     }
                 });
 
