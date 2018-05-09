@@ -19,7 +19,7 @@ public class Api {
     public static final String HOME = "http://47.106.85.0";
 //    public static final String HOME = "http://192.168.1.102:8080";
 //    public static final String HOME = "http://192.168.1.10:8080";
-//    public static final String HOME = "http://192.168.1.6:8087";
+//    public static final String HOME = "http://192.168.1.110:8087";
 
     /**
      * 登陆 get/post

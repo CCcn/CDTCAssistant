@@ -2,13 +2,16 @@ package com.cdtc.student.cdtcassistant.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import com.cdtc.student.cdtcassistant.network.bean.ContactBean;
 import com.cdtc.student.cdtcassistant.network.request.AddFindRequest;
 import com.cdtc.student.cdtcassistant.network.response.AddFindResponse;
 import com.cdtc.student.cdtcassistant.network.response.FileUploadResponse;
+import com.cdtc.student.cdtcassistant.util.BitMapUtils;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
 
@@ -69,6 +73,11 @@ public class AddFindActivity extends BaseTopActivity {
      * 存上传的图片
      */
     private List<String> imgs = new ArrayList<>();
+
+    /**
+     * 压缩后的图片路径
+     */
+    private List<String> paths = new ArrayList<>();
 
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -178,48 +187,17 @@ public class AddFindActivity extends BaseTopActivity {
                 contacts.add(contactBean);
             }
 
-
-
             addFindRequest.setFind(addFindBean);
             addFindRequest.setContacts(contacts);
 
+            //未选择图片
+            if (!paths.isEmpty()) {
+                T.showShort(activity,"正在上传图片，请耐心等待！");
+                submit.setEnabled(true);
+               return;
+            }
 
-            OkHttpUtil.doJsonPost(Api.CREATE_FIND, new Gson().toJson(addFindRequest), new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.d(TAG, "onFailure: 请求失败" + e.getMessage() );
-
-                    runOnUiThread(() -> {
-                        T.showError(activity);
-                        submit.setEnabled(true);
-                    });
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Log.i(TAG, "onResponse: 响应成功 " + response.code());
-                    String responseString = response.body().string();
-                    runOnUiThread(() -> {
-                        AddFindResponse addFindResponse = null;
-
-                        try {
-                            addFindResponse = new Gson().fromJson(responseString, AddFindResponse.class);
-                            if (addFindResponse.code == HttpConstant.OK) {
-                                T.showShort(activity, "提交成功");
-                                Log.i(TAG, "onResponse: " + addFindResponse.message);
-                                finish();
-                                return;
-                            }
-                            //出错了
-                            T.showShort(activity, addFindResponse.message);
-                            submit.setEnabled(true);
-                        } catch (Exception e) {
-                            T.showDataError(activity);
-                            submit.setEnabled(true);
-                        }
-                    });
-                }
-            });
+            submitData(addFindRequest);
         });
 
     }
@@ -252,9 +230,10 @@ public class AddFindActivity extends BaseTopActivity {
                 cursor.moveToFirst();
                 // 最后根据索引值获取图片路径
                 String path = cursor.getString(column_index);
+                Log.i(TAG, "onActivityResult: path" + path);
+                String compressImage = BitMapUtils.compressImage(path, activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getPath(), 50);
                 int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if (permission != PackageManager.PERMISSION_GRANTED) {
-                    // We don't have permission so prompt the user
                     ActivityCompat.requestPermissions(
                             activity,
                             PERMISSIONS_STORAGE,
@@ -262,31 +241,8 @@ public class AddFindActivity extends BaseTopActivity {
                     );
                 }
                 if (permission == PackageManager.PERMISSION_GRANTED) {
-                    OkHttpUtil.upLoadFile(Api.FILE_UPLOAD, path, new Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            runOnUiThread(() -> {
-                                T.showShort(activity,e.getMessage());
-                            });
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            String responseString = response.body().string();
-                            runOnUiThread(() -> {
-                                try {
-                                    FileUploadResponse response1 = new Gson().fromJson(responseString, FileUploadResponse.class);
-                                    if (response1.code == HttpConstant.OK) {
-                                        imgs.addAll(response1.getData().getUrls());
-                                        T.showShort(activity,"图片上传成功");
-                                    }
-                                } catch (Exception e) {
-                                    T.showShort(activity,"图片上传失败" + e.getMessage());
-                                }
-                            });
-
-                        }
-                    });
+                    paths.add(compressImage);
+                    uploadPicture(compressImage);
                 }else {
                     T.showShort(activity,"请开启文件读写权限");
                 }
@@ -304,6 +260,81 @@ public class AddFindActivity extends BaseTopActivity {
 
     }
 
+    /**
+     * 提交数据
+     * @param addFindRequest
+     */
+    private void submitData(AddFindRequest addFindRequest) {
+        OkHttpUtil.doJsonPost(Api.CREATE_FIND, new Gson().toJson(addFindRequest), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: 请求失败" + e.getMessage() );
+
+                runOnUiThread(() -> {
+                    T.showError(activity);
+                    submit.setEnabled(true);
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i(TAG, "onResponse: 响应成功 " + response.code());
+                String responseString = response.body().string();
+                runOnUiThread(() -> {
+                    AddFindResponse addFindResponse = null;
+
+                    try {
+                        addFindResponse = new Gson().fromJson(responseString, AddFindResponse.class);
+                        if (addFindResponse.code == HttpConstant.OK) {
+                            T.showShort(activity, "提交成功");
+                            Log.i(TAG, "onResponse: " + addFindResponse.message);
+                            finish();
+                            return;
+                        }
+                        //出错了
+                        T.showShort(activity, addFindResponse.message);
+                        submit.setEnabled(true);
+                    } catch (Exception e) {
+                        T.showDataError(activity);
+                        submit.setEnabled(true);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 上传图片
+     * @param compressImage 压缩后的图片路径
+     */
+    private void uploadPicture(String compressImage) {
+        OkHttpUtil.upLoadFile(Api.FILE_UPLOAD, compressImage, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(() -> {
+                    T.showShort(activity,e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseString = response.body().string();
+                runOnUiThread(() -> {
+                    try {
+                        FileUploadResponse response1 = new Gson().fromJson(responseString, FileUploadResponse.class);
+                        if (response1.code == HttpConstant.OK) {
+                            imgs.addAll(response1.getData().getUrls());
+                            paths.remove(compressImage);
+                            Log.i(TAG, "onResponse: 图片上传成功" + response1.getData().getUrls());
+                        }
+                    } catch (Exception e) {
+                        T.showShort(activity,"图片上传失败" + e.getMessage());
+                    }
+                });
+
+            }
+        });
+    }
 
     public static void startAction(Context context) {
         Intent intent = new Intent(context, AddFindActivity.class);
