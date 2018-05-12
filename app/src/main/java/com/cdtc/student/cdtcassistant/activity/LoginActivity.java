@@ -120,6 +120,8 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
 
         if (TextUtils.isEmpty(inputAccount) || TextUtils.isEmpty(inputPassword)) {
             T.showShort(activity,"请输入完整");
+            login.setEnabled(true);
+            LoadDialogUtils.hide(activity);
             return;
         }
 
