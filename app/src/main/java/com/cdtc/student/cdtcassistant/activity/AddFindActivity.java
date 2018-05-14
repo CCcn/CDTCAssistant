@@ -63,7 +63,6 @@ public class AddFindActivity extends BaseTopActivity {
     private final String TAG = "AddFindActivity";
 
 
-
     private static final String IMAGE_UNSPECIFIED = "image/*";
     private final int IMAGE_CODE = 0;
 
@@ -202,7 +201,7 @@ public class AddFindActivity extends BaseTopActivity {
                     builder.setNegativeButton("不使用", ((dialog, which) -> {
                         submitData(addFindRequest);
                     }));
-                    builder.setPositiveButton("添加图片", ((dialog,with)->{
+                    builder.setPositiveButton("添加图片", ((dialog, with) -> {
                         submit.setEnabled(true);
                     }));
                 }
@@ -213,9 +212,9 @@ public class AddFindActivity extends BaseTopActivity {
 
             //未选择图片
             if (!paths.isEmpty()) {
-                T.showShort(activity,"正在上传图片，请耐心等待！");
+                T.showShort(activity, "正在上传图片，请耐心等待！");
                 submit.setEnabled(true);
-               return;
+                return;
             }
 
             submitData(addFindRequest);
@@ -241,7 +240,7 @@ public class AddFindActivity extends BaseTopActivity {
                 // imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bm, 100, 100));
                 // 显得到bitmap图片
                 // imageView.setImageBitmap(bm);
-                String[] proj = { MediaStore.Images.Media.DATA };
+                String[] proj = {MediaStore.Images.Media.DATA};
                 // 好像是android多媒体数据库的封装接口，具体的看Android文档
                 Cursor cursor = managedQuery(originalUri, proj, null, null, null);
 
@@ -264,15 +263,14 @@ public class AddFindActivity extends BaseTopActivity {
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     paths.add(compressImage);
                     uploadPicture(compressImage);
-                }else {
-                    T.showShort(activity,"请开启文件读写权限");
+                } else {
+                    T.showShort(activity, "请开启文件读写权限");
                 }
 
             } catch (IOException e) {
                 Log.e("TAG-->Error", e.toString());
 
-            }
-            finally {
+            } finally {
                 return;
             }
         }
@@ -283,13 +281,14 @@ public class AddFindActivity extends BaseTopActivity {
 
     /**
      * 提交数据
+     *
      * @param addFindRequest
      */
     private void submitData(AddFindRequest addFindRequest) {
         OkHttpUtil.doJsonPost(Api.CREATE_FIND, new Gson().toJson(addFindRequest), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: 请求失败" + e.getMessage() );
+                Log.d(TAG, "onFailure: 请求失败" + e.getMessage());
 
                 runOnUiThread(() -> {
                     T.showError(activity);
@@ -326,6 +325,7 @@ public class AddFindActivity extends BaseTopActivity {
 
     /**
      * 上传图片
+     *
      * @param compressImage 压缩后的图片路径
      */
     private void uploadPicture(String compressImage) {
@@ -333,7 +333,7 @@ public class AddFindActivity extends BaseTopActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(() -> {
-                    T.showShort(activity,e.getMessage());
+                    T.showShort(activity, e.getMessage());
                 });
             }
 
@@ -349,7 +349,7 @@ public class AddFindActivity extends BaseTopActivity {
                             Log.i(TAG, "onResponse: 图片上传成功" + response1.getData().getUrls());
                         }
                     } catch (Exception e) {
-                        T.showShort(activity,"图片上传失败" + e.getMessage());
+                        T.showShort(activity, "图片上传失败" + e.getMessage());
                     }
                 });
 

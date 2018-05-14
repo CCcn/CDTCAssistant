@@ -196,7 +196,7 @@ public class AddBuyActivity extends BaseTopActivity {
                     builder.setNegativeButton("不使用", ((dialog, which) -> {
                         submitData(request);
                     }));
-                    builder.setPositiveButton("添加图片",((dialog, which) -> {
+                    builder.setPositiveButton("添加图片", ((dialog, which) -> {
                         submit.setEnabled(true);
                     }));
 

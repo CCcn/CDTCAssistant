@@ -16,15 +16,21 @@ public class Api {
     /**
      *服务器地址
      */
-    public static final String HOME = "http://47.106.85.0";
+//    public static final String HOME = "http://47.106.85.0";
 //    public static final String HOME = "http://192.168.1.102:8080";
 //    public static final String HOME = "http://192.168.1.10:8080";
-//    public static final String HOME = "http://192.168.1.110:8087";
+    public static final String HOME = "http://192.168.43.78:8087";
 
     /**
-     * 登陆 get/post
+     * 登录 get/post
      */
     public static final String LOGIN = HOME + "/user/login";
+
+    /**
+     * 修改密码
+     *   post json
+     */
+    public static final String UPDATE_PASSWORD = HOME + "/user/updatePassword";
 
     /**
      * 加在初始化数据

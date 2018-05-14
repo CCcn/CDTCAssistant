@@ -69,7 +69,7 @@ public class FindDetailActivity extends BaseTopActivity {
 
     /**
      * 微信
-     *  用于控制隐藏
+     * 用于控制隐藏
      */
     private LinearLayout weChatLayout;
 
@@ -151,7 +151,7 @@ public class FindDetailActivity extends BaseTopActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.i(TAG, "onResponse: " +response.code());
+                Log.i(TAG, "onResponse: " + response.code());
                 String responseString = response.body().string();
 
                 runOnUiThread(() -> {
@@ -164,10 +164,10 @@ public class FindDetailActivity extends BaseTopActivity {
                         if (findDetailResponse.code == HttpConstant.OK) {
                             Log.i(TAG, "onResponse: 响应成功" + findDetailResponse.getData());
                             FindDetail findDetail = findDetailResponse.getData();
-                            showData(findDetail.getFindDetail(), findDetail.getContacts(),findDetail.getImgs());
+                            showData(findDetail.getFindDetail(), findDetail.getContacts(), findDetail.getImgs());
                         } else {
                             Log.i(TAG, "onResponse: 响应出错" + findDetailResponse.message);
-                            T.showShort(activity,findDetailResponse.message);
+                            T.showShort(activity, findDetailResponse.message);
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: 响应失败：" + e.getMessage());
@@ -182,16 +182,17 @@ public class FindDetailActivity extends BaseTopActivity {
 
     /**
      * 请求成功后展示数据
+     *
      * @param findDetailBean 请求得到的数据
      */
-    private void showData(FindDetailBean findDetailBean, List<ContactBean> contacts,List<String> imgs) {
+    private void showData(FindDetailBean findDetailBean, List<ContactBean> contacts, List<String> imgs) {
 
         contactPerson.setText(findDetailBean.getContactPerson());
         lostPlace.setText(findDetailBean.getLostPlace());
         lostDate.setText(findDetailBean.getLostDate());
         description.setText(findDetailBean.getDescription());
 
-        for (int i = 0 ; i < contacts.size(); i++) {
+        for (int i = 0; i < contacts.size(); i++) {
             ContactBean contact = contacts.get(i);
             if ("wx".equals(contact.getContactType())) {
                 weChatLayout.setVisibility(View.VISIBLE);
@@ -225,7 +226,7 @@ public class FindDetailActivity extends BaseTopActivity {
                         .error(R.drawable.holder)
                         .into(imageView);
             }
-        }else {
+        } else {
             ImageView imageView = new ImageView(activity);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             //动态添加图片
@@ -250,9 +251,10 @@ public class FindDetailActivity extends BaseTopActivity {
 
     /**
      * 打开失物招领详细页面
+     *
      * @param context 上下文
-     * @param title 标题
-     * @param findId id
+     * @param title   标题
+     * @param findId  id
      */
     public static void startAction(Context context, String title, String findId) {
         Intent intent = new Intent(context, FindDetailActivity.class);

@@ -35,10 +35,8 @@ import com.cdtc.student.cdtcassistant.network.bean.UserBean;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.hjm.bottomtabbar.BottomTabBar;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
 
 
     /**
@@ -80,13 +78,13 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * 从初始页启动
-     *   ok    ：数据请求成功
-     *   failed：数据请求失败，进行相应提示
+     * ok    ：数据请求成功
+     * failed：数据请求失败，进行相应提示
      */
     private static final String STATUS = "status";
 
     /**
-     * 本地广播，登陆后启动收广播更新用户数据
+     * 本地广播，登录后启动收广播更新用户数据
      */
     private IntentFilter intentFilter;
     private BroadcastReceiver localReceiver;
@@ -100,13 +98,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         //输入法弹出时防止改变当前页面的布局
-        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -123,7 +121,7 @@ public class MainActivity extends AppCompatActivity
 
 
     /**
-     * 注册监听登陆广播
+     * 注册监听登录广播
      */
     private void registerLoginBroadcast() {
 
@@ -131,21 +129,40 @@ public class MainActivity extends AppCompatActivity
         localReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.i(TAG, "onReceive: " + "收到本地广播:" + intent.getAction() +" data" + intent.getStringExtra(StringConstant.STATUS));
-                updateUser();
+                String status = intent.getStringExtra(StringConstant.STATUS);
+                Log.i(TAG, "onReceive: " + "收到本地广播:" + intent.getAction() + " data " + status);
+                //登陆
+                if (StringConstant.LOGIN.equals(status)) {
+                    Log.i(TAG, "onReceive: 用户登陆"  );
+                    updateUser();
+                //退出登陆
+                } else if (StringConstant.LOGOUT.equals(status)){
+                    Log.i(TAG, "onReceive: 用户退出登陆");
+                    initUser();
+                }
             }
         };
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);
 
-        localBroadcastManager.registerReceiver(localReceiver,intentFilter);
+        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
+
     private void initListener() {
 
         navigationView.setNavigationItemSelectedListener(this);
-
+        //todo 控制fab 显隐
+        fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(view -> {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            //未登录
+            if (Singleton.getInstance(activity).getUser() == null) {
+                Log.i(TAG, "fab initListener: 用户未登陆");
+                LoginActivity.startAction(activity);
+                return;
+            }
+
+            MyInfoActivity.startAction(activity);
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
         });
     }
 
@@ -161,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
 
     /**
-     * 当用户登陆后需要更新头像、用户名和密码
+     * 当用户登录后需要更新头像、用户名和密码
      */
     private void updateUser() {
 
@@ -169,7 +186,7 @@ public class MainActivity extends AppCompatActivity
 
         if (user != null) {
             //设置Navigation里面的组件要这样获取
-            View headerView= navigationView.getHeaderView(0);
+            View headerView = navigationView.getHeaderView(0);
             headImage = headerView.findViewById(R.id.head_image);
             userName = headerView.findViewById(R.id.head_name);
             className = headerView.findViewById(R.id.head_class);
@@ -187,22 +204,31 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void initView() {
-        navigationView  = findViewById(R.id.nav_view);
+    /**
+     * 退出登录后清除数据
+     */
+    private void initUser() {
+        headImage.setBackgroundResource(R.mipmap.icon);
+        userName.setText("");
+        className.setText("");
+    }
 
-        fab =  findViewById(R.id.fab);
+    private void initView() {
+        navigationView = findViewById(R.id.nav_view);
+
+        fab = findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
 
         //设置Navigation里面的组件要这样获取
-        View headerView= navigationView.getHeaderView(0);
+        View headerView = navigationView.getHeaderView(0);
         headImage = headerView.findViewById(R.id.head_image);
 
         mBottomTabBar = findViewById(R.id.bottom_tab_bar);
         mBottomTabBar.init(getSupportFragmentManager())
-                .setImgSize(64,64)
+                .setImgSize(64, 64)
                 .setFontSize(8)
-                .setTabPadding(20,6,20)
-                .setChangeColor(Color.parseColor("#00CBAB"),Color.DKGRAY)
+                .setTabPadding(20, 6, 20)
+                .setChangeColor(Color.parseColor("#00CBAB"), Color.DKGRAY)
                 .addTabItem("首页", R.drawable.icon_index, IndexFragment.class)
                 .addTabItem("跳蚤", R.drawable.icon_buy, BuyFragment.class)
                 .addTabItem("招领", R.drawable.icon_find, FindFragment.class)
@@ -227,9 +253,7 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
     }
-
 
 
 //    @Override
@@ -259,7 +283,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //未登陆
+        //未登录
         if (Singleton.getInstance(activity).getUser() == null) {
             LoginActivity.startAction(activity);
 
@@ -289,24 +313,25 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * 从初始化页面加在进来
+     *
      * @param context 上下文
-     * @param status 网络请求状态
+     * @param status  网络请求状态
      */
     public static void startAction(Context context, String status) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(STATUS,status);
+        intent.putExtra(STATUS, status);
         context.startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             //防止无误触
             if ((System.currentTimeMillis() - pressBack) > 2000) {
-                T.showShort(activity,"再按一次退出程序");
+                T.showShort(activity, "再按一次退出程序");
                 pressBack = System.currentTimeMillis();
             } else {
                 finish();

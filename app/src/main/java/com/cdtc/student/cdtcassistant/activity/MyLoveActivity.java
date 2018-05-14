@@ -182,7 +182,6 @@ public class MyLoveActivity extends BaseTopActivity {
     }
 
 
-
     private class MyLoveAdapter extends RecyclerView.Adapter<MyLoveHolder> {
 
         @NonNull
@@ -244,28 +243,29 @@ public class MyLoveActivity extends BaseTopActivity {
                                             T.showError(activity);
                                         });
                                     }
+
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
-                                        String responseString  = response.body().string();
-                                       runOnUiThread(() ->{
-                                           try {
-                                               BaseResponse baseResponse = new Gson().fromJson(responseString, BaseResponse.class);
-                                               if (baseResponse.code == HttpConstant.OK) {
-                                                   T.showShort(activity, "删除成功");
-                                                   myLoveAdapter.removeItem(position);
-                                                   return;
-                                               }
-                                               T.showShort(activity, baseResponse.message);
-                                           } catch (Exception e) {
-                                               T.showError(activity);
-                                           }
-                                       });
+                                        String responseString = response.body().string();
+                                        runOnUiThread(() -> {
+                                            try {
+                                                BaseResponse baseResponse = new Gson().fromJson(responseString, BaseResponse.class);
+                                                if (baseResponse.code == HttpConstant.OK) {
+                                                    T.showShort(activity, "删除成功");
+                                                    myLoveAdapter.removeItem(position);
+                                                    return;
+                                                }
+                                                T.showShort(activity, baseResponse.message);
+                                            } catch (Exception e) {
+                                                T.showError(activity);
+                                            }
+                                        });
                                     }
                                 });
                             }
                         });
-                        builder.setPositiveButton("取消", null);
-                        builder.create().show();
+                builder.setPositiveButton("取消", null);
+                builder.create().show();
                 return false;
             });
         }

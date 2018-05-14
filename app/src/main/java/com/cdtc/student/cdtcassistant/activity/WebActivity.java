@@ -33,7 +33,7 @@ public class WebActivity extends BaseTopActivity {
 
     /**
      * 浏览页面的标题
-     *  暂时无法实现实时更新页面标题，只有跳转的时候传一个标题名称
+     * 暂时无法实现实时更新页面标题，只有跳转的时候传一个标题名称
      */
     public static final String TITLE = "title";
 
@@ -82,22 +82,23 @@ public class WebActivity extends BaseTopActivity {
 
     /**
      * 打开一个web
+     *
      * @param context 上下文
-     * @param url 要打开的链接
+     * @param url     要打开的链接
      */
     public static void startWeb(Context context, String url, String title) {
         Intent intent = new Intent(context, WebActivity.class);
         intent.putExtra(WEB_URL, url);
         intent.putExtra(TITLE, title);
 
-        Log.i(TAG, "startWeb: " + " url:" + url +" title:" + title);
+        Log.i(TAG, "startWeb: " + " url:" + url + " title:" + title);
 
         context.startActivity(intent);
     }
 
     /**
      * 从父容器中移除webview,然后再销毁webview:
-     *   防止关闭Activity后页面播放不能停止
+     * 防止关闭Activity后页面播放不能停止
      */
     @Override
     protected void onDestroy() {

@@ -17,7 +17,7 @@ public class AboutActivity extends BaseTopActivity {
     }
 
     public static void startAction(Context context) {
-        Intent intent = new Intent(context,AboutActivity.class);
+        Intent intent = new Intent(context, AboutActivity.class);
         context.startActivity(intent);
     }
 }

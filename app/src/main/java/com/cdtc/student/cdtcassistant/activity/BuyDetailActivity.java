@@ -33,8 +33,8 @@ import okhttp3.Response;
 
 /**
  * 跳蚤市场详细展示页
- *    后期增加展示图片
- *
+ * 后期增加展示图片
+ * <p>
  * Created by pcc on 2018/4/22.
  *
  * @author pcc
@@ -88,7 +88,7 @@ public class BuyDetailActivity extends BaseTopActivity {
 
     /**
      * 微信
-     *  用于控制隐藏
+     * 用于控制隐藏
      */
     private LinearLayout weChatLayout;
 
@@ -119,6 +119,7 @@ public class BuyDetailActivity extends BaseTopActivity {
     private static final String GOODS_ID = "goods_id";
 
     private static final String TAG = "BuyDetailActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +134,7 @@ public class BuyDetailActivity extends BaseTopActivity {
     /**
      * 开始请求数据
      */
-    private void  loadData() {
+    private void loadData() {
         OkHttpUtil.doGet(Api.BUY_DETAIL + "?id=" + goodsId, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -156,7 +157,7 @@ public class BuyDetailActivity extends BaseTopActivity {
                             BuyDetail buyDetail = buyDetailResponse.getData();
                             Log.i(TAG, "onResponse: 响应成功：" + buyDetail);
 
-                            showData(buyDetail.getBuyDetail(),buyDetail.getContacts(),buyDetail.getImgs());
+                            showData(buyDetail.getBuyDetail(), buyDetail.getContacts(), buyDetail.getImgs());
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
@@ -169,14 +170,15 @@ public class BuyDetailActivity extends BaseTopActivity {
 
     /**
      * 展示数据
+     *
      * @param buyDetail
      */
-    private void showData(BuyDetailBean buyDetail,List<ContactBean> contacts,List<String> imgs) {
+    private void showData(BuyDetailBean buyDetail, List<ContactBean> contacts, List<String> imgs) {
         name.setText(buyDetail.getName());
         price.setText("¥ " + buyDetail.getPrice());
         owner.setText(buyDetail.getOwner());
         description.setText(buyDetail.getDescription());
-        for (int i = 0 ; i < contacts.size(); i++) {
+        for (int i = 0; i < contacts.size(); i++) {
             ContactBean contact = contacts.get(i);
             if ("wx".equals(contact.getContactType())) {
                 weChatLayout.setVisibility(View.VISIBLE);
@@ -209,7 +211,7 @@ public class BuyDetailActivity extends BaseTopActivity {
                         .error(R.drawable.holder)
                         .into(imageView);
             }
-        }else {
+        } else {
             ImageView imageView = new ImageView(activity);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             //动态添加图片
@@ -250,12 +252,13 @@ public class BuyDetailActivity extends BaseTopActivity {
 
     /**
      * 跳转到此页面
+     *
      * @param context 上下文
-     * @param title 商品标题
+     * @param title   商品标题
      * @param goodsId 商品id
      */
-    public static void startAction(Context context, String title,String goodsId) {
-        Intent intent = new Intent(context,BuyDetailActivity.class);
+    public static void startAction(Context context, String title, String goodsId) {
+        Intent intent = new Intent(context, BuyDetailActivity.class);
         intent.putExtra(TITLE, title);
         intent.putExtra(GOODS_ID, goodsId);
         context.startActivity(intent);

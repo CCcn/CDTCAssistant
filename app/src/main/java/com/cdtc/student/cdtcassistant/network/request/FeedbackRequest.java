@@ -11,7 +11,7 @@ package com.cdtc.student.cdtcassistant.network.request;
 public class FeedbackRequest {
 
     /**
-     * 当前登陆用户id
+     * 当前登录用户id
      */
     private Integer userId;
 

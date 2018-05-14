@@ -40,7 +40,7 @@ public class FeedbackActivity extends BaseTopActivity {
 
     /**
      * 联系方式
-     *   可选
+     * 可选
      */
     private EditText contact;
 
@@ -121,7 +121,7 @@ public class FeedbackActivity extends BaseTopActivity {
             }
         });
 
-        submit.setOnClickListener( v-> {
+        submit.setOnClickListener(v -> {
             String inputContent = content.getText().toString();
             String inputContact = contact.getText().toString();
 
@@ -140,7 +140,7 @@ public class FeedbackActivity extends BaseTopActivity {
                 TextUtils.isEmpty("sdasd");
 
 
-                OkHttpUtil.doJsonPost(Api.FEEDBACK,new Gson().toJson(feedbackBean) , new Callback() {
+                OkHttpUtil.doJsonPost(Api.FEEDBACK, new Gson().toJson(feedbackBean), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d(TAG, "onFailure: " + e.getMessage());
@@ -156,15 +156,15 @@ public class FeedbackActivity extends BaseTopActivity {
                         runOnUiThread(() -> {
 
                             FeedbackResponse feedbackResponse = null;
-                            try{
+                            try {
                                 feedbackResponse = new Gson().fromJson(responseString, FeedbackResponse.class);
-                            }catch (Exception e) {
+                            } catch (Exception e) {
                                 Log.d(TAG, "onResponse: 解析json失败" + e.getMessage());
                                 return;
                             }
 
                             if (feedbackResponse != null && feedbackResponse.code == HttpConstant.OK) {
-                                T.showShort(activity,"谢谢你的帮助，让我更快成长！");
+                                T.showShort(activity, "谢谢你的帮助，让我更快成长！");
                                 finish();
                             } else {
                                 T.showShort(activity, feedbackResponse.message);
@@ -174,7 +174,7 @@ public class FeedbackActivity extends BaseTopActivity {
                 });
 
             } else {
-                T.showShort(activity,"我们很重视你的意见，多输入一点哟");
+                T.showShort(activity, "我们很重视你的意见，多输入一点哟");
             }
 
         });
@@ -182,6 +182,7 @@ public class FeedbackActivity extends BaseTopActivity {
 
     /**
      * 打开反馈界面
+     *
      * @param context 上下文
      */
     public static void startAction(Context context) {

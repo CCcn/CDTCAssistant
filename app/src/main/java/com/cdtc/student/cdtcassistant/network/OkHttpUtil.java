@@ -83,7 +83,7 @@ public class OkHttpUtil {
      * @param jsonObject json字符串
      * @param callback 回调接口
      */
-    private static void doJsonPost(String url, Object jsonObject, Callback callback) {
+    public static void doJsonPost(String url, Object jsonObject, Callback callback) {
         RequestBody requestBody = RequestBody.create(JSON, new Gson().toJson(jsonObject));
         Request request = new Request.Builder()
                 .url(url)

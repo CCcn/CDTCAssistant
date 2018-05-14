@@ -40,6 +40,7 @@ public class AddLoveActivity extends BaseTopActivity {
     private Integer userId;
 
     private static final String TAG = "AddLoveActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,24 +97,24 @@ public class AddLoveActivity extends BaseTopActivity {
                 public void onResponse(Call call, Response response) throws IOException {
                     String responseString = response.body().string();
 
-                  runOnUiThread(() -> {
-                      AddLoveResponse addLoveResponse = null;
-                      try {
-                          addLoveResponse = new Gson().fromJson(responseString, AddLoveResponse.class);
-                          if (addLoveResponse.code == HttpConstant.OK) {
-                              T.showShort(activity, "提交成功");
-                              Log.i(TAG, "onResponse: " + addLoveResponse.message);
-                              finish();
-                              return;
-                          }
-                          //出错了
-                          T.showShort(activity, addLoveResponse.message);
-                          submit.setEnabled(true);
-                      } catch (Exception e) {
-                          T.showDataError(activity);
-                          submit.setEnabled(true);
-                      }
-                  });
+                    runOnUiThread(() -> {
+                        AddLoveResponse addLoveResponse = null;
+                        try {
+                            addLoveResponse = new Gson().fromJson(responseString, AddLoveResponse.class);
+                            if (addLoveResponse.code == HttpConstant.OK) {
+                                T.showShort(activity, "提交成功");
+                                Log.i(TAG, "onResponse: " + addLoveResponse.message);
+                                finish();
+                                return;
+                            }
+                            //出错了
+                            T.showShort(activity, addLoveResponse.message);
+                            submit.setEnabled(true);
+                        } catch (Exception e) {
+                            T.showDataError(activity);
+                            submit.setEnabled(true);
+                        }
+                    });
 
                 }
             });
@@ -122,7 +123,6 @@ public class AddLoveActivity extends BaseTopActivity {
     }
 
     /**
-     *
      * @param context 上下文
      */
     public static void startAction(Context context) {

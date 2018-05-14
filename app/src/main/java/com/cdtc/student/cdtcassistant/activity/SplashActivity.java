@@ -77,10 +77,8 @@ public class SplashActivity extends AppCompatActivity {
                         return;
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: " + e.getMessage());
-                        T.showError(activity);
                         MainActivity.startAction(activity, StringConstant.FAILED);
                     }
-
                 });
             }
         });

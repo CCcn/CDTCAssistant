@@ -40,6 +40,7 @@ public class BaseTopActivity extends AppCompatActivity {
 
     /**
      * 右上角按钮
+     *
      * @param title 按钮文字
      */
     protected void setBtnTopRight1(String title) {
@@ -49,13 +50,14 @@ public class BaseTopActivity extends AppCompatActivity {
 
     /**
      * 顶部标题栏
+     *
      * @param title 标题
      */
     protected void initTopBar(String title) {
         llTopBack = findViewById(R.id.llTopBack);
-        tvTopTitle =  findViewById(R.id.tvTopTitle);
-        btnTopRight4 =  findViewById(R.id.btnTopRight4);
-        btnTopRight1 =  findViewById(R.id.btnTopRight1);
+        tvTopTitle = findViewById(R.id.tvTopTitle);
+        btnTopRight4 = findViewById(R.id.btnTopRight4);
+        btnTopRight1 = findViewById(R.id.btnTopRight1);
         btnTopRight2 = findViewById(R.id.btnTopRight2);
 
         tvTopTitle.setText(title);
@@ -76,7 +78,8 @@ public class BaseTopActivity extends AppCompatActivity {
 
     /**
      * 绑定组件
-     * @param id 组件id
+     *
+     * @param id  组件id
      * @param <T> View及View的子类
      * @return 组件的实例
      */

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    android:orientation="vertical"
+    tools:context=".activity.MyInfoActivity">
+
+    <include layout="@layout/activity_base_top"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--修改密码-->
+        <LinearLayout
+            android:id="@+id/my_info_change_password"
+            android:background="@drawable/shape_setting_text_bg"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical|left"
+                android:text="更改密码:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <ImageView
+                android:src="@drawable/arrow_right"
+                android:paddingRight="8dp"
+                android:gravity="center_vertical|right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <!--姓名-->
+        <LinearLayout
+            android:background="@drawable/shape_setting_text_bg"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical|left"
+                android:text="姓名:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:paddingRight="8dp"
+                android:id="@+id/my_info_name"
+                android:gravity="center_vertical|right"
+                tools:text="彭陈"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--gender-->
+        <LinearLayout
+            android:background="@drawable/shape_setting_text_bg"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical|left"
+                android:text="性别:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:paddingRight="8dp"
+                android:id="@+id/my_info_gender"
+                android:gravity="center_vertical|right"
+                tools:text="男"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--专业 + 年纪-->
+        <LinearLayout
+            android:background="@drawable/shape_setting_text_bg"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical|left"
+                android:text="专业:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:paddingRight="8dp"
+                android:id="@+id/my_info_className"
+                android:gravity="center_vertical|right"
+                tools:text="软件技术151"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--学院-->
+        <LinearLayout
+            android:background="@drawable/shape_setting_text_bg"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical|left"
+                android:text="学院:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:paddingRight="8dp"
+                android:id="@+id/my_info_academy"
+                android:gravity="center_vertical|right"
+                tools:text="电信学院"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <!--年纪-->
+        <LinearLayout
+            android:background="@drawable/shape_setting_text_bg"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical|left"
+                android:text="年级:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:paddingRight="8dp"
+                android:id="@+id/my_info_grade"
+                android:gravity="center_vertical|right"
+                tools:text="2015"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_btn_bg"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="退出登录"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:id="@+id/my_info_login_out"
+            android:layout_width="match_parent" />
+
+    </LinearLayout>
+</LinearLayout>

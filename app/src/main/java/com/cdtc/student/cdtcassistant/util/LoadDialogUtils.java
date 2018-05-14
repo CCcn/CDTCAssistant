@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cdtc.student.cdtcassistant.R;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -27,6 +28,36 @@ public class LoadDialogUtils {
     public static void showDialogForLoading(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_loading_dialog, null);
         AVLoadingIndicatorView avLoadingIndicatorView = view.findViewById(R.id.loading_indicator);
+        mLoadingDialog = new Dialog(context, R.style.loading_dialog_style);
+        mLoadingDialog.setCancelable(false);
+        mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+        mLoadingDialog.show();
+        avLoadingIndicatorView.smoothToShow();
+        mLoadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    mLoadingDialog.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
+
+    /**
+     * 显示加载动画
+     *  请稍等
+     *
+     * @param context 上下文
+     */
+    public static void showDialogForWaiting(Context context) {
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_loading_dialog, null);
+        AVLoadingIndicatorView avLoadingIndicatorView = view.findViewById(R.id.loading_indicator);
+        TextView text = view.findViewById(R.id.loading_text);
+        text.setText("请稍等");
         mLoadingDialog = new Dialog(context, R.style.loading_dialog_style);
         mLoadingDialog.setCancelable(false);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
