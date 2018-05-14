@@ -52,6 +52,11 @@ public class ChangePasswordActivity extends BaseTopActivity {
 
     private Activity activity;
 
+    /**
+     * 密码最低位数
+     */
+    private final int MIN_PASSWORD_LENGTH = 6;
+
     private static final String TAG = "ChangePasswordActivity";
 
     @Override
@@ -91,6 +96,12 @@ public class ChangePasswordActivity extends BaseTopActivity {
                 return;
             }
 
+            if (inputNewPassword.length() < MIN_PASSWORD_LENGTH) {
+                T.showShort(activity, "密码最少六位");
+                submit.setEnabled(true);
+                return;
+            }
+
             if (!inputNewPassword.equals(inputConfirmPassword)) {
                 T.showShort(activity, "两次密码输入不一致");
                 submit.setEnabled(true);
@@ -107,7 +118,7 @@ public class ChangePasswordActivity extends BaseTopActivity {
             OkHttpUtil.doJsonPost(Api.UPDATE_PASSWORD, request, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.i(TAG, "onFailure: 网络链接是被" +e.getMessage());
+                    Log.i(TAG, "onFailure: 网络链接是被" + e.getMessage());
                     runOnUiThread(() -> {
                         LoadDialogUtils.hide(activity);
                         T.showError(activity);
