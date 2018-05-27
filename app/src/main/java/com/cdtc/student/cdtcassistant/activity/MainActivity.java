@@ -229,10 +229,12 @@ public class MainActivity extends AppCompatActivity
                 .setFontSize(8)
                 .setTabPadding(20, 6, 20)
                 .setChangeColor(Color.parseColor("#00CBAB"), Color.DKGRAY)
+
                 .addTabItem("首页", R.drawable.icon_index, IndexFragment.class)
                 .addTabItem("跳蚤", R.drawable.icon_buy, BuyFragment.class)
                 .addTabItem("招领", R.drawable.icon_find, FindFragment.class)
-//                .addTabItem("我的", R.drawable.icon_mine, MineFragment.class)
+
+
                 .setTabBarBackgroundColor(Color.parseColor("#f9feff"))
                 .isShowDivider(true);
 

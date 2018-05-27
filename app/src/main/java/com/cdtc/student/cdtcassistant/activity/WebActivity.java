@@ -56,6 +56,7 @@ public class WebActivity extends BaseTopActivity {
         //避免输入法界面弹出后遮挡输入光标的问题
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         initView();
     }
 
@@ -64,12 +65,13 @@ public class WebActivity extends BaseTopActivity {
         webView = getView(R.id.web_view);
         rootLayout = getView(R.id.root_web_view);
 
-        initTopBar("浏览");
+        initTopBar(getIntent().getStringExtra(TITLE));
 
         webView.loadUrl(url);
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -77,7 +79,6 @@ public class WebActivity extends BaseTopActivity {
                 return true;
             }
         });
-
     }
 
     /**

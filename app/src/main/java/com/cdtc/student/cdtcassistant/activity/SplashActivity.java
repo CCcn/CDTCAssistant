@@ -61,14 +61,20 @@ public class SplashActivity extends AppCompatActivity {
 
                     try {
                         initResponse = new Gson().fromJson(responseSting, InitResponse.class);
+
                         if (initResponse.code == HttpConstant.OK) {
+
                             Singleton.getInstance(activity).setBannerBean(initResponse.getBanner());
+
+
                             Singleton.getInstance(activity).setBuys(initResponse.getBuys());
                             Singleton.getInstance(activity).setFinds(initResponse.getFinds());
                             Singleton.getInstance(activity).setLoves(initResponse.getLoves());
+                            
                             MainActivity.startAction(activity, StringConstant.OK);
                             Log.i(TAG, "onResponse: 数据加载完成，启动到main");
                             finish();
+
                             return;
                         }
 

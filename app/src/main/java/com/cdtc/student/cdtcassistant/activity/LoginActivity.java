@@ -112,6 +112,7 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+
         login.setEnabled(false);
         LoadDialogUtils.showDialogForLogin(activity);
         String inputAccount = studentNumber.getText().toString();
@@ -125,6 +126,8 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
         }
 
         Log.i(TAG, "onClick: password " + inputPassword);
+
+
         String finalInputPassword = inputPassword;
 
         //将密码加密
@@ -140,11 +143,13 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "onFailure: 登录请求出错" + e.getMessage());
+
                 runOnUiThread(() -> {
                     T.showError(activity);
                     login.setEnabled(true);
                     LoadDialogUtils.hide(activity);
                 });
+
             }
 
             @Override
@@ -162,8 +167,8 @@ public class LoginActivity extends BaseTopActivity implements View.OnClickListen
                         //登录成功
                         if (userResponse.code == HttpConstant.OK) {
                             Log.i(TAG, "onResponse: 登录成功" + userResponse);
-                            Singleton.getInstance(activity).setUser(userResponse.getData());
 
+                            Singleton.getInstance(activity).setUser(userResponse.getData());
 
                             //记住用户名和密码
                             if (rememberMe.isChecked()) {

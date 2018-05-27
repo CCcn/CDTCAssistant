@@ -115,6 +115,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
         initView(view);
 
         loadBannerData(bgaBanner);
+
         return view;
     }
 
@@ -199,6 +200,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
                             loves = initResponse.getLoves();
 
                             showRefreshData();
+
                             refreshLayout.finishRefresh();
                             return;
                         }
@@ -260,6 +262,8 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
      */
     private void loadBannerData(BGABanner banner) {
         bannerBean = Singleton.getInstance(getContext()).getBannerBean();
+
+
         if (bannerBean != null) {
             banner.setData(bannerBean.getImgs(), bannerBean.getTips());
         } else {
@@ -321,6 +325,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
             if (position % 1 == 0) {
                 holder.root.setBackgroundColor(Color.parseColor("#fffed955"));
             }
+
             BuyBean buyBean = buys.get(position);
             holder.price.setText("¥ " + buyBean.getPrice());
             holder.title.setText(buyBean.getTitle());
@@ -329,7 +334,6 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
                     .placeholder(R.drawable.holder)
                     .error(R.drawable.holder)
                     .into(holder.imageView);
-
         }
 
         @Override
@@ -431,6 +435,7 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
      */
     @Override
     public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+
         Glide.with(itemView.getContext())
                 .load(Api.HOME + model)
                 .placeholder(R.drawable.holder)
@@ -440,16 +445,20 @@ public class IndexFragment extends Fragment implements BGABanner.Adapter<ImageVi
                 .into(itemView);
 
         itemView.setOnClickListener(view -> {
+
+
             String url = bannerBean.getUrls().get(position);
             String title = bannerBean.getTips().get(position);
             Log.i(TAG, "fillBannerItem: url" + url);
             //简单验证链接的有效性，应该做一个HTPP工具类
             if (!TextUtils.isEmpty(url) && url.contains("http")) {
+
                 WebActivity.startWeb(activity, url, title);
             } else {
                 T.showShort(activity, "链接无效");
             }
         });
+
     }
 
     @Override
