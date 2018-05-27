@@ -3,10 +3,8 @@ package com.cdtc.student.cdtcassistant.network;
 import android.widget.ScrollView;
 
 /**
- *
- *
  * 所以的请求地址全部存放在这里
- *
+ * <p>
  * Created by pcc on 2018/4/18.
  *
  * @author pcc
@@ -14,12 +12,12 @@ import android.widget.ScrollView;
 public class Api {
 
     /**
-     *服务器地址
+     * 服务器地址
      */
-//    public static final String HOME = "http://47.106.85.0";
+    public static final String HOME = "http://47.106.85.0";
 //    public static final String HOME = "http://192.168.1.102:8080";
 //    public static final String HOME = "http://192.168.1.10:8080";
-    public static final String HOME = "http://192.168.43.78:8087";
+//    public static final String HOME = "http://192.168.43.78:8087";
 
     /**
      * 登录 get/post
@@ -28,75 +26,74 @@ public class Api {
 
     /**
      * 修改密码
-     *   post json
+     * post json
      */
     public static final String UPDATE_PASSWORD = HOME + "/user/updatePassword";
 
     /**
      * 加在初始化数据
-     *   get
-     *
+     * get
      */
     public static final String INIT = HOME + "/index";
 
     /**
      * 反馈
-     *   post json
+     * post json
      */
     public static final String FEEDBACK = HOME + "/feedback/add";
 
     /**
-     *跳蚤商品
+     * 跳蚤商品
      * post pageNum pageSize
      */
     public static final String BUY = HOME + "/buy/allBuys";
 
     /**
      * 用户所有的跳蚤商品
-     *  post userId pageNum pageSize
+     * post userId pageNum pageSize
      */
     public static final String BUY_USER_ALL = HOME + "/buy/showUserBuys";
 
     /**
      * 提交一个二手商品
-     *  post json
+     * post json
      */
     public static final String CREATE_BUY = HOME + "/buy/createBuy";
 
 
     /**
      * 商品详细信息
-     *   get goodsId
+     * get goodsId
      */
     public static final String BUY_DETAIL = HOME + "/buy/showBuy";
 
     /**
      * 删除
-     *  get id
+     * get id
      */
     public static final String BUY_DELETE = HOME + "/buy/deleteBuy";
 
     /**
      * 失物招领
-     *  post  pageNum，pageSize
+     * post  pageNum，pageSize
      */
     public static final String FIND_ALL = HOME + "/find/allFinds";
 
     /**
      * 用户的所有失物招领
-     *   post
+     * post
      */
     public static final String FIND_USER_ALL = HOME + "/find/showUserFinds";
 
     /**
      * 提交一个查找
-     *   post json
+     * post json
      */
     public static final String CREATE_FIND = HOME + "/find/createFind";
 
     /**
      * 失物招领详细信息
-     *  get
+     * get
      */
     public static final String FIND_DETAIL = HOME + "/find/showFind";
 
@@ -109,20 +106,20 @@ public class Api {
 
     /**
      * 用户所有的表白
-     *   get userId
+     * get userId
      */
     public static final String LOVE_USER_ALL = HOME + "/love/showUserLoves";
 
     /**
      * 删除表白信息
-     *
-     *   get id
+     * <p>
+     * get id
      */
     public static final String DELETE_LOVE = HOME + "/love/deleteLove";
 
     /**
      * 提交一个love
-     *  post json
+     * post json
      */
     public static final String CREATE_LOVE = HOME + "/love/createLove";
 
