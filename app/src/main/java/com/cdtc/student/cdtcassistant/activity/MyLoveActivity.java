@@ -51,6 +51,8 @@ public class MyLoveActivity extends BaseTopActivity {
 
     private Activity activity;
 
+
+
     private Integer userId;
 
     private static final String TAG = "MyLoveActivity";
