@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -52,9 +53,14 @@ public class BuyFragment extends Fragment {
     private static final String TAG = "BuyFragment";
 
     private Integer pageNum = 1;
+
     private Integer pageSize = 10;
     private boolean hasLoadAll = false;
 
+    /**
+     * Recycle横向展示item个数
+     */
+    private int spanCount = 2;
 
 
     @Override
@@ -145,7 +151,7 @@ public class BuyFragment extends Fragment {
      */
     private void initView(View view) {
         buyRecycler = view.findViewById(R.id.buy_recycler);
-        buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        buyRecycler.setLayoutManager(new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL));
 
         refreshLayout = view.findViewById(R.id.buy_refresh);
         refreshLayout.setLoadMore(true);
@@ -206,8 +212,10 @@ public class BuyFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull BuyHolder holder, int position) {
             BuyBean buy = buys.get(position);
+
             holder.title.setText(buy.getTitle());
             holder.price.setText("¥ " + buy.getPrice());
+
             Glide.with(activity)
                     .load(Api.HOME + buy.getImg())
                     .placeholder(R.drawable.holder)
@@ -245,7 +253,6 @@ public class BuyFragment extends Fragment {
 
             //点击后应该跳转到展示页面，后期可以实现ViewPager
             img.setOnClickListener(v -> {
-                // T.showShort(activity, "点击了"+getAdapterPosition());
                 BuyBean buyBean = buys.get(getAdapterPosition());
                 BuyDetailActivity.startAction(activity, buyBean.getTitle(), buyBean.getId());
             });

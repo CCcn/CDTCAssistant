@@ -132,7 +132,6 @@ public class FeedbackActivity extends BaseTopActivity {
                 }
 
                 FeedbackRequest feedbackBean = new FeedbackRequest();
-                feedbackBean.setContact(inputContact);
                 feedbackBean.setContent(inputContent);
                 feedbackBean.setUserId(Singleton.getInstance(activity).getUser().getId());
 

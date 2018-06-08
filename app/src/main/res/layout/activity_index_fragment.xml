@@ -9,10 +9,9 @@
     tools:context=".fragment.IndexFragment">
 
 
-    <!--&lt;!&ndash;ScrollView&ndash;&gt;-->
 
-
-        <com.cjj.MaterialRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.cjj.MaterialRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/index_refresh"
             android:layout_width="match_parent"
@@ -25,6 +24,8 @@
             app:wave_color="#00CBAB"
             app:wave_height_type="normal"
             app:wave_show="true">
+
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,6 +47,7 @@
                         app:banner_indicatorGravity="bottom|center_horizontal"
                         app:banner_pointDrawable="@drawable/bga_banner_selector_point_solid"
                         app:banner_transitionEffect="flip" />
+
                 </LinearLayout>
 
                 <!--工具栏-->

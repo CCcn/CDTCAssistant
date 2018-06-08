@@ -138,9 +138,7 @@ public class FindFragment extends Fragment {
             }
         });
 
-
         LoadDialogUtils.showDialogForLoading(activity);
-
     }
 
     private void loadData() {
@@ -165,7 +163,7 @@ public class FindFragment extends Fragment {
                 String responseString = response.body().string();
                 Log.i(TAG, "onResponse: " + responseString);
                 activity.runOnUiThread(() -> {
-                    FindResponse findResponse = null;
+                    FindResponse findResponse;
 
                     refreshLayout.finishRefreshLoadMore();
                     refreshLayout.finishRefresh();
@@ -187,7 +185,6 @@ public class FindFragment extends Fragment {
                         }
                         Log.d(TAG, "onResponse: 响应异常 " + findResponse);
                         T.showShort(activity, findResponse.message);
-
 
                     } catch (Exception e) {
                         Log.d(TAG, "onResponse: 请求失败：" + e.getMessage());

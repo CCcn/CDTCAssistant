@@ -7,7 +7,8 @@
     android:background="#fff"
     tools:context=".fragment.BuyFragment">
 
-    <com.cjj.MaterialRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.cjj.MaterialRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/buy_refresh"
         android:layout_width="0dp"
