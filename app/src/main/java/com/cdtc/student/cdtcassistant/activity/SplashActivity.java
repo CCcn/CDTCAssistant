@@ -14,6 +14,7 @@ import com.cdtc.student.cdtcassistant.network.Singleton;
 import com.cdtc.student.cdtcassistant.network.response.InitResponse;
 import com.cdtc.student.cdtcassistant.util.T;
 import com.google.gson.Gson;
+import com.umeng.message.PushAgent;
 
 import java.io.IOException;
 
@@ -31,6 +32,9 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        //开启推送
+        PushAgent.getInstance(this).onAppStart();
 
         activity = this;
 

@@ -10,12 +10,15 @@ import com.umeng.message.PushAgent;
 public class UMApplication extends Application {
 
     private final String TAG = "UMApplication";
+    private final String APP_KEY = "5b1dd41ff29d984395000033";
+    private final String CHANNEL_ID = "Umeng";
+    private final String UMENG_MESSAGE_SECRET = "6568e2978aa1ef0bdc17aa86a7d81c37";
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        UMConfigure.init(this, "5b1dd41ff29d984395000033", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "6568e2978aa1ef0bdc17aa86a7d81c37");
+        UMConfigure.init(this, APP_KEY, CHANNEL_ID, UMConfigure.DEVICE_TYPE_PHONE, UMENG_MESSAGE_SECRET);
 
         //log开关
         UMConfigure.setLogEnabled(true);
@@ -28,7 +31,7 @@ public class UMApplication extends Application {
 
             @Override
             public void onSuccess(String deviceToken) {
-                Log.d(TAG, "onSuccess: ");
+                Log.d(TAG, "onSuccess: " + deviceToken);
             }
 
             @Override
@@ -36,7 +39,6 @@ public class UMApplication extends Application {
 
             }
         });
-
 
     }
 }
